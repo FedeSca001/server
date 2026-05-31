@@ -1,6 +1,6 @@
 const cheerio = require("cheerio");
 
-const getRace = async () => {
+/*const getRace = async () => {
   try {
     const response = await fetch("https://www.motogp.com/en/calendar");
     const html = await response.text();
@@ -21,6 +21,14 @@ const getRace = async () => {
     console.error("Error al obtener las carreras:", error);
     throw error;
   }
+};
+*/
+const getRace = async () => {
+  console.log("hola funciones");
+
+  return [
+    { name: "Test Race", date: "2026-01-01" }
+  ];
 };
 
 module.exports = { getRace };

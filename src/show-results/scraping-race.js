@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getRace } = require("../scrapingFunctions/scrapingFunctions");
+const { getRace } = require("../show-results/scrapingFunctions/scrapingFunctinos.js");
 
 router.get("/inicio", (req, res) => {
   res.send("¡Bienvenido a la carrera de scraping! 🏁");
