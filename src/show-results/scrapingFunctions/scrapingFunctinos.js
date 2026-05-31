@@ -26,9 +26,7 @@ const cheerio = require("cheerio");
 const getRace = async () => {
   console.log("hola funciones");
 
-  return [
-    { name: "Test Race", date: "2026-01-01" }
-  ];
+  return "Hola desde la función getRace";
 };
 
 module.exports = { getRace };
