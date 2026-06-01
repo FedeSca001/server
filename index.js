@@ -9,10 +9,6 @@ app.get("/", (req, res) => {
   res.send("¡Hola, mundo! 🌍");
 });
 
-app.get("/proyecto1", (req, res) => {
-  res.send("Hola desde la Raspberry 🚀");
-});
-
 app.use("/scrapingRace", scrapingRaceRouter);
 
 app.use((req, res) => {
