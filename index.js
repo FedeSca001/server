@@ -20,31 +20,20 @@ app.use((req, res) => {
   res.status(404).send({ error: "Ruta no encontrada" });
 });
 
-readline.question("¿Deseas iniciar el servidor? (s/n) ", (answer) => {
-  const accepted = ["s", "si", "y", "yes"];
+let PORT = process.env.PORT || 3000;
 
-  if (accepted.includes(answer.toLowerCase())) {
-    const PORT = process.env.PORT || 3000;
+readline.on("line", (input) => {
+    const newPort = Number(input);
+    if (!isNaN(newPort) && newPort > 0 && newPort <= 65535) {
+      PORT = newPort;
+    } else if (input === "exit") {
+      console.log("Saliendo del programa...");
+      process.exit(0);
+    }
 
-    const server = app.listen(PORT, () => {
-      console.log(`Servidor iniciado en el puerto ${PORT}`);
-      console.log("Escribe 'exit' para detener el servidor.");
+    app.listen(PORT, () => {
+      console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
-
-    readline.on("line", (input) => {
-      if (input.trim().toLowerCase() === "exit") {
-        console.log("Deteniendo servidor...");
-
-        server.close(() => {
-          console.log("Servidor detenido.");
-          readline.close();
-          process.exit(0);
-        });
-      }
-    });
-  } else {
-    console.log("Servidor no iniciado. Saliendo...");
     readline.close();
-    process.exit(0);
   }
-});
+);
