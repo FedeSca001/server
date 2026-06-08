@@ -2,6 +2,7 @@ const express = require("express");
 const readline = require("readline");
 
 const scrapingRaceRouter = require("./src/show-results/scraping-race");
+const {scrapingImagenes} = require("./src/scraping-img/ScrapingImg.js");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -29,7 +30,8 @@ function mostrarMenu() {
   console.log("\n===== MENÚ =====");
   console.log("1. scraping");
   console.log("2. detener");
-  console.log("3. salir");
+  console.log("3. img");
+  console.log("4. salir");
   console.log("================");
 
   rl.question("¿Qué quieres hacer? ", (opcion) => {
@@ -45,6 +47,21 @@ function mostrarMenu() {
         break;
 
       case "3":
+      case "img":
+      case "Imagenes":
+          rl.question("Introduce la URL: ", async (url) => {
+              try {
+                  await scrapingImagenes(url);
+              } catch (error) {
+                  console.error("Error:", error.message);
+              }
+
+              mostrarMenu();
+          });
+
+          break;
+
+      case "4":
       case "salir":
       case "exit":
         cerrarAplicacion();
