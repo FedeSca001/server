@@ -4,7 +4,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 // 📁 Carpeta de descarga (robusta)
-const folder = path.resolve(__dirname, "../../../downloads/imagenes");
+const folder = path.resolve(__dirname, "../../../downloads");
 
 // 🧱 Asegurar que exista
 fs.mkdirSync(folder, { recursive: true });
