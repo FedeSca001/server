@@ -3,6 +3,7 @@ const readline = require("readline");
 
 const scrapingRaceRouter = require("./src/show-results/scraping-race");
 const {scrapingImagenes} = require("./src/scraping-img/ScrapingImg.js");
+const {iterarScraping} = require("./src/scraping-img/ScrapingIter.js");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -31,7 +32,8 @@ function mostrarMenu() {
   console.log("1. scraping");
   console.log("2. detener");
   console.log("3. img");
-  console.log("4. salir");
+  console.log("4. Iterar");
+  console.log("5. salir");
   console.log("================");
 
   rl.question("¿Qué quieres hacer? ", (opcion) => {
@@ -55,13 +57,24 @@ function mostrarMenu() {
               } catch (error) {
                   console.error("Error:", error.message);
               }
-
               mostrarMenu();
           });
-
           break;
 
       case "4":
+      case "iterar":
+        rl.question("Introducir Primera parte de URL, luego numero de iteraciones y luego fin de URL: (Separados por espacios)", async (input) => {
+          try {
+            const [baseUrl, iterations, suffix] = input.split(" ");
+            await iterarScraping(baseUrl, parseInt(iterations), suffix);
+          } catch (error) {
+              console.error("Error:", error.message);
+          }
+          mostrarMenu();
+        });
+        break;
+
+      case "5":
       case "salir":
       case "exit":
         cerrarAplicacion();
