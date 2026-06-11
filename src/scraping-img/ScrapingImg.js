@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 const folder = path.resolve(__dirname, "../../../downloads");
 fs.mkdirSync(folder, { recursive: true });
 
-const scrapingImagenes = async (url) => {
+const scrapingImagenes = async (url, urlNumber) => {
     console.log("\n===== SCRAPING UNIVERSAL DE IMÁGENES =====");
     console.log("URL:", url);
 
@@ -19,36 +19,48 @@ const scrapingImagenes = async (url) => {
         });
 
         const $ = cheerio.load(data);
-
         const imagenes = new Set();
 
-        // 1. <img src>, data-src, data-original, etc.
+        // 1. Obtener imágenes desde etiquetas <img>
         $("img").each((_, el) => {
-            const attrs = ["src", "data-src", "data-original", "data-lazy", "data-url"];
+            const attrs = [
+                "src",
+                "data-src",
+                "data-original",
+                "data-lazy",
+                "data-url",
+            ];
 
             attrs.forEach((attr) => {
-                let val = $(el).attr(attr);
-                if (val) imagenes.add(val);
+                const val = $(el).attr(attr);
+                if (val) {
+                    imagenes.add(val);
+                }
             });
 
-            // srcset (muy importante)
+            // Obtener imágenes desde srcset
             const srcset = $(el).attr("srcset");
             if (srcset) {
                 srcset.split(",").forEach((item) => {
-                    const url = item.trim().split(" ")[0];
-                    if (url) imagenes.add(url);
+                    const img = item.trim().split(" ")[0];
+                    if (img) {
+                        imagenes.add(img);
+                    }
                 });
             }
         });
 
-        // 2. background-image CSS
+        // 2. Obtener imágenes desde background-image
         $("[style]").each((_, el) => {
             const style = $(el).attr("style");
-            const match = /url\(["']?(.*?)["']?\)/g.exec(style || "");
-            if (match?.[1]) imagenes.add(match[1]);
+            const match = /url\(["']?(.*?)["']?\)/.exec(style || "");
+
+            if (match?.[1]) {
+                imagenes.add(match[1]);
+            }
         });
 
-        // 3. convertir a URLs absolutas
+        // 3. Convertir a URLs absolutas
         const finalImages = [...imagenes]
             .filter(Boolean)
             .map((img) => {
@@ -62,7 +74,7 @@ const scrapingImagenes = async (url) => {
 
         console.log(`Encontradas: ${finalImages.length} imágenes`);
 
-        // 4. descargar
+        // 4. Descargar imágenes
         for (let i = 0; i < finalImages.length; i++) {
             const imgUrl = finalImages[i];
 
@@ -71,16 +83,23 @@ const scrapingImagenes = async (url) => {
                     responseType: "arraybuffer",
                 });
 
-                const ext =
-                    path.extname(new URL(imgUrl).pathname) || ".jpg";
+                let ext = path.extname(new URL(imgUrl).pathname);
 
-                const filePath = path.join(folder, `img_${i + 1}${ext}`);
+                if (!ext) {
+                    ext = ".jpg";
+                }
+
+                // Nombre: 1_1.jpg, 1_2.png, 2_1.webp, etc.
+                const fileName = `${urlNumber}_${i + 1}${ext}`;
+                const filePath = path.join(folder, fileName);
 
                 fs.writeFileSync(filePath, response.data);
 
-                console.log(`✔ ${i + 1}/${finalImages.length}`);
+                console.log(
+                    `✔ ${i + 1}/${finalImages.length} -> ${fileName}`
+                );
             } catch (err) {
-                console.log(`❌ Error: ${imgUrl}`);
+                console.log(`❌ Error descargando: ${imgUrl}`);
             }
         }
 
