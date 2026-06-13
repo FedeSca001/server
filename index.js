@@ -4,6 +4,7 @@ const readline = require("readline");
 const scrapingRaceRouter = require("./src/show-results/scraping-race");
 const {scrapingImagenes} = require("./src/scraping-img/ScrapingImg.js");
 const {iterarScraping} = require("./src/scraping-img/ScrapingIter.js");
+const {findAlbums} = require("./src/scraping-img/ScrapingBunkrAlbums.js");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -33,7 +34,8 @@ function mostrarMenu() {
   console.log("2. detener");
   console.log("3. img");
   console.log("4. Iterar");
-  console.log("5. salir");
+  console.log("5. Bunkr");
+  console.log("6. salir");
   console.log("================");
 
   rl.question("¿Qué quieres hacer? ", (opcion) => {
@@ -75,6 +77,12 @@ function mostrarMenu() {
         break;
 
       case "5":
+      case "Bunkr":
+        findAlbums();
+        mostrarMenu();
+        break;
+
+      case "6":
       case "salir":
       case "exit":
         cerrarAplicacion();
