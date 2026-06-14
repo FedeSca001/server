@@ -1,4 +1,3 @@
-// Crear conexión a la base de datos
 const mysql = require("mysql2");
 
 const db = mysql.createPool({
@@ -11,16 +10,16 @@ const db = mysql.createPool({
     queueLimit: 0
 });
 
-
-// Conectar
-db.connect((err) => {
+// test opcional (correcto con pool)
+db.getConnection((err, connection) => {
     if (err) {
         console.error("❌ Error conectando a la base de datos:");
-        console.error(err); // <-- importante para ver el error real completo
+        console.error(err);
         return;
     }
 
-    console.log("✅ Conectado a MariaDB");
+    console.log("✅ Conectado a MariaDB (pool)");
+    connection.release();
 });
 
 module.exports = db;

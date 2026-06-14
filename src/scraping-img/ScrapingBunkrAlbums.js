@@ -1,12 +1,12 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("../DataBase/db.js");
+const fs = require("fs");
 
 /* ---------------- CONFIG ---------------- */
 
 const MAX_PAGE = 19237;
 const CONCURRENCY = 5;
-
 const PROGRESS_FILE = "./progress.json";
 
 /* ---------------- UTILIDADES ---------------- */
@@ -21,8 +21,6 @@ function randomDelay() {
 
 /* ---------------- PROGRESO ---------------- */
 
-const fs = require("fs");
-
 function saveProgress(page) {
     fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ page }));
 }
@@ -34,21 +32,7 @@ function loadProgress() {
     return data.page || 1;
 }
 
-/* ---------------- GUARDAR EN DB ---------------- */
-
-const saveAlbums = (albums) => {
-    const sql = "INSERT INTO albums (title, image, url) VALUES (?, ?, ?)";
-
-    albums.forEach((album) => {
-        db.query(sql, [album.title, album.image, album.url], (err) => {
-            if (err) {
-                console.error("Error insertando:", err.message);
-            }
-        });
-    });
-};
-
-/* ---------------- SCRAPE PAGE ---------------- */
+/* ---------------- SCRAPING ---------------- */
 
 async function scrapePage(page) {
     const url = `https://balbums.st/?search=&mode=broad&per=20&sort=latest&page=${page}`;
@@ -63,7 +47,6 @@ async function scrapePage(page) {
         });
 
         const $ = cheerio.load(data);
-
         const albums = [];
 
         $("section.grid.gap-4.fadeup > a").each((i, el) => {
@@ -86,20 +69,43 @@ async function scrapePage(page) {
         return albums;
 
     } catch (err) {
-        console.log(`Error página ${page}: ${err.message}`);
+        console.log(`❌ Error página ${page}: ${err.message}`);
         return [];
     }
 }
 
-/* ---------------- WORKER ---------------- */
+/* ---------------- DB SAVE ---------------- */
+
+const saveAlbums = (albums) => {
+    const sql = "INSERT INTO albums (title, image, url) VALUES (?, ?, ?)";
+
+    for (const album of albums) {
+        db.query(sql, [album.title, album.image, album.url], (err) => {
+            if (err) {
+                console.error("Error insertando:", err.message);
+            }
+        });
+    }
+};
+
+/* ---------------- CONTROL DE PÁGINAS (THREAD SAFE) ---------------- */
 
 let currentPage = loadProgress();
+const lock = { value: currentPage };
+
+async function getNextPage() {
+    return lock.value++;
+}
+
+/* ---------------- WORKER ---------------- */
 
 async function worker() {
-    while (currentPage <= MAX_PAGE) {
-        const page = currentPage++;
+    while (true) {
+        const page = await getNextPage();
 
-        console.log(`Procesando página ${page}`);
+        if (page > MAX_PAGE) break;
+
+        console.log(`📄 Procesando página ${page}`);
 
         const albums = await scrapePage(page);
 
@@ -116,6 +122,8 @@ async function worker() {
 /* ---------------- MAIN ---------------- */
 
 async function main() {
+    console.log("🚀 Iniciando scraping...");
+
     const workers = [];
 
     for (let i = 0; i < CONCURRENCY; i++) {
@@ -124,7 +132,7 @@ async function main() {
 
     await Promise.all(workers);
 
-    console.log("Finalizado");
+    console.log("✅ Finalizado");
 }
 
 /* ---------------- EXPORT ---------------- */
