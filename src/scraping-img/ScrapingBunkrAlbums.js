@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const db = require("../db");
+const db = require("../DataBase/db.js");
 
 /* ---------------- CONFIG ---------------- */
 
