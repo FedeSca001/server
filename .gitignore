@@ -1,0 +1,36 @@
+node# ---------------- NODE ----------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------------- ENV / SECRETS ----------------
+.env
+
+# ---------------- DATABASE / PROGRESS ----------------
+progress.json
+*.sqlite
+*.db
+
+# Si algún día guardas dumps
+*.sql
+
+# ---------------- LOGS ----------------
+logs/
+*.log
+
+# ---------------- OUTPUTS DE SCRAPING ----------------
+downloads/
+albums.txt
+
+# ---------------- SYSTEM / RASPBERRY ----------------
+.DS_Store
+Thumbs.db
+
+# ---------------- IDE ----------------
+.vscode/
+.idea/
+
+# ---------------- OPTIONAL CACHE ----------------
+.cache/
+.tmp/
