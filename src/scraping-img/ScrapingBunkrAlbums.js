@@ -3,55 +3,11 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const path = require("path");
 
-const baseUrl = "https://bunkr.si/a/";
-const alphabet =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-const LENGTH = 8;
-const CONCURRENCY = 20;
-
 const folder = path.resolve(__dirname, "../../../downloads/text");
 const filePath = path.join(folder, "albums.txt");
 
-// scraping
-const scrapingBunkr = async (url) => {
-    try {
-        const { data } = await axios.get(url, {
-            timeout: 5000,
-            headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
-            },
-        });
+/* ----------------- CREAR CARPETA ----------------- */
 
-        const $ = cheerio.load(data);
-
-        const title = $("h1").first().text().trim();
-
-        return title || null;
-    } catch {
-        return null;
-    }
-};
-
-// base62
-const toBase62 = (num) => {
-    const base = alphabet.length;
-    let str = "";
-
-    for (let i = 0; i < LENGTH; i++) {
-        str = alphabet[num % base] + str;
-        num = Math.floor(num / base);
-    }
-
-    return str;
-};
-
-// generar ids sin memoria
-const total = Math.pow(alphabet.length, LENGTH);
-let index = 0;
-
-// asegurar carpeta
 const ensureFolder = () => {
     if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true });
@@ -62,53 +18,88 @@ const ensureFolder = () => {
     }
 };
 
-// guardar en archivo (append seguro)
-const saveToFile = (data) => {
-    fs.appendFileSync(
-        filePath,
-        `${data.title} | ${data.url}\n`,
-        "utf8"
-    );
+/* ----------------- GUARDAR DATOS ----------------- */
+
+const saveAlbums = (albums) => {
+    const text = albums
+        .map(album => `${album.title} | ${album.image} | ${album.url}`)
+        .join("\n") + "\n";
+
+    fs.appendFileSync(filePath, text, "utf8");
 };
 
-// worker
-const worker = async (seen = new Set()) => {
-    while (index < total) {
-        const current = index++;
-        const id = toBase62(current);
-        const url = `${baseUrl}${id}`;
+/* ----------------- SCRAPING POR PÁGINA ----------------- */
 
-        const title = await scrapingBunkr(url);
+async function scrapePage(page) {
+    const url = `https://balbums.st/?search=&mode=broad&per=20&sort=latest&page=${page}`;
 
-        if (title && !seen.has(url)) {
-            seen.add(url);
+    try {
+        const { data } = await axios.get(url, {
+            timeout: 10000,
+            headers: {
+                "User-Agent":
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+            },
+        });
 
-            const entry = {
-                title,
-                url,
-            };
+        const $ = cheerio.load(data);
 
-            console.log("FOUND:", title);
+        const albums = [];
 
-            saveToFile(entry);
-        }
+        $("section.grid.gap-4.fadeup > a").each((i, el) => {
+
+            const title = $(el)
+                .find("div.p-3\\.5 h3")
+                .text()
+                .trim();
+
+            const image =
+                $(el).find("img.thumb-img").attr("src") ||
+                $(el).find("img.thumb-img").attr("data-src");
+
+            const albumUrl = $(el).attr("href");
+
+            if (title && image) {
+                albums.push({
+                    title,
+                    image,
+                    url: albumUrl
+                });
+
+                console.log(`Album encontrado: ${title} | ${image}`);
+            }
+        });
+
+        return albums;
+
+    } catch (err) {
+        console.log(`Error página ${page}: ${err.message}`);
+        return [];
     }
-};
+}
 
-const findAlbums = async () => {
-    console.log("Iniciando scraping...");
+/* ----------------- SCRAPING GENERAL ----------------- */
 
+async function main() {
     ensureFolder();
 
-    const seen = new Set();
+    for (let page = 1; page <= 19237; page++) {
+        console.log(`Procesando página ${page}`);
 
-    const workers = Array.from({ length: CONCURRENCY }).map(() =>
-        worker(seen)
-    );
+        const albums = await scrapePage(page);
 
-    await Promise.all(workers);
+        if (albums.length) {
+            saveAlbums(albums);
+        }
+    }
 
-    console.log("Terminado.");
+    console.log("Finalizado");
+}
+
+/* ----------------- EXPORT ----------------- */
+
+module.exports = {
+    scrapePage,
+    main,
+    saveAlbums
 };
-
-module.exports = { findAlbums, scrapingBunkr };
