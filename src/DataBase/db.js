@@ -1,5 +1,3 @@
-const mysql = require("mysql2");
-
 // Crear conexión a la base de datos
 const mysql = require("mysql2");
 
