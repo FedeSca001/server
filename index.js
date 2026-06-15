@@ -18,7 +18,7 @@ app.use((req,res)=>res.status(404).json({error:"Ruta no encontrada"}));
 /* SERVER */
 const iniciarServidor=()=>{
     if(server)return mostrarMenu();
-    server=app.listen(PORT,()=>{console.log("Servidor:",PORT);mostrarMenu();});
+    server=app.listen(PORT,()=>{console.log("Servidor en puerto:",PORT);mostrarMenu();});
 };
 
 const detenerServidor=()=>{
