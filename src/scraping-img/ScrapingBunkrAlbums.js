@@ -3,9 +3,6 @@ const cheerio = require("cheerio");
 const db = require("../DataBase/db.js");
 const fs = require("fs");
 
-/* ---------------- CONFIG ---------------- */
-
-const MAX_PAGE = 19238; // ahora 19251
 const CONCURRENCY = 5;
 const PROGRESS_FILE = "./progress.json";
 
@@ -17,19 +14,6 @@ function sleep(ms) {
 
 function randomDelay() {
     return Math.floor(Math.random() * 1500) + 500;
-}
-
-/* ---------------- PROGRESO ---------------- */
-
-function saveProgress(page) {
-    fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ page }));
-}
-
-function loadProgress() {
-    if (!fs.existsSync(PROGRESS_FILE)) return 1;
-
-    const data = JSON.parse(fs.readFileSync(PROGRESS_FILE, "utf8"));
-    return data.page || 1;
 }
 
 /* ---------------- SCRAPING ---------------- */
@@ -61,7 +45,7 @@ async function scrapePage(page) {
 
             const url = $(el).attr("href");
 
-            if (title && image) {
+            if (title && image && url) {
                 albums.push({ title, image, url });
             }
         });
@@ -76,7 +60,7 @@ async function scrapePage(page) {
 
 /* ---------------- DB SAVE ---------------- */
 
-const saveAlbums = (albums) => {
+function saveAlbums(albums) {
     const sql = "INSERT INTO albums (title, image, url) VALUES (?, ?, ?)";
 
     for (const album of albums) {
@@ -86,31 +70,23 @@ const saveAlbums = (albums) => {
             }
         });
     }
-};
-
-/* ---------------- CONTROL DE PÁGINAS (THREAD SAFE) ---------------- */
-
-let currentPage = loadProgress();
-const lock = { value: currentPage };
-
-async function getNextPage() {
-    return lock.value++;
 }
 
 /* ---------------- WORKER ---------------- */
 
-async function worker() {
-    for(let i = 19238; i < 19251; i++) {
-        const page = await getNextPage();
+async function worker(queue) {
+    while (true) {
+        const page = queue.shift(); // toma siguiente página
+
+        if (page === undefined) break;
 
         console.log(`📄 Procesando página ${page}`);
+
         const albums = await scrapePage(page);
 
         if (albums.length > 0) {
             saveAlbums(albums);
         }
-
-        saveProgress(page);
 
         await sleep(randomDelay());
     }
@@ -118,13 +94,21 @@ async function worker() {
 
 /* ---------------- MAIN ---------------- */
 
-async function main() {
-    console.log("🚀 Iniciando scraping...");
+async function main(initialPage, finalPage) {
+    console.log(`🚀 Iniciando scraping desde ${initialPage} hasta ${finalPage}`);
 
+    // crear cola de páginas
+    const queue = [];
+
+    for (let i = initialPage; i <= finalPage; i++) {
+        queue.push(i);
+    }
+
+    // lanzar workers
     const workers = [];
 
     for (let i = 0; i < CONCURRENCY; i++) {
-        workers.push(worker());
+        workers.push(worker(queue));
     }
 
     await Promise.all(workers);

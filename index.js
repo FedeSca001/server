@@ -125,11 +125,22 @@ function mostrarMenu() {
                         "Introduce el numero inicial y final de las páginas separados por espacios: ",
                         async (respuesta) => {
                             try {
-                                const [start, end] = respuesta.split(" ").map(Number);
+                                const [start, end] = respuesta
+                                    .trim()
+                                    .split(/\s+/)   // 🔥 FIX IMPORTANTE
+                                    .map(Number);
+
+                                if (Number.isNaN(start) || Number.isNaN(end)) {
+                                    console.log("❌ Entrada inválida");
+                                    return mostrarMenu();
+                                }
+
                                 await main(start, end);
+
                             } catch (err) {
                                 console.error(err.message);
                             }
+
                             return mostrarMenu();
                         }
                     );
