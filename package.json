@@ -18,7 +18,8 @@
     "express": "^5.2.1",
     "helmet": "^8.2.0",
     "morgan": "^1.10.1",
-    "mysql2": "^3.22.5"
+    "mysql2": "^3.22.5",
+    "puppeteer": "^25.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

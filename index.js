@@ -4,6 +4,7 @@ const scrapingRaceRouter=require("./src/show-results/scraping-race");
 const {scrapingImagenes}=require("./src/scraping-img/ScrapingImg");
 const {iterarScraping}=require("./src/scraping-img/ScrapingIter");
 const {main}=require("./src/scraping-img/ScrapingBunkrAlbums");
+const {scrapingVideo}=require("./src/Scraping-video/ScrapingVideo");
 const app=express();
 const PORT=process.env.PORT||3000;
 const rl=readline.createInterface({input:process.stdin,output:process.stdout});
@@ -21,10 +22,6 @@ const iniciarServidor=()=>{
     server=app.listen(PORT,()=>{console.log("Servidor en puerto:",PORT);mostrarMenu();});
 };
 
-const detenerServidor=()=>{
-    if(!server)return mostrarMenu();
-    server.close(()=>{server=null;console.log("Servidor detenido");mostrarMenu();});
-};
 
 const cerrarAplicacion=()=>{
     rl.close();
@@ -35,7 +32,7 @@ const cerrarAplicacion=()=>{
 /* MENU */
 const opciones=()=>console.log(`
 1.Scraping
-2.Detener
+2.Videos
 3.Imagenes
 4.Iterar
 5.Bunkr
@@ -53,10 +50,18 @@ function mostrarMenu(){
                 case"scraping":
                     return iniciarServidor();
 
-                case"2":
-                case"detener":
-                    return detenerServidor();
-
+                case "2":
+                case "videos":
+                    rl.question("URL del video: ", async (url) => {
+                        try {
+                            await scrapingVideo(url.trim());
+                        } catch (e) {
+                            console.error("Error:", e.message);
+                        }
+                        mostrarMenu();   // ← Solo una vez al final
+                    });
+                    break;
+                    
                 case"3":
                 case"img":
                 case"imagenes":
@@ -64,6 +69,7 @@ function mostrarMenu(){
                         try{await scrapingImagenes(url);}catch(e){console.error(e.message);}
                         mostrarMenu();
                     });
+                    break;
 
                 case"4":
                 case"iterar":
@@ -74,6 +80,7 @@ function mostrarMenu(){
                         }catch(e){console.error(e.message);}
                         mostrarMenu();
                     });
+                    break;
 
                 case"5":
                 case"bunkr":
@@ -85,11 +92,13 @@ function mostrarMenu(){
                         }catch(e){console.error(e.message);}
                         mostrarMenu();
                     });
+                    break;
 
                 case"6":
                 case"salir":
                 case"exit":
                     return cerrarAplicacion();
+                    break;
 
                 default:
                     console.log("Opcion invalida");
