@@ -5,7 +5,7 @@ const fs = require("fs");
 
 /* ---------------- CONFIG ---------------- */
 
-const MAX_PAGE = 19237;
+const MAX_PAGE = 19238; // ahora 19251
 const CONCURRENCY = 5;
 const PROGRESS_FILE = "./progress.json";
 
@@ -100,13 +100,10 @@ async function getNextPage() {
 /* ---------------- WORKER ---------------- */
 
 async function worker() {
-    while (true) {
+    for(let i = 19238; i < 19251; i++) {
         const page = await getNextPage();
 
-        if (page > MAX_PAGE) break;
-
         console.log(`📄 Procesando página ${page}`);
-
         const albums = await scrapePage(page);
 
         if (albums.length > 0) {

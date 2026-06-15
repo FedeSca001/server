@@ -109,12 +109,30 @@ function mostrarMenu() {
 
                 case "4":
                 case "iterar":
-                    return pedirIteracion();
+                    rl.question("Introduce la baseURL, número de iteraciones y sufijo (separados por espacios): ", async (input) => {
+                        try {
+                            const [baseUrl, iterations, suffix] = input.split(" ");
+                            await iterarScraping(baseUrl, Number(iterations), suffix);
+                        } catch (err) {
+                            console.error(err.message);
+                        }
+                        return mostrarMenu();
+                    });
 
                 case "5":
                 case "bunkr":
-                    await main();
-                    return mostrarMenu();
+                    rl.question(
+                        "Introduce el numero inicial y final de las páginas separados por espacios: ",
+                        async (respuesta) => {
+                            try {
+                                const [start, end] = respuesta.split(" ").map(Number);
+                                await main(start, end);
+                            } catch (err) {
+                                console.error(err.message);
+                            }
+                            return mostrarMenu();
+                        }
+                    );
 
                 case "6":
                 case "salir":
