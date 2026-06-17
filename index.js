@@ -42,10 +42,15 @@ const commands = {
         rl.question("inicio fin: ", async (r) => {
             try {
                 const [a, b] = r.trim().split(" ").map(Number);
-                await require("./src/scraping-img/ScrapingBunkrAlbums")(a, b);
+
+                const { main } = require("./src/scraping-img/ScrapingBunkrAlbums.js");
+
+                await main(a, b);
+
             } catch (e) {
-                console.error(e.message);
+                console.error(e);
             }
+
             mostrarMenu();
         });
     },

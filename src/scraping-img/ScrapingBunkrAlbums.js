@@ -4,7 +4,6 @@ const db = require("../DataBase/db.js");
 const fs = require("fs");
 
 const CONCURRENCY = 5;
-const PROGRESS_FILE = "./progress.json";
 
 /* ---------------- UTILIDADES ---------------- */
 
