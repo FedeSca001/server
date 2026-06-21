@@ -58,25 +58,25 @@ async function scrapePage(page) {
 }
 
 /* ---------------- DB SAVE ---------------- */
-/*function saveAlbums(albums){
-    // ver si esta repetido, console.log(`💾 Guardado: ${a.title}`); o console.log ("repetido")
-  const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
-  for(const a of albums){
-    db.query(sql,[a.title,a.image,a.url],err=>{
-      if(err) console.error(err.message);
-    });
-  }
-}*/
 function saveAlbums(albums){
   const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
-
+  let saved = 0;
+  let duplicated = 0;
+  let errors = 0;
   for(const a of albums){
     db.query(sql,[a.title,a.image,a.url],(err, result)=>{
       if(err){
-        console.error(err.message);
+        errors++;
+        console.log(`❌ Error: ${a.title}`);
         return;
       }
-      if(result.affectedRows === 0){console.log("🔁 Repetido:", a.title);} else {console.log("💾 Guardado:", a.title);}
+      if(result.affectedRows === 0){
+        duplicated++;
+        console.log(`🔁 Repetido (${duplicated}): ${a.title}`);} else {
+        saved++;
+        console.log(`💾 Guardado (${saved}): ${a.title}`);
+      }
+      console.log(`📊 Total → Guardados: ${saved} | Repetidos: ${duplicated} | Errores: ${errors}`);
     });
   }
 }
