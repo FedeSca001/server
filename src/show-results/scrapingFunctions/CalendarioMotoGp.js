@@ -139,7 +139,7 @@ router.get("/", async (req, res) => {
     for (const item of data) {
 
       await db.promise().query(
-        `INSERT INTO motogp.grandes_premios (nombre, fecha, circuito, img_circuito)
+        `INSERT INTO grandes_premios (nombre, fecha, circuito, img_circuito)
          VALUES (?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
          circuito=VALUES(circuito),
@@ -153,7 +153,7 @@ router.get("/", async (req, res) => {
       );
 
       const [rows] = await db.promise().query(
-        "SELECT id FROM motogp.grandes_premios WHERE nombre=? AND fecha=?",
+        "SELECT id FROM grandes_premios WHERE nombre=? AND fecha=?",
         [item.granPremio.trim(), item.fecha.trim()]
       );
 
@@ -161,12 +161,12 @@ router.get("/", async (req, res) => {
 
       const gpId = rows[0].id;
 
-      await db.promise().query("DELETE FROM motogp.podios WHERE gp_id=?", [gpId]);
-      await db.promise().query("DELETE FROM motogp.horarios WHERE gp_id=?", [gpId]);
+      await db.promise().query("DELETE FROM podios WHERE gp_id=?", [gpId]);
+      await db.promise().query("DELETE FROM horarios WHERE gp_id=?", [gpId]);
 
       for (const p of item.podium) {
         await db.promise().query(
-          `INSERT INTO motogp.podios (gp_id, posicion, piloto, bandera)
+          `INSERT INTO podios (gp_id, posicion, piloto, bandera)
            VALUES (?, ?, ?, ?)`,
           [gpId, p.position, p.piloto, p.bandera]
         );
@@ -175,7 +175,7 @@ router.get("/", async (req, res) => {
       for (const cat of ["motoGp", "moto2", "moto3"]) {
         for (const c of item.competiciones[cat]) {
           await db.promise().query(
-            `INSERT INTO motogp.horarios (gp_id, categoria, dia, descripcion, hora, link)
+            `INSERT INTO horarios (gp_id, categoria, dia, descripcion, hora, link)
              VALUES (?, ?, ?, ?, ?, ?)`,
             [gpId, cat, c.dia, c.descripcion, c.hora, c.link]
           );
