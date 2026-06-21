@@ -58,11 +58,25 @@ async function scrapePage(page) {
 }
 
 /* ---------------- DB SAVE ---------------- */
-function saveAlbums(albums){
+/*function saveAlbums(albums){
+    // ver si esta repetido, console.log(`💾 Guardado: ${a.title}`); o console.log ("repetido")
   const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
   for(const a of albums){
     db.query(sql,[a.title,a.image,a.url],err=>{
       if(err) console.error(err.message);
+    });
+  }
+}*/
+function saveAlbums(albums){
+  const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
+
+  for(const a of albums){
+    db.query(sql,[a.title,a.image,a.url],(err, result)=>{
+      if(err){
+        console.error(err.message);
+        return;
+      }
+      if(result.affectedRows === 0){console.log("🔁 Repetido:", a.title);} else {console.log("💾 Guardado:", a.title);}
     });
   }
 }
