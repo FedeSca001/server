@@ -130,16 +130,15 @@ const updateCalendario = async () => {
 
 router.get("/", async (req, res) => {
   const data = await updateCalendario();
-  if (data.error) return res.status(500).json(data);
-
-  const conn = await db.promise().getConnection();
+  res.send(data);
+  if (data.error) {
+    return res.status(500).json(data);
+  }
 
   try {
-    await conn.beginTransaction();
-
     for (const item of data) {
 
-      const [gpResult] = await conn.query(
+      await db.promise().query(
         `INSERT INTO grandes_premios (nombre, fecha, circuito, img_circuito)
          VALUES (?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
@@ -153,52 +152,40 @@ router.get("/", async (req, res) => {
         ]
       );
 
-      const gpId = gpResult.insertId;
+      const [rows] = await db.promise().query(
+        "SELECT id FROM grandes_premios WHERE nombre=? AND fecha=?",
+        [item.granPremio.trim(), item.fecha.trim()]
+      );
 
-      await conn.query("DELETE FROM podios WHERE gp_id=?", [gpId]);
-      await conn.query("DELETE FROM horarios WHERE gp_id=?", [gpId]);
+      if (!rows.length) continue;
 
-      if (item.podium.length) {
-        const podioValues = item.podium.map(p => [
-          gpId,
-          p.position,
-          p.piloto,
-          p.bandera
-        ]);
+      const gpId = rows[0].id;
 
-        await conn.query(
-          "INSERT INTO podios (gp_id, posicion, piloto, bandera) VALUES ?",
-          [podioValues]
+      await db.promise().query("DELETE FROM podios WHERE gp_id=?", [gpId]);
+      await db.promise().query("DELETE FROM horarios WHERE gp_id=?", [gpId]);
+
+      for (const p of item.podium) {
+        await db.promise().query(
+          `INSERT INTO podios (gp_id, posicion, piloto, bandera)
+           VALUES (?, ?, ?, ?)`,
+          [gpId, p.position, p.piloto, p.bandera]
         );
       }
 
       for (const cat of ["motoGp", "moto2", "moto3"]) {
-        if (!item.competiciones[cat].length) continue;
-
-        const horariosValues = item.competiciones[cat].map(c => [
-          gpId,
-          cat,
-          c.dia,
-          c.descripcion,
-          c.hora,
-          c.link
-        ]);
-
-        await conn.query(
-          "INSERT INTO horarios (gp_id, categoria, dia, descripcion, hora, link) VALUES ?",
-          [horariosValues]
-        );
+        for (const c of item.competiciones[cat]) {
+          await db.promise().query(
+            `INSERT INTO horarios (gp_id, categoria, dia, descripcion, hora, link)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [gpId, cat, c.dia, c.descripcion, c.hora, c.link]
+          );
+        }
       }
     }
-
-    await conn.commit();
-    conn.release();
 
     return res.json({ ok: true, total: data.length });
 
   } catch (err) {
-    await conn.rollback();
-    conn.release();
     return res.status(500).json({ error: err.message });
   }
 });
