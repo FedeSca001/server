@@ -76,7 +76,6 @@ function saveAlbums(albums){
         saved++;
         console.log(`💾 Guardado (${saved}): ${a.title}`);}
     });
-    console.log(`📊 Total → Guardados: ${saved} | Repetidos: ${duplicated} | Errores: ${errors}`);
   }
 }
 /* ---------------- WORKER ---------------- */
