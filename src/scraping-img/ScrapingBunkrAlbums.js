@@ -58,19 +58,14 @@ async function scrapePage(page) {
 }
 
 /* ---------------- DB SAVE ---------------- */
-
-function saveAlbums(albums) {
-    const sql = "INSERT INTO albums (title, image, url) VALUES (?, ?, ?)";
-
-    for (const album of albums) {
-        db.query(sql, [album.title, album.image, album.url], (err) => {
-            if (err) {
-                console.error("Error insertando:", err.message);
-            }
-        });
-    }
+function saveAlbums(albums){
+  const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
+  for(const a of albums){
+    db.query(sql,[a.title,a.image,a.url],err=>{
+      if(err) console.error(err.message);
+    });
+  }
 }
-
 /* ---------------- WORKER ---------------- */
 
 async function worker(queue) {
@@ -80,7 +75,7 @@ async function worker(queue) {
         if (page === undefined) break;
 
         console.log(`📄 Procesando página ${page}`);
-
+        
         const albums = await scrapePage(page);
 
         if (albums.length > 0) {
