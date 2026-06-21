@@ -130,7 +130,7 @@ const updateCalendario = async () => {
 
 router.get("/", async (req, res) => {
   const data = await updateCalendario();
-
+  res.send(data);
   if (data.error) {
     return res.status(500).json(data);
   }
