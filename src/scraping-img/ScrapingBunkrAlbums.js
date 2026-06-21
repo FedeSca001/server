@@ -66,10 +66,7 @@ function saveAlbums(albums){
       if(err){
         console.log(`❌ Error: ${a.title}`);
         return;}
-      if(result.affectedRows === 0){
-        console.log(`🔁 Repetido (${a.title}`);}
-      else {
-        console.log(`💾 Guardado (${a.title}`);}
+        console.log(`✅ Titulo: ${a.title}`);
     });
   }
 }
