@@ -60,21 +60,16 @@ async function scrapePage(page) {
 /* ---------------- DB SAVE ---------------- */
 function saveAlbums(albums){
   const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
-  let saved = 0;
-  let duplicated = 0;
-  let errors = 0;
+
   for(const a of albums){
     db.query(sql,[a.title,a.image,a.url],(err, result)=>{
       if(err){
-        errors++;
         console.log(`❌ Error: ${a.title}`);
         return;}
       if(result.affectedRows === 0){
-        duplicated++;
-        console.log(`🔁 Repetido (${duplicated}): ${a.title}`);}
+        console.log(`🔁 Repetido (${a.title}`);}
       else {
-        saved++;
-        console.log(`💾 Guardado (${saved}): ${a.title}`);}
+        console.log(`💾 Guardado (${a.title}`);}
     });
   }
 }
