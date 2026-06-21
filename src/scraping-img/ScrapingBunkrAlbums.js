@@ -68,16 +68,15 @@ function saveAlbums(albums){
       if(err){
         errors++;
         console.log(`❌ Error: ${a.title}`);
-        return;
-      }
+        return;}
       if(result.affectedRows === 0){
         duplicated++;
-        console.log(`🔁 Repetido (${duplicated}): ${a.title}`);} else {
+        console.log(`🔁 Repetido (${duplicated}): ${a.title}`);}
+      else {
         saved++;
-        console.log(`💾 Guardado (${saved}): ${a.title}`);
-      }
-      console.log(`📊 Total → Guardados: ${saved} | Repetidos: ${duplicated} | Errores: ${errors}`);
+        console.log(`💾 Guardado (${saved}): ${a.title}`);}
     });
+    console.log(`📊 Total → Guardados: ${saved} | Repetidos: ${duplicated} | Errores: ${errors}`);
   }
 }
 /* ---------------- WORKER ---------------- */
