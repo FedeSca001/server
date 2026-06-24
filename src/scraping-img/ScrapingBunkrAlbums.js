@@ -10,13 +10,10 @@ const CONCURRENCY = 5;
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
 function randomDelay() {
     return Math.floor(Math.random() * 1500) + 500;
 }
-
 /* ---------------- SCRAPING ---------------- */
-
 async function scrapePage(page) {
     const url = `https://balbums.st/?search=&mode=broad&per=20&sort=latest&page=${page}`;
 
@@ -28,10 +25,8 @@ async function scrapePage(page) {
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
             },
         });
-
         const $ = cheerio.load(data);
         const albums = [];
-
         $("section.grid.gap-4.fadeup > a").each((i, el) => {
             const title = $(el)
                 .find("div.p-3\\.5 h3")
@@ -48,9 +43,7 @@ async function scrapePage(page) {
                 albums.push({ title, image, url });
             }
         });
-
         return albums;
-
     } catch (err) {
         console.log(`❌ Error página ${page}: ${err.message}`);
         return [];
@@ -66,7 +59,7 @@ function saveAlbums(albums){
       if(err){
         console.log(`❌ Error: ${a.title}`);
         return;}
-        console.log(`✅ Titulo: ${a.title}`);
+        //console.log(`✅ Titulo: ${a.title}`);
     });
   }
 }
