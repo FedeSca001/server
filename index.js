@@ -73,6 +73,7 @@ let server = null;
 app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
 app.use("/scrapingRace", scrapingRaceRouter);
+app.use("/html", express.static("src/html"));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 
 const iniciarServidor = () => {
