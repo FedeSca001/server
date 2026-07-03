@@ -3,6 +3,7 @@ console.log("Bienvenido al menú de scraping");
 const db =require("./src/db/db.js");
 
 const input = document.getElementById("urlInput");
+const btn = document.getElementById("buscarSql");
 const resultado = [];
 const findAlbum = async (input) => {
     const sql = "SELECT * FROM albums WHERE title LIKE ?";
@@ -17,6 +18,9 @@ const findAlbum = async (input) => {
     });
 }
 
+btn.addEventListener("click", () => {
+    findAlbum(input.value);
+});
 input.addEventListener("keypress", function(event) {
     console.log("Key pressed:", event.key);
     if (event.key === "Enter") {
