@@ -14,8 +14,8 @@ async function buscarAlbums(texto) {
         for (const album of albums) {
             const li = document.createElement("li");
             li.innerHTML = `
-                <h3>Título:</h3> ${album.title}<br>
-                <img src="${album.image}" alt="${album.title}" width="100"><br>
+                <h3>${album.title}</h3> <br>
+                <img src="${album.image}" alt="${album.title}"><br>
                 <a href="${album.url}" target="_blank">Ver álbum</a>
             `;
 
