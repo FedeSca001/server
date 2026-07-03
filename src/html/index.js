@@ -1,20 +1,14 @@
 console.log("Bienvenido al menú de scraping");
 // debe buscar en la base datos scraper
-const db =require("./src/db/db.js");
+const db = require("./src/db/db.js");
 
 const input = document.getElementById("urlInput");
 const btn = document.getElementById("buscarSql");
 const resultado = [];
 const findAlbum = async (input) => {
-    const sql = "SELECT * FROM albums WHERE title LIKE ?";
-    const searchTerm = `%${input}%`;
-    db.query(sql, [searchTerm], (err, results) => {
-        if (err) {
-            console.error("Error al buscar en la base de datos:", err);
-            return;
-        }
-        console.log("Resultados encontrados:", results);
+    db.query("SELECT * FROM albums WHERE title LIKE ?", [`%${input}%`], (err, results) => {
         resultado.push(...results);
+        console.log("Resultados encontrados:", results);
     });
 }
 
