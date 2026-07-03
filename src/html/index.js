@@ -10,11 +10,18 @@ async function buscarAlbums(texto) {
             throw new Error("Error en la petición");
         }
         const albums = await response.json();
-        console.log("Resultados encontrados:", albums);
         listado.innerHTML = "";
         for (const album of albums) {
             const li = document.createElement("li");
-            li.textContent = `Título: ${album.title}, Imagen: ${album.image}, URL: ${album.url}`;
+            /*
+            Necesito agrefar un <li> por cada album que encuentre en la base de datos, y dentro de ese <li> necesito agregar el titulo, la imagen y la url del album.
+            */
+            li.innerHTML = `
+                <strong>Título:</strong> ${album.title}<br>
+                <img src="${album.image}" alt="${album.title}" width="100"><br>
+                <a href="${album.url}" target="_blank">Ver álbum</a>
+            `;
+
             listado.appendChild(li);
         }
     } catch (error) {
