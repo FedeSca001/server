@@ -1,6 +1,6 @@
 const express = require("express");
 const readline = require("readline");
-
+const apiAlbumsRouter = require("./src/show-results/apiAlbums");
 const scrapingRaceRouter = require("./src/show-results/scraping-race");
 
 const commands = {
@@ -72,6 +72,7 @@ let server = null;
 /* EXPRESS */
 app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
+app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/scrapingRace", scrapingRaceRouter);
 app.use("/html", express.static("src/html"));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
