@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db/db.js");
+const db = require("../DataBase/db.js");
 
 const findAlbum = async (input) => {
     return new Promise((resolve, reject) => {
