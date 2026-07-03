@@ -13,11 +13,8 @@ async function buscarAlbums(texto) {
         listado.innerHTML = "";
         for (const album of albums) {
             const li = document.createElement("li");
-            /*
-            Necesito agrefar un <li> por cada album que encuentre en la base de datos, y dentro de ese <li> necesito agregar el titulo, la imagen y la url del album.
-            */
             li.innerHTML = `
-                <strong>Título:</strong> ${album.title}<br>
+                <h3>Título:</h3> ${album.title}<br>
                 <img src="${album.image}" alt="${album.title}" width="100"><br>
                 <a href="${album.url}" target="_blank">Ver álbum</a>
             `;
