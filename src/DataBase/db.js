@@ -18,7 +18,7 @@ db.getConnection((err, connection) => {
         return;
     }
 
-    console.log("✅ Conectado a MariaDB (pool)");
+    console.log("✅ Conectado a MariaDB (pool)"+ connection.threadId);
     connection.release();
 });
 
