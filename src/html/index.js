@@ -30,6 +30,8 @@ const getRandomAlbums = async () => {
     try {
         const response = await fetch("http://192.168.1.148:3000/apiAlbums/random");
         const albums = await response.json();
+        console.log(albums);
+        
         randomList.innerHTML = "";
         for (const album of albums) {
             const li = document.createElement("li");
