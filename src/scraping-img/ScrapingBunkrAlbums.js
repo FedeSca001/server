@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("../DataBase/db.js");
 const fs = require("fs");
-
+let counterNewAlbums = 0;
 const CONCURRENCY = 5;
 
 /* ---------------- UTILIDADES ---------------- */
@@ -51,17 +51,20 @@ async function scrapePage(page) {
 }
 
 /* ---------------- DB SAVE ---------------- */
-function saveAlbums(albums){
-  const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
-
-  for(const a of albums){
-    db.query(sql,[a.title,a.image,a.url],(err, result)=>{
-      if(err){
-        console.log(`❌ Error: ${a.title}`);
-        return;}
-        //console.log(`✅ Titulo: ${a.title}`);
-    });
-  }
+function saveAlbums(albums) {
+    const sql = "INSERT IGNORE INTO albums (title, image, url) VALUES (?, ?, ?)";
+    for (const a of albums) {
+        db.query(sql, [a.title, a.image, a.url], (err, result) => {
+            if (err) {
+                console.log(`❌ Error: ${a.title}`);
+                return;
+            }
+            // Solo contar si realmente se insertó un nuevo registro
+            if (result.affectedRows === 1) {
+                counterNewAlbums++;
+            }
+        });
+    }
 }
 /* ---------------- WORKER ---------------- */
 
@@ -101,10 +104,8 @@ async function main(initialPage, finalPage) {
     for (let i = 0; i < CONCURRENCY; i++) {
         workers.push(worker(queue));
     }
-
     await Promise.all(workers);
-
-    console.log("✅ Finalizado");
+    console.log(`✅ Finalizado. Nuevos álbumes encontrados: ${counterNewAlbums}`);
 }
 
 /* ---------------- EXPORT ---------------- */
