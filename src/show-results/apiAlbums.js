@@ -46,7 +46,7 @@ const findAlbum = async (input) => {
     });
 };
 
-router.get("/:_input", async (req, res) => {
+router.get("/input/:_input", async (req, res) => {
     try {
         const results = await findAlbum(req.params._input);
         res.json(results);
