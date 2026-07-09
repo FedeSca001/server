@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 const db = require("../DataBase/db.js");
 const fs = require("fs");
 let counterNewAlbums = 0;
-const CONCURRENCY = 5;
+const CONCURRENCY = 2;
 
 /* ---------------- UTILIDADES ---------------- */
 
