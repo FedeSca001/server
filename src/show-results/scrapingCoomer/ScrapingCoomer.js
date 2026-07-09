@@ -53,6 +53,7 @@ async function scrapePage(page) {
                 posts.push({ artista, image, url, platform });
             }
         });
+        console.log(`Página ${page}: ${posts.length} artistas`);
         return posts;
     } catch (err) {
         console.log(`❌ Error página ${page}: ${err.message}`);
@@ -71,6 +72,7 @@ const saveArtists = (artists) => {
             }
             if (result.affectedRows === 1) {
                 counterNewArtists++;
+                console.log(`✅ Nuevo artista: ${a.artista}`);
             }
         });
     }
