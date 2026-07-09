@@ -100,9 +100,7 @@ async function main(initialPage, finalPage) {
 /*module.exports = {
     main,
 };*/
-
-const axios = require("axios");
-const cheerio = require("cheerio");
+const puppeteer = require("puppeteer");
 const db = require("../../DataBase/db.js");
 
 let counterNewArtists = 0;
@@ -121,55 +119,42 @@ function randomDelay() {
 /* ---------------- SCRAPING ---------------- */
 
 async function scrapePage(page) {
-    const url = `https://coomer.st/artists?o=${page}`;
+    const browser = await puppeteer.launch({
+        headless: true,
+    });
 
     try {
-        const { data } = await axios.get(url, {
+        const browserPage = await browser.newPage();
+
+        await browserPage.setUserAgent(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+        );
+
+        await browserPage.goto(`https://coomer.st/artists?o=${page}`, {
+            waitUntil: "networkidle2",
+            timeout: 30000,
+        });
+
+        await browserPage.waitForSelector("a.user-card", {
             timeout: 10000,
-            headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
-            },
         });
 
-        // DEBUG
-        console.log(data.substring(0, 500));
-        const $ = cheerio.load(data);
-        console.log("user-card:", $("a.user-card").length);
-
-        const posts = [];
-
-        $("a.user-card").each((i, el) => {
-            const artista = $(el)
-                .find(".user-card__name")
-                .text()
-                .trim();
-
-            const image =
-                $(el).find("img").attr("src") ||
-                $(el).find("img").attr("data-src");
-
-            const profileUrl = $(el).attr("href");
-
-            const platform = $(el)
-                .find(".user-card__service")
-                .text()
-                .trim();
-
-            if (artista && image && profileUrl && platform) {
-                posts.push({
-                    artista,
-                    image,
-                    url: profileUrl,
-                    platform,
-                });
-            }
-        });
+        const posts = await browserPage.$$eval("a.user-card", cards =>
+            cards.map(card => ({
+                artista: card.querySelector(".user-card__name")?.textContent.trim(),
+                image: card.querySelector("img")?.src || "",
+                url: card.getAttribute("href"),
+                platform: card.querySelector(".user-card__service")?.textContent.trim(),
+            }))
+        );
 
         console.log(`Página ${page}: ${posts.length} artistas`);
+
+        await browser.close();
         return posts;
     } catch (err) {
         console.log(`❌ Error página ${page}: ${err.message}`);
+        await browser.close();
         return [];
     }
 }
@@ -183,7 +168,7 @@ function saveArtists(artists) {
     for (const a of artists) {
         db.query(sql, [a.artista, a.image, a.url, a.platform], (err, result) => {
             if (err) {
-                console.log(`❌ Error: ${a.artista}`, err.message);
+                console.log(`❌ Error: ${a.artista}: ${err.message}`);
                 return;
             }
 
