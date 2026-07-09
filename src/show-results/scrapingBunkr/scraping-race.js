@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const calendarioMotoGp = require("./scrapingFunctions/CalendarioMotoGp.js");
-const clasificacionMotoGp = require("./scrapingFunctions/ClasificacionMotoGp.js");
-const clasificacionF1 = require("./scrapingFunctions/ClasificacionF1.js");
+const calendarioMotoGp = require("../scrapingFunctions/CalendarioMotoGp.js");
+const clasificacionMotoGp = require("../scrapingFunctions/ClasificacionMotoGp.js");
+const clasificacionF1 = require("../scrapingFunctions/ClasificacionF1.js");
 
 router.get("/inicio", (req, res) => {
   res.send("¡Bienvenido a la carrera de scraping! 🏁");

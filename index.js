@@ -1,7 +1,8 @@
 const express = require("express");
 const readline = require("readline");
-const apiAlbumsRouter = require("./src/show-results/apiAlbums");
-const scrapingRaceRouter = require("./src/show-results/scraping-race");
+const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
+const scrapingRaceRouter = require("./src/show-results/scrapingBunkr/scraping-race.js");
+const apiCoomerRouter = require("./src/show-results/scrapingCoomer/apiCoomer.js");
 
 const commands = {
     videos: async (rl) => {
@@ -42,11 +43,21 @@ const commands = {
         rl.question("inicio fin: ", async (r) => {
             try {
                 const [a, b] = r.trim().split(" ").map(Number);
-
                 const { main } = require("./src/scraping-img/ScrapingBunkrAlbums.js");
-
                 await main(a, b);
+            } catch (e) {
+                console.error(e);
+            }
+            mostrarMenu();
+        });
+    },
 
+    coomer: async (rl) => {
+        rl.question("inicio fin: ", async (r) => {
+            try {
+                const [a, b] = r.trim().split(" ").map(Number);
+                const { main } = require("./src/show-results/scrapingCoomer/ScrapingCoomer.js");
+                await main(a, b);
             } catch (e) {
                 console.error(e);
             }
@@ -74,6 +85,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
 app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/scrapingRace", scrapingRaceRouter);
+app.use("/apiCoomer", apiCoomerRouter);
 app.use("/html", express.static("src/html"));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 
@@ -98,7 +110,8 @@ const opciones = () => console.log(`
 3. Imagenes
 4. Iterar
 5. Bunkr
-6. Salir
+6. Coomer
+7. Salir
 `);
 
 function mostrarMenu() {
@@ -118,7 +131,9 @@ function mostrarMenu() {
             "iterar": "iterar",
             "5": "bunkr",
             "bunkr": "bunkr",
-            "6": "salir",
+            "6": "Coomer",
+            "coomer": "Coomer",
+            "7": "salir",
             "salir": "salir",
             "exit": "salir"
         };

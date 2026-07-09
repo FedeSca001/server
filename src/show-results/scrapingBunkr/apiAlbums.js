@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../DataBase/db.js");
+const db = require("../../DataBase/db.js");
 
 const topElements = async () => {
     return new Promise((resolve, reject) => {
@@ -33,7 +33,6 @@ const randomElements = () => {
     });
 };
 
-
 const findAlbum = async (input) => {
     return new Promise((resolve, reject) => {
         db.query("SELECT * FROM albums WHERE title LIKE ?", [`%${input}%`], (err, results) => {
@@ -45,8 +44,8 @@ const findAlbum = async (input) => {
         });
     });
 };
-
-router.get("/input/:_input", async (req, res) => {
+/* ---------------- ROUTES ---------------- */
+router.get("/album-input/:_input", async (req, res) => {
     try {
         const results = await findAlbum(req.params._input);
         res.json(results);
