@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const db = require("../DataBase/db.js");
+const db = require("../../DataBase/db.js");
 const fs = require("fs");
 let counterNewArtists = 0;
 const CONCURRENCY = 5;
