@@ -1,42 +1,50 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
 const db = require("../../DataBase/db.js");
 
 let counterNewArtists = 0;
-const CONCURRENCY = 2;
-let browser;
-
-/* ---------------- UTILIDADES ---------------- */
+const CONCURRENCY = 1;           // ← Muy importante: déjalo en 1
+const MAX_RETRIES = 4;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function randomDelay() {
-    return Math.floor(Math.random() * 1500) + 500;
+function randomDelay(min = 3500, max = 8500) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
-/* ---------------- SCRAPING ---------------- */
+/* ---------------- SCRAPING CON REINTENTOS ---------------- */
 
-async function scrapePage(page) {
+async function scrapePage(pageNum, retry = 0) {
     let browserPage;
 
     try {
         browserPage = await browser.newPage();
 
+        // User agent más realista
         await browserPage.setUserAgent(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
         );
 
-        await browserPage.goto(`https://coomer.st/artists?o=${page}`, {
+        await browserPage.setExtraHTTPHeaders({
+            "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        });
+
+        await browserPage.goto(`https://coomer.st/artists?o=${pageNum}`, {
             waitUntil: "networkidle2",
-            timeout: 30000,
+            timeout: 60000,
         });
 
+        // Esperamos el selector principal
         await browserPage.waitForSelector("a.user-card", {
-            timeout: 10000,
+            timeout: 18000,
         });
 
-        const posts = await browserPage.$$eval("a.user-card", cards =>
+        const artists = await browserPage.$$eval("a.user-card", cards =>
             cards.map(card => ({
                 artista: card.querySelector(".user-card__name")?.textContent.trim(),
                 image: card.querySelector("img")?.src || "",
@@ -45,41 +53,55 @@ async function scrapePage(page) {
             }))
         );
 
-        console.log(`Página ${page}: ${posts.length} artistas`);
-
+        console.log(`✅ Página ${pageNum}: ${artists.length} artistas`);
         await browserPage.close();
-        return posts;
+        return artists;
 
     } catch (err) {
-        console.log(`❌ Error página ${page}: ${err.message}`);
-
         if (browserPage) {
             await browserPage.close().catch(() => {});
         }
 
+        const isCloudflare = err.message.includes("timeout") || 
+                             err.message.includes("waiting for selector");
+
+        if (retry < MAX_RETRIES) {
+            const waitTime = 8000 * (retry + 1) + Math.random() * 4000;
+            console.log(`🔄 Reintentando página ${pageNum} en ${Math.round(waitTime/1000)}s... (intento ${retry + 1}/${MAX_RETRIES})`);
+            await sleep(waitTime);
+            return scrapePage(pageNum, retry + 1);
+        }
+
+        console.log(`❌ Error página ${pageNum} después de ${MAX_RETRIES} intentos: ${err.message}`);
         return [];
     }
 }
 
-/* ---------------- DB SAVE ---------------- */
+/* ---------------- GUARDADO EN DB ---------------- */
 
 function saveArtists(artists) {
-    const sql =
-        "INSERT IGNORE INTO artists (name, image, url, platform) VALUES (?, ?, ?, ?)";
+    return new Promise((resolve) => {
+        if (artists.length === 0) {
+            resolve();
+            return;
+        }
 
-    for (const a of artists) {
-        db.query(sql, [a.artista, a.image, a.url, a.platform], (err, result) => {
-            if (err) {
-                console.log(`❌ Error: ${a.artista}: ${err.message}`);
-                return;
-            }
+        const sql = "INSERT IGNORE INTO artists (name, image, url, platform) VALUES (?, ?, ?, ?)";
+        let pending = artists.length;
 
-            if (result.affectedRows === 1) {
-                counterNewArtists++;
-                console.log(`✅ Nuevo artista: ${a.artista}`);
-            }
-        });
-    }
+        for (const a of artists) {
+            db.query(sql, [a.artista, a.image, a.url, a.platform], (err, result) => {
+                if (err) {
+                    console.log(`❌ Error guardando ${a.artista}: ${err.message}`);
+                } else if (result.affectedRows === 1) {
+                    counterNewArtists++;
+                    console.log(`✅ Nuevo: ${a.artista}`);
+                }
+                pending--;
+                if (pending === 0) resolve();
+            });
+        }
+    });
 }
 
 /* ---------------- WORKER ---------------- */
@@ -87,15 +109,13 @@ function saveArtists(artists) {
 async function worker(queue) {
     while (true) {
         const page = queue.shift();
-
         if (page === undefined) break;
 
         console.log(`📄 Procesando página ${page}`);
-
         const artists = await scrapePage(page);
 
         if (artists.length > 0) {
-            saveArtists(artists);
+            await saveArtists(artists);
         }
 
         await sleep(randomDelay());
@@ -105,33 +125,33 @@ async function worker(queue) {
 /* ---------------- MAIN ---------------- */
 
 async function main(initialPage, finalPage) {
-    console.log(`🚀 Iniciando scraping desde ${initialPage} hasta ${finalPage}`);
+    console.log(`🚀 Iniciando scraping desde ${initialPage} hasta ${finalPage} (concurrencia: ${CONCURRENCY})`);
 
     browser = await puppeteer.launch({
         executablePath: "/usr/bin/chromium",
         headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-blink-features=AutomationControlled",
+            "--disable-features=IsolateOrigins,site-per-process",
+        ],
     });
 
     const queue = [];
-
     for (let i = initialPage; i <= finalPage; i++) {
         queue.push(i);
     }
 
     const workers = [];
-
     for (let i = 0; i < CONCURRENCY; i++) {
         workers.push(worker(queue));
     }
 
     await Promise.all(workers);
-
     await browser.close();
 
-    console.log(`✅ Finalizado. Nuevos artistas encontrados: ${counterNewArtists}`);
+    console.log(`\n✅ Finalizado. Nuevos artistas guardados: ${counterNewArtists}`);
 }
 
-module.exports = {
-    main,
-};
+module.exports = { main };
