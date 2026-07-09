@@ -120,7 +120,9 @@ function randomDelay() {
 
 async function scrapePage(page) {
     const browser = await puppeteer.launch({
-        headless: true,
+    executablePath: "/usr/bin/chromium",
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     try {
