@@ -131,8 +131,8 @@ function mostrarMenu() {
             "iterar": "iterar",
             "5": "bunkr",
             "bunkr": "bunkr",
-            "6": "Coomer",
-            "coomer": "Coomer",
+            "6": "coomer",
+            "coomer": "coomer",
             "7": "salir",
             "salir": "salir",
             "exit": "salir"
