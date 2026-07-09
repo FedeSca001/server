@@ -41,7 +41,6 @@ async function scrapePage(page) {
 
             if (title && image && url) {
                 albums.push({ title, image, url });
-                console.log(`✅ Página ${page}: Álbum encontrado - ${title}`);
             }
         });
         return albums;
@@ -63,6 +62,7 @@ function saveAlbums(albums) {
             // Solo contar si realmente se insertó un nuevo registro
             if (result.affectedRows === 1) {
                 counterNewAlbums++;
+                console.log(`💾 Álbum guardado: ${a.title}`);
             }
         });
     }
