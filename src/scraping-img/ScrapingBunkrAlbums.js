@@ -41,6 +41,7 @@ async function scrapePage(page) {
 
             if (title && image && url) {
                 albums.push({ title, image, url });
+                console.log(`✅ Página ${page}: Álbum encontrado - ${title}`);
             }
         });
         return albums;
