@@ -4,8 +4,9 @@ puppeteer.use(StealthPlugin());
 
 const db = require("../../DataBase/db.js");
 
+let browser;
 let counterNewArtists = 0;
-const CONCURRENCY = 1;           // ← Muy importante: déjalo en 1
+const CONCURRENCY = 1;
 const MAX_RETRIES = 4;
 
 function sleep(ms) {
@@ -24,7 +25,6 @@ async function scrapePage(pageNum, retry = 0) {
     try {
         browserPage = await browser.newPage();
 
-        // User agent más realista
         await browserPage.setUserAgent(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
         );
@@ -34,12 +34,22 @@ async function scrapePage(pageNum, retry = 0) {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         });
 
+        // === Cargar cookies desde cookies.json ===
+        try {
+            const cookies = require("./cookies.json");
+            if (cookies && cookies.length > 0) {
+                await browserPage.setCookie(...cookies);
+                console.log("🍪 Cookies cargadas");
+            }
+        } catch {
+            console.log("⚠️ No se encontró cookies.json");
+        }
+
         await browserPage.goto(`https://coomer.st/artists?o=${pageNum}`, {
             waitUntil: "networkidle2",
             timeout: 60000,
         });
 
-        // Esperamos el selector principal
         await browserPage.waitForSelector("a.user-card", {
             timeout: 18000,
         });
@@ -61,9 +71,6 @@ async function scrapePage(pageNum, retry = 0) {
         if (browserPage) {
             await browserPage.close().catch(() => {});
         }
-
-        const isCloudflare = err.message.includes("timeout") || 
-                             err.message.includes("waiting for selector");
 
         if (retry < MAX_RETRIES) {
             const waitTime = 8000 * (retry + 1) + Math.random() * 4000;
