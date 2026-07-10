@@ -49,7 +49,7 @@ const getRandomAlbums = async () => {
 
 async function buscarAlbums(texto) {
     try {
-        const response = await fetch(`http://192.168.1.148:3000/apiAlbums/album-input/${encodeURIComponent(texto)}`);
+        const response = await fetch(`http://192.168.1.148:3000/apiAlbums/album-input/${texto}`);
 
         if (!response.ok) {
             throw new Error("Error en la petición");
