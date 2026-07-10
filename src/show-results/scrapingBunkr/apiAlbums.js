@@ -44,6 +44,17 @@ const findAlbum = async (input) => {
         });
     });
 };
+const deleteAlbum = async (id) => {
+    return new Promise((resolve, reject) => {
+        db.query("DELETE FROM albums WHERE id = ?", [id], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+};
 /* ---------------- ROUTES ---------------- */
 router.get("/album-input/:_input", async (req, res) => {
     try {
@@ -70,4 +81,12 @@ router.get("/random", async (req, res) => {
     }
 });
 
+router.delete("/delete/:id", async (req, res) => {
+    try {
+        const results = await deleteAlbum(req.params.id);
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 module.exports = router;

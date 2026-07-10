@@ -62,6 +62,7 @@ async function buscarAlbums(texto) {
                 <h3>${album.title}</h3>
                 <img src="${album.image}" alt="${album.title}">
                 <a href="${album.url}" target="_blank">Ver álbum</a>
+                <button onclick="deleteAlbum(${album.id})">Eliminar</button>
             `;
             listado.appendChild(li);
         }
@@ -69,6 +70,21 @@ async function buscarAlbums(texto) {
         console.error("Error al buscar álbum:", error);
     }
 }
+
+const deleteAlbum = async (id) => {
+    try {
+        const response = await fetch(`http://192.168.1.148:3000/apiAlbums/delete/${id}`, {
+            method: "DELETE"
+        });
+        if (!response.ok) {
+            throw new Error("Error al eliminar álbum");
+        }
+        // Refrescar la lista de álbumes
+        await buscarAlbums(input.value.trim());
+    } catch (error) {
+        console.error("Error al eliminar álbum:", error);
+    }
+};
 
 btn.addEventListener("click", () => {
     buscarAlbums(input.value.trim());
