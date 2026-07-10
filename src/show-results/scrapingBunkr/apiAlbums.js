@@ -4,7 +4,7 @@ const db = require("../../DataBase/db.js");
 
 const topElements = async () => {
     return new Promise((resolve, reject) => {// SELECT * FROM albums ORDER BY id DESC LIMIT 12;
-        db.query("SELECT * FROM albums ORDER BY id DESC LIMIT 15;", (err, results) => {
+        db.query("SELECT * FROM albums ORDER BY id DESC LIMIT 16;", (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -19,10 +19,10 @@ const randomElements = () => {
             if (err) return reject(err);
 
             const total = rows[0].total;
-            const offset = Math.floor(Math.random() * (total - 15));
+            const offset = Math.floor(Math.random() * (total - 16));
 
             db.query(
-                "SELECT * FROM albums LIMIT 15 OFFSET ?",
+                "SELECT * FROM albums LIMIT 16 OFFSET ?",
                 [offset],
                 (err, results) => {
                     if (err) reject(err);
