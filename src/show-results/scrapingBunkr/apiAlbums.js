@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require("../../DataBase/db.js");
 
 const topElements = async () => {
-    return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM albums ORDER BY id DESC LIMIT 12;", (err, results) => {
+    return new Promise((resolve, reject) => {// SELECT * FROM albums ORDER BY id DESC LIMIT 12;
+        db.query("SELECT * FROM albums ORDER BY id DESC LIMIT 15;", (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -19,10 +19,10 @@ const randomElements = () => {
             if (err) return reject(err);
 
             const total = rows[0].total;
-            const offset = Math.floor(Math.random() * (total - 12));
+            const offset = Math.floor(Math.random() * (total - 15));
 
             db.query(
-                "SELECT * FROM albums LIMIT 12 OFFSET ?",
+                "SELECT * FROM albums LIMIT 15 OFFSET ?",
                 [offset],
                 (err, results) => {
                     if (err) reject(err);
