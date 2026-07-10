@@ -18,6 +18,7 @@ const getTopElements = async () => {
                 <h3>${album.title}</h3>
                 <img src="${album.image}" alt="${album.title}">
                 <a href="${album.url}" target="_blank">Ver álbum</a>
+                <button class="btn btn-danger" onclick="deleteAlbum(${album.id})">Eliminar</button>
             `;
             topElementsList.appendChild(li);
         }
@@ -39,6 +40,7 @@ const getRandomAlbums = async () => {
             <h3>${album.title}</h3>
             <img src="${album.image}" alt="${album.title}">
             <a href="${album.url}" target="_blank">Ver álbum</a>
+            <button class="btn btn-danger" onclick="deleteAlbum(${album.id})">Eliminar</button>
         `;
             randomList.appendChild(li);
         }
