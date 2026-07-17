@@ -7,7 +7,7 @@ const topElementsBtn = document.getElementById("getTopElements");
 const topElementsList = document.getElementById("topElementsList");
 const moreElementsBtn = document.getElementById("moreElements");
 
-let offset = 16;
+let offset = 0;
 let albums = [];
 
 /* ---------------- TOP ALBUMS ---------------- */
