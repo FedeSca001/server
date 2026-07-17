@@ -1,6 +1,9 @@
 const listado = document.getElementById("resultList");
-const input = document.getElementById("urlInput");
 const btn = document.getElementById("buscarSql");
+const listaElementsCard = document.getElementById("elementsList");
+const btnElementsCard = document.getElementById("buscarElemento");
+const input = document.getElementById("urlInput");
+const elementInput = document.getElementById("elementInput");
 const randomBtn = document.getElementById("getRandomAlbums");
 const randomList = document.getElementById("randomList");
 const topElementsBtn = document.getElementById("getTopElements");
@@ -117,6 +120,32 @@ const buscarAlbums = async (texto) => {
     }
 };
 
+const buscarElementosCards = async (txt) => {
+    try {
+        const response = await fetch(
+            `http://192.168.1.148:3000/apiElement/card-title/${txt}`
+        );
+
+        const elementCard = await response.json();
+
+        listaElementsCard.innerHTML = "";
+
+        if (!elementCard) return;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <h3>${elementCard.title}</h3>
+            <img src="${elementCard.image}" alt="${elementCard.title}">
+            <a href="${elementCard.url}" target="_blank">Ver elemento</a>
+        `;
+
+        listaElementsCard.appendChild(li);
+
+    } catch (error) {
+        console.error("Error al buscar Elemento en card:", error);
+    }
+};
+
 /* ---------------- DELETE ---------------- */
 
 const deleteAlbum = async (id) => {
@@ -132,12 +161,10 @@ const deleteAlbum = async (id) => {
             throw new Error("Error al eliminar álbum");
         }
 
-        // Actualiza la búsqueda si hay texto
         if (input.value.trim() !== "") {
             await buscarAlbums(input.value.trim());
         }
 
-        // Actualiza la lista de Top si está cargada
         if (albums.length > 0) {
             albums = albums.filter(album => album.id !== id);
             renderTopAlbums();
@@ -160,8 +187,16 @@ input.addEventListener("keypress", (event) => {
     }
 });
 
+btnElementsCard.addEventListener("click", () => {
+    buscarElementosCards(elementInput.value.trim());
+});
+
+elementInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        buscarElementosCards(elementInput.value.trim());
+    }
+});
+
 randomBtn.addEventListener("click", getRandomAlbums);
-
 topElementsBtn.addEventListener("click", getTopElements);
-
 moreElementsBtn.addEventListener("click", getMoreTopElements);
