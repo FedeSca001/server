@@ -13,91 +13,100 @@ const selectorDate = "span[class*='type-']";
 
 /* ---------------- UTILIDADES ---------------- */
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function randomDelay() {
-    return Math.floor(Math.random() * 1500) + 500;
-}
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const randomDelay = () => Math.floor(Math.random() * 1500) + 500;
 
 /* ---------------- DATABASE ---------------- */
 
-const dblength = () => {
-    return new Promise((resolve, reject) => {
-        db.query(
-            "SELECT COUNT(*) AS total FROM albums",
-            (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows[0].total);
-            }
+const dblength = () =>
+    new Promise((resolve, reject) => {
+        db.query("SELECT COUNT(*) AS total FROM albums", (err, rows) =>
+            err ? reject(err) : resolve(rows[0].total)
         );
     });
-};
 
-const getAlbum = (id) => {
-    return new Promise((resolve, reject) => {
-        db.query(
-            "SELECT * FROM albums WHERE id = ?",
-            [id],
-            (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows[0]);
-            }
+const getAlbum = id =>
+    new Promise((resolve, reject) => {
+        db.query("SELECT * FROM albums WHERE id = ?", [id], (err, rows) =>
+            err ? reject(err) : resolve(rows[0])
         );
     });
-};
 
 /* ---------------- DB SAVE ---------------- */
+
 function saveCard(card) {
-    const sql = "INSERT IGNORE INTO cards (album_id, title, image, url, size, date, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [card.album_id, card.title, card.image, card.url, card.size, card.date, card.type], (err, result) => {
-        if (err) {
-            console.error(`Error al guardar el álbum: ${err.message}`);
-        } else {
-            console.log(`Álbum guardado: ${card.title}`);
+    const sql = `
+        INSERT IGNORE INTO cards
+        (album_id, title, image, url, size, date, type)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+        sql,
+        [
+            card.album_id,
+            card.title,
+            card.image,
+            card.url,
+            card.size,
+            card.date,
+            card.type,
+        ],
+        err => {
+            if (err) console.error(`Error: ${err.message}`);
+            else console.log(`Guardado: ${card.title}`);
         }
-    });
+    );
 }
 
 /* ---------------- SCRAPING ---------------- */
 
-const scrapePage = async (pageUrl) => {
-    //const pageUrl = `https://bunkr.cr/a/wU0KY6Ip?page=${page}`;
+const scrapePage = async (pageUrl, albumId) => {
+    let page = 1;
 
     try {
-        const { data } = await axios.get(pageUrl, {
-            timeout: 10000,
-            headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
-            },
-        });
-        const $ = cheerio.load(data);
-        const cards = $(selectorCard);
-        cards.each((i, el) => {
-            const card = $(el);
-            const href = card.find(selectorUrl).attr("href") || "";
-            const typeSpan = card.find(selectorDate);
-            const className = typeSpan.attr("class") || "";
-            const match = className.match(/type-([^\s]+)/);
+        while (true) {
+            const url = page === 1 ? pageUrl : `${pageUrl}?page=${page}`;
 
-            const album = {
-                title: card.find(selectorTitle).text().trim(),
-                url: href.startsWith("http")
-                    ? href
-                    : `https://bunkr.cr${href}`,
-                image: card.find(selectorImage).attr("src") || "",
-                size: card.find(selectorSize).text().trim(),
-                date: card.find("span.theDate").text().trim(),
-                type: match ? match[1] : "",
-            };
-            saveCard(album);
-        });
+            console.log(`Scrapeando: ${url}`);
+
+            const { data } = await axios.get(url, {
+                timeout: 10000,
+                headers: {
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+                },
+            });
+
+            const $ = cheerio.load(data);
+
+            $(selectorCard).each((_, el) => {
+                const card = $(el);
+                const href = card.find(selectorUrl).attr("href") || "";
+                const className = card.find(selectorDate).attr("class") || "";
+                const match = className.match(/type-([^\s]+)/);
+
+                saveCard({
+                    album_id: albumId,
+                    title: card.find(selectorTitle).text().trim(),
+                    url: href.startsWith("http")
+                        ? href
+                        : `https://bunkr.cr${href}`,
+                    image: card.find(selectorImage).attr("src") || "",
+                    size: card.find(selectorSize).text().trim(),
+                    date: card.find("span.theDate").text().trim(),
+                    type: match ? match[1] : "",
+                });
+            });
+
+            // Si no existe la siguiente página, termina
+            if ($(`a[href="?page=${page + 1}"]`).length === 0) break;
+
+            page++;
+        }
 
     } catch (err) {
-        console.error(`Error al scrapear página ${pageUrl}: ${err.message}`);
-        return [];
+        console.error(`Error al scrapear ${pageUrl}: ${err.message}`);
     }
 };
 
@@ -106,12 +115,11 @@ const scrapePage = async (pageUrl) => {
 const main = async () => {
     try {
         const total = await dblength();
-        console.log(`Álbumes en la BD: ${total}`);
-       
+
         for (let i = 1; i <= total; i++) {
             const album = await getAlbum(i);
-            console.log(album);
-            // aqui el id = i (por cada numero de album) y se puede usar para scrapear los cards individuales
+            if (!album) continue;
+            await scrapePage(album.url, album.id);
             await sleep(randomDelay());
         }
     } catch (err) {
