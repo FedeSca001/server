@@ -54,7 +54,7 @@ const commands = {
         rl.question("Buscando Cards individuales: ", async () => {
             try {
 
-                const { main } = require("./src/scraping-img/ScrapingBunkrTitulos.js");
+                const { main } = require("./src/scraping-img/ScrapingAlbumIndividual.js");
                 await main(a, b);
             } catch (e) {
                 console.error(e);
