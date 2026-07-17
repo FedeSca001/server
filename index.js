@@ -51,7 +51,7 @@ const commands = {
         });
     },
     bunkrTitulos: async (rl) => {
-
+        rl.question("inicio fin: ", async (r) => {
             try {
                 const { main } = require("./src/scraping-img/ScrapingAlbumIndividual.js");
                 await main();
@@ -59,6 +59,7 @@ const commands = {
                 console.error(e);
             }
             mostrarMenu();
+        });
     },
     scraping: async () => iniciarServidor(),
     salir: async () => cerrarAplicacion()
