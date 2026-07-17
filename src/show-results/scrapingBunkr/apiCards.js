@@ -24,18 +24,18 @@ MariaDB [scraper]> DESCRIBE cards;
 const getElementbyTitle = (title) => {
     return new Promise((resolve, reject) => {
         db.query(
-            "SELECT * FROM cards WHERE title = ?",
-            [title],
+            "SELECT * FROM cards WHERE title LIKE ?",
+            [`%${title}%`],
             (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(results[0]);
+                    resolve(results); // devuelve todos los resultados
                 }
             }
         );
     });
-}
+};
 
 /* ---------------- ROUTES ---------------- */
 
