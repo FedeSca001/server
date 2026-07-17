@@ -48,10 +48,22 @@ const getAlbum = (id) => {
     });
 };
 
+/* ---------------- DB SAVE ---------------- */
+function saveCard(card) {
+    const sql = "INSERT IGNORE INTO cards (album_id, title, image, url, size, date, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [card.album_id, card.title, card.image, card.url, card.size, card.date, card.type], (err, result) => {
+        if (err) {
+            console.error(`Error al guardar el álbum: ${err.message}`);
+        } else {
+            console.log(`Álbum guardado: ${card.title}`);
+        }
+    });
+}
+
 /* ---------------- SCRAPING ---------------- */
 
-const scrapePage = async (page = 1) => {
-    const pageUrl = `https://bunkr.cr/a/wU0KY6Ip?page=${page}`;
+const scrapePage = async (pageUrl) => {
+    //const pageUrl = `https://bunkr.cr/a/wU0KY6Ip?page=${page}`;
 
     try {
         const { data } = await axios.get(pageUrl, {
@@ -61,19 +73,10 @@ const scrapePage = async (page = 1) => {
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
             },
         });
-
         const $ = cheerio.load(data);
-
         const cards = $(selectorCard);
-
-        console.log(`Página ${page}`);
-        console.log(`Cards encontradas: ${cards.length}`);
-
-        const results = [];
-
         cards.each((i, el) => {
             const card = $(el);
-
             const href = card.find(selectorUrl).attr("href") || "";
             const typeSpan = card.find(selectorDate);
             const className = typeSpan.attr("class") || "";
@@ -81,29 +84,19 @@ const scrapePage = async (page = 1) => {
 
             const album = {
                 title: card.find(selectorTitle).text().trim(),
-
                 url: href.startsWith("http")
                     ? href
                     : `https://bunkr.cr${href}`,
-
                 image: card.find(selectorImage).attr("src") || "",
-
                 size: card.find(selectorSize).text().trim(),
-
                 date: card.find("span.theDate").text().trim(),
-
                 type: match ? match[1] : "",
             };
-            console.log(`Guardando: ${album.title}`);
-            results.push(album);
+            saveCard(album);
         });
 
-        console.table(results);
-
-        return results;
-
     } catch (err) {
-        console.error(`Error al scrapear página ${page}: ${err.message}`);
+        console.error(`Error al scrapear página ${pageUrl}: ${err.message}`);
         return [];
     }
 };
@@ -113,27 +106,18 @@ const scrapePage = async (page = 1) => {
 const main = async () => {
     try {
         const total = await dblength();
-
         console.log(`Álbumes en la BD: ${total}`);
-
-        const albums = await scrapePage(1);
-
-        console.log(`Se obtuvieron ${albums.length} elementos.`);
-
-        /*
+       
         for (let i = 1; i <= total; i++) {
             const album = await getAlbum(i);
             console.log(album);
+            // aqui el id = i (por cada numero de album) y se puede usar para scrapear los cards individuales
             await sleep(randomDelay());
         }
-        */
-
     } catch (err) {
         console.error(err);
     }
 };
-
-main();
 
 module.exports = {
     scrapePage,
