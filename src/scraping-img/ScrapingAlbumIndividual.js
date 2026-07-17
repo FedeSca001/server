@@ -94,7 +94,7 @@ const scrapePage = async (page = 1) => {
 
                 type: match ? match[1] : "",
             };
-
+            console.log(`Guardando: ${album.title}`);
             results.push(album);
         });
 
