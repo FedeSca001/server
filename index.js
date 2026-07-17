@@ -50,6 +50,18 @@ const commands = {
             mostrarMenu();
         });
     },
+    bunkrTitulos: async (rl) => {
+        rl.question("Buscando Cards individuales: ", async () => {
+            try {
+
+                const { main } = require("./src/scraping-img/ScrapingBunkrTitulos.js");
+                await main(a, b);
+            } catch (e) {
+                console.error(e);
+            }
+            mostrarMenu();
+        });
+    },
     scraping: async () => iniciarServidor(),
     salir: async () => cerrarAplicacion()
 };
@@ -93,7 +105,8 @@ const opciones = () => console.log(`
 3. Imagenes
 4. Iterar
 5. Bunkr
-6. Salir
+6. Scraping Bunkr Titulos
+7. Salir
 `);
 
 function mostrarMenu() {
@@ -113,7 +126,9 @@ function mostrarMenu() {
             "iterar": "iterar",
             "5": "bunkr",
             "bunkr": "bunkr",
-            "6": "salir",
+            "6": "bunkrTitulos",
+            "bunkrTitulos": "bunkrTitulos",
+            "7": "salir",
             "salir": "salir",
             "exit": "salir"
         };
