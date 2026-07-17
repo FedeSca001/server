@@ -1,11 +1,15 @@
 const listado = document.getElementById("resultList");
 const btn = document.getElementById("buscarSql");
+
 const listaElementsCard = document.getElementById("elementsList");
 const btnElementsCard = document.getElementById("buscarElemento");
+
 const input = document.getElementById("urlInput");
 const elementInput = document.getElementById("elementInput");
+
 const randomBtn = document.getElementById("getRandomAlbums");
 const randomList = document.getElementById("randomList");
+
 const topElementsBtn = document.getElementById("getTopElements");
 const topElementsList = document.getElementById("topElementsList");
 const moreElementsBtn = document.getElementById("moreElements");
@@ -24,7 +28,7 @@ const renderTopAlbums = () => {
             <h3>${album.title}</h3>
             <img src="${album.image}" alt="${album.title}">
             <a href="${album.url}" target="_blank">Ver álbum</a>
-            <button class="btn btn-danger" onclick="deleteAlbum(${album.id})">Eliminar</button>
+            <button onclick="deleteAlbum(${album.id})">Eliminar</button>
         `;
         topElementsList.appendChild(li);
     }
@@ -39,7 +43,7 @@ const getTopElements = async () => {
 
         renderTopAlbums();
     } catch (error) {
-        console.error("Error al obtener álbumes:", error);
+        console.error(error);
     }
 };
 
@@ -51,7 +55,7 @@ const getMoreTopElements = async () => {
 
         const nuevosAlbums = await response.json();
 
-        if (nuevosAlbums.length === 0) {
+        if (!nuevosAlbums.length) {
             alert("No hay más álbumes.");
             return;
         }
@@ -61,7 +65,7 @@ const getMoreTopElements = async () => {
 
         renderTopAlbums();
     } catch (error) {
-        console.error("Error al obtener más álbumes:", error);
+        console.error(error);
     }
 };
 
@@ -69,37 +73,38 @@ const getMoreTopElements = async () => {
 
 const getRandomAlbums = async () => {
     try {
-        const response = await fetch("http://192.168.1.148:3000/apiAlbums/random");
+        const response = await fetch(
+            "http://192.168.1.148:3000/apiAlbums/random"
+        );
+
         const albums = await response.json();
 
         randomList.innerHTML = "";
 
         for (const album of albums) {
             const li = document.createElement("li");
+
             li.innerHTML = `
                 <h3>${album.title}</h3>
                 <img src="${album.image}" alt="${album.title}">
                 <a href="${album.url}" target="_blank">Ver álbum</a>
-                <button class="btn btn-danger" onclick="deleteAlbum(${album.id})">Eliminar</button>
+                <button onclick="deleteAlbum(${album.id})">Eliminar</button>
             `;
+
             randomList.appendChild(li);
         }
     } catch (error) {
-        console.error("Error al obtener álbumes aleatorios:", error);
+        console.error(error);
     }
 };
 
-/* ---------------- SEARCH ---------------- */
+/* ---------------- SEARCH ALBUMS ---------------- */
 
 const buscarAlbums = async (texto) => {
     try {
         const response = await fetch(
-            `http://192.168.1.148:3000/apiAlbums/album-input/${texto}`
+            `http://192.168.1.148:3000/apiAlbums/album-input/${encodeURIComponent(texto)}`
         );
-
-        if (!response.ok) {
-            throw new Error("Error en la petición");
-        }
 
         const albums = await response.json();
 
@@ -107,42 +112,54 @@ const buscarAlbums = async (texto) => {
 
         for (const album of albums) {
             const li = document.createElement("li");
+
             li.innerHTML = `
                 <h3>${album.title}</h3>
                 <img src="${album.image}" alt="${album.title}">
                 <a href="${album.url}" target="_blank">Ver álbum</a>
-                <button class="btn btn-danger" onclick="deleteAlbum(${album.id})">Eliminar</button>
+                <button onclick="deleteAlbum(${album.id})">Eliminar</button>
             `;
+
             listado.appendChild(li);
         }
+
     } catch (error) {
-        console.error("Error al buscar álbum:", error);
+        console.error(error);
     }
 };
 
-const buscarElementosCards = async (txt) => {
+/* ---------------- SEARCH CARDS ---------------- */
+
+const buscarElementosCards = async (texto) => {
     try {
         const response = await fetch(
-            `http://192.168.1.148:3000/apiElement/card-title/${txt}`
+            `http://192.168.1.148:3000/apiElement/card-title/${encodeURIComponent(texto)}`
         );
 
-        const elementCard = await response.json();
+        if (!response.ok) {
+            throw new Error("Error en la petición");
+        }
+
+        const elementsCard = await response.json();
+
+        console.log(elementsCard);
 
         listaElementsCard.innerHTML = "";
 
-        if (!elementCard) return;
+        for (const elementCard of elementsCard) {
+            const li = document.createElement("li");
 
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <h3>${elementCard.title}</h3>
-            <img src="${elementCard.image}" alt="${elementCard.title}">
-            <a href="${elementCard.url}" target="_blank">Ver elemento</a>
-        `;
+            li.innerHTML = `
+                <h3>${elementCard.title}</h3>
+                <img src="${elementCard.image}" alt="${elementCard.title}">
+                <a href="${elementCard.url}" target="_blank">Ver elemento</a>
+            `;
 
-        listaElementsCard.appendChild(li);
+            listaElementsCard.appendChild(li);
+        }
 
     } catch (error) {
-        console.error("Error al buscar Elemento en card:", error);
+        console.error(error);
     }
 };
 
@@ -158,20 +175,20 @@ const deleteAlbum = async (id) => {
         );
 
         if (!response.ok) {
-            throw new Error("Error al eliminar álbum");
+            throw new Error("Error al eliminar");
         }
 
-        if (input.value.trim() !== "") {
+        if (input.value.trim()) {
             await buscarAlbums(input.value.trim());
         }
 
-        if (albums.length > 0) {
+        if (albums.length) {
             albums = albums.filter(album => album.id !== id);
             renderTopAlbums();
         }
 
     } catch (error) {
-        console.error("Error al eliminar álbum:", error);
+        console.error(error);
     }
 };
 
@@ -181,8 +198,8 @@ btn.addEventListener("click", () => {
     buscarAlbums(input.value.trim());
 });
 
-input.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
+input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
         buscarAlbums(input.value.trim());
     }
 });
