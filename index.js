@@ -51,16 +51,14 @@ const commands = {
         });
     },
     bunkrTitulos: async (rl) => {
-        rl.question("Buscando Cards individuales: ", async () => {
-            try {
 
+            try {
                 const { main } = require("./src/scraping-img/ScrapingAlbumIndividual.js");
-                await main(a, b);
+                await main();
             } catch (e) {
                 console.error(e);
             }
             mostrarMenu();
-        });
     },
     scraping: async () => iniciarServidor(),
     salir: async () => cerrarAplicacion()
