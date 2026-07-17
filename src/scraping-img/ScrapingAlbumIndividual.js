@@ -9,8 +9,7 @@ const selectorUrl = "a[aria-label='download']";
 const selectorImage = "img.grid-images_box-img";
 const selectorTitle = "p.theName";
 const selectorSize = "p.theSize";
-const selectorDate = "span.theDate";
-const selectorType = "span[class*='type-']";
+const selectorDate = "span[class*='type-']";
 
 /* ---------------- UTILIDADES ---------------- */
 
@@ -52,10 +51,10 @@ const getAlbum = (id) => {
 /* ---------------- SCRAPING ---------------- */
 
 const scrapePage = async (page = 1) => {
-    const url = `https://bunkr.cr/a/wU0KY6Ip?page=${page}`;
+    const pageUrl = `https://bunkr.cr/a/wU0KY6Ip?page=${page}`;
 
     try {
-        const { data } = await axios.get(url, {
+        const { data } = await axios.get(pageUrl, {
             timeout: 10000,
             headers: {
                 "User-Agent":
@@ -75,13 +74,25 @@ const scrapePage = async (page = 1) => {
         cards.each((i, el) => {
             const card = $(el);
 
+            const href = card.find(selectorUrl).attr("href") || "";
+            const typeSpan = card.find(selectorDate);
+            const className = typeSpan.attr("class") || "";
+            const match = className.match(/type-([^\s]+)/);
+
             const album = {
                 title: card.find(selectorTitle).text().trim(),
-                url: card.find(selectorUrl).attr("href") || "",
+
+                url: href.startsWith("http")
+                    ? href
+                    : `https://bunkr.cr${href}`,
+
                 image: card.find(selectorImage).attr("src") || "",
+
                 size: card.find(selectorSize).text().trim(),
-                date: card.find(selectorDate).text().trim(),
-                type: card.find(selectorType).text().trim(),
+
+                date: card.find("span.theDate").text().trim(),
+
+                type: match ? match[1] : "",
             };
 
             results.push(album);
@@ -92,7 +103,7 @@ const scrapePage = async (page = 1) => {
         return results;
 
     } catch (err) {
-        console.error(`Error al scrapear página ${page}:`, err.message);
+        console.error(`Error al scrapear página ${page}: ${err.message}`);
         return [];
     }
 };
@@ -123,4 +134,10 @@ const main = async () => {
 };
 
 main();
-module.exports = { scrapePage, dblength, getAlbum, main };
+
+module.exports = {
+    scrapePage,
+    dblength,
+    getAlbum,
+    main,
+};
