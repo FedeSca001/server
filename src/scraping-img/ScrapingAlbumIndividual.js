@@ -60,30 +60,11 @@ const cleanDuplicatesByUrl = () => {
     });
 };
 
-// Limpia duplicados de una URL específica
-const deleteDuplicateByUrl = (url) => {
-    return new Promise((resolve) => {
-        db.query(
-            "DELETE FROM cards WHERE url = ? AND id NOT IN (SELECT MIN(id) FROM cards WHERE url = ?)",
-            [url, url],
-            (err, result) => {
-                if (err) console.error(`Error limpiando ${url}:`, err.message);
-                else if (result.affectedRows > 0) {
-                    console.log(`🧹 Duplicado eliminado: ${url}`);
-                }
-                resolve();
-            }
-        );
-    });
-};
 
 /* ---------------- DB SAVE ---------------- */
 
 async function saveCard(card) {
     try {
-        // Limpiamos por si acaso
-        await deleteDuplicateByUrl(card.url);
-
         const sql = `
             INSERT IGNORE INTO cards
             (album_id, title, image, url, size, date, type)
