@@ -124,8 +124,10 @@ li{
     border:1px solid #3b4149;
     border-radius:10px;
     padding:12px;
-    text-align:center;
     transition:.2s;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
 li:hover{
@@ -139,8 +141,17 @@ li h3{
     font-weight:600;
     color:#ffffff;
     min-height:40px;
-    margin-bottom:10px;
     word-break:break-word;
+}
+
+li p{
+    background:#1f242a;
+    border-radius:8px;
+    padding:10px;
+    color:#cbd5e1;
+    font-size:13px;
+    line-height:1.5;
+    margin:0;
 }
 
 /* =========================
@@ -152,7 +163,6 @@ img{
     height:180px;
     object-fit:cover;
     border-radius:8px;
-    margin-bottom:10px;
 }
 
 /* =========================
@@ -161,14 +171,15 @@ img{
 
 a{
     display:block;
-    margin-top:8px;
-    padding:8px;
+    margin-top:auto;
+    padding:10px;
     text-decoration:none;
     background:#3d7df0;
     color:#ffffff;
     border-radius:8px;
     font-size:13px;
     font-weight:600;
+    text-align:center;
     transition:.2s;
 }
 

@@ -15,6 +15,9 @@ const topElements = async () => {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(
+                        `[GET /top] ${results.length} álbumes | IDs: ${results.map(a => a.id).join(", ")}`
+                    );
                     resolve(results);
                 }
             }
@@ -31,6 +34,9 @@ const moreTopElements = async (offset) => {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(
+                        `[GET /top-more/${offset}] ${results.length} álbumes | IDs: ${results.map(a => a.id).join(", ")}`
+                    );
                     resolve(results);
                 }
             }
@@ -53,6 +59,9 @@ const randomElements = () => {
                     if (err) {
                         reject(err);
                     } else {
+                        console.log(
+                            `[GET /random] ${results.length} álbumes | Offset: ${offset} | IDs: ${results.map(a => a.id).join(", ")}`
+                        );
                         resolve(results);
                     }
                 }
@@ -70,6 +79,9 @@ const findAlbum = async (input) => {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(
+                        `[GET /album-input/${input}] ${results.length} álbumes encontrados | IDs: ${results.map(a => a.id).join(", ")}`
+                    );
                     resolve(results);
                 }
             }
@@ -86,6 +98,9 @@ const deleteAlbum = async (id) => {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(
+                        `[DELETE /delete/${id}] Filas eliminadas: ${results.affectedRows}`
+                    );
                     resolve(results);
                 }
             }

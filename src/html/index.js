@@ -139,30 +139,33 @@ const buscarElementosCards = async (texto) => {
         if (!response.ok) {
             throw new Error("Error en la petición");
         }
-
         const elementsCard = await response.json();
-
         console.log(elementsCard);
-
         listaElementsCard.innerHTML = "";
+        const lista = Array.isArray(elementsCard)
+            ? elementsCard
+            : [elementsCard];
 
-        for (const elementCard of elementsCard) {
+        for (const elementCard of lista) {
             const li = document.createElement("li");
-
             li.innerHTML = `
                 <h3>${elementCard.title}</h3>
                 <img src="${elementCard.image}" alt="${elementCard.title}">
-                <a href="${elementCard.url}" target="_blank">Ver elemento</a>
+                <p>
+                    Tipo: ${elementCard.type} |
+                    Tamaño: ${elementCard.size} |
+                    Fecha: ${elementCard.date}
+                </p>
+                <a href="${elementCard.url}" target="_blank" rel="noopener noreferrer">
+                    Ver elemento
+                </a>
             `;
-
             listaElementsCard.appendChild(li);
         }
-
     } catch (error) {
-        console.error(error);
+        console.error("Error:", error);
     }
 };
-
 /* ---------------- DELETE ---------------- */
 
 const deleteAlbum = async (id) => {
