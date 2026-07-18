@@ -2,7 +2,7 @@ const express = require("express");
 const readline = require("readline");
 const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
 const scrapingRaceRouter = require("./src/show-results/scrapingBunkr/scraping-race.js");
-const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js")
+const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js");
 
 const commands = {
     videos: async (rl) => {
@@ -51,6 +51,7 @@ const commands = {
             mostrarMenu();
         });
     },
+
     bunkrTitulos: async (rl) => {
         rl.question("inicio fin: ", async (r) => {
             try {
@@ -62,6 +63,26 @@ const commands = {
             mostrarMenu();
         });
     },
+
+    // ====================== LIMPIAR CARDS ======================
+    limpiarCards: async (rl) => {
+        rl.question("¿Deseas limpiar la tabla Cards de duplicados? (S/N): ", async (r) => {
+            if (!["s", "si"].includes(r.toLowerCase())) {
+                console.log("Operación cancelada.");
+                return mostrarMenu();
+            }
+
+            try {
+                const { cleanDuplicatesByUrl } = require("./src/scraping-img/ScrapingAlbumIndividual.js");
+                await cleanDuplicatesByUrl();
+            } catch (error) {
+                console.error("Error al limpiar cards:", error);
+            } finally {
+                mostrarMenu();
+            }
+        });
+    },
+
     scraping: async () => iniciarServidor(),
     salir: async () => cerrarAplicacion()
 };
@@ -80,7 +101,7 @@ let server = null;
 app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
 app.use("/apiAlbums", apiAlbumsRouter);
-app.use("/apiElement",apiElementsCard);
+app.use("/apiElement", apiElementsCard);
 app.use("/scrapingRace", scrapingRaceRouter);
 app.use("/html", express.static("src/html"));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
@@ -107,7 +128,8 @@ const opciones = () => console.log(`
 4. Iterar
 5. Bunkr
 6. Scraping Bunkr Titulos
-7. Salir
+7. Limpiar duplicados Cards
+8. Salir
 `);
 
 function mostrarMenu() {
@@ -129,7 +151,9 @@ function mostrarMenu() {
             "bunkr": "bunkr",
             "6": "bunkrTitulos",
             "bunkrTitulos": "bunkrTitulos",
-            "7": "salir",
+            "7": "limpiarCards",
+            "limpiar": "limpiarCards",
+            "8": "salir",
             "salir": "salir",
             "exit": "salir"
         };
