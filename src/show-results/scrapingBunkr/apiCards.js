@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../DataBase/db.js");
 
-/*---------------- QUERIES ---------------- */
+/*---------------- QUERIES ----------------*/
 
 const getElementbyTitle = (title) => {
     return new Promise((resolve, reject) => {
@@ -11,26 +11,34 @@ const getElementbyTitle = (title) => {
             [`%${title}%`],
             (err, results) => {
                 if (err) {
-                    reject(err);
-                } else {
-                    resolve(results); // devuelve todos los resultados
+                    return reject(err);
                 }
-                console.log(results)
+
+                resolve(results);
             }
         );
     });
 };
 
-/* ---------------- ROUTES ---------------- */
+/*---------------- ROUTES ----------------*/
 
 router.get("/card-title/:title", async (req, res) => {
     try {
         const card = await getElementbyTitle(req.params.title);
+
+        console.log(
+            `[GET /card-title/${req.params.title}] ${card.length} cards encontradas | IDs: ${card.map(c => c.id).join(", ")}`
+        );
+
         res.json(card);
-        console.log(`[GET /card-title/${title}] ${results.length} cards encontradas | IDs: ${results.map(c => c.id).join(", ")}`);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Internal server error" });
+
+        if (!res.headersSent) {
+            res.status(500).json({
+                error: "Internal server error"
+            });
+        }
     }
 });
 
