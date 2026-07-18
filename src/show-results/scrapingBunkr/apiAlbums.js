@@ -16,7 +16,7 @@ const topElements = async () => {
                     reject(err);
                 } else {
                     console.log(
-                        `[GET /top] ${results.length} álbumes | IDs: ${results.map(a => a.id).join(", ")}`
+                        `[GET /top] ${results.length} álbumes`
                     );
                     resolve(results);
                 }
@@ -35,7 +35,7 @@ const moreTopElements = async (offset) => {
                     reject(err);
                 } else {
                     console.log(
-                        `[GET /top-more/${offset}] ${results.length} álbumes | IDs: ${results.map(a => a.id).join(", ")}`
+                        `[GET /top-more/${offset}] ${results.length} álbumes`
                     );
                     resolve(results);
                 }
@@ -60,7 +60,7 @@ const randomElements = () => {
                         reject(err);
                     } else {
                         console.log(
-                            `[GET /random] ${results.length} álbumes | Offset: ${offset} | IDs: ${results.map(a => a.id).join(", ")}`
+                            `[GET /random] ${results.length} álbumes | Offset: ${offset}`
                         );
                         resolve(results);
                     }
@@ -80,7 +80,7 @@ const findAlbum = async (input) => {
                     reject(err);
                 } else {
                     console.log(
-                        `[GET /album-input/${input}] ${results.length} álbumes encontrados | IDs: ${results.map(a => a.id).join(", ")}`
+                        `[GET /album-input/${input}] ${results.length} álbumes encontrados`
                     );
                     resolve(results);
                 }

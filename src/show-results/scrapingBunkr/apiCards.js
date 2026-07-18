@@ -27,7 +27,7 @@ router.get("/card-title/:title", async (req, res) => {
         const card = await getElementbyTitle(req.params.title);
 
         console.log(
-            `[GET /card-title/${req.params.title}] ${card.length} cards encontradas | IDs: ${card.map(c => c.id).join(", ")}`
+            `[GET /card-title/${req.params.title}] ${card.length} cards encontradas`
         );
 
         res.json(card);
