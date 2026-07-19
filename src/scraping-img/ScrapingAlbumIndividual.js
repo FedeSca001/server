@@ -140,8 +140,6 @@ const scrapePage = async (pageUrl, albumId) => {
 
 const main = async () => {
     try {
-        console.log("🔍 Limpiando duplicados existentes...");
-        await cleanDuplicatesByUrl();   // Limpieza global al inicio
 
         const total = await dblength();
         console.log(`🚀 Iniciando scraping de ${total} álbumes...`);
