@@ -131,8 +131,6 @@ const buscarAlbums = async (texto) => {
 
 /* ---------------- SEARCH ELEMENTS ---------------- */
 
-/* ---------------- SEARCH ELEMENTS ---------------- */
-
 const buscarElementosCards = async (texto) => {
     try {
 
@@ -145,6 +143,7 @@ const buscarElementosCards = async (texto) => {
             throw new Error("Error en la petición");
         }
         const elementsCard = await response.json();
+        console.log(elementsCard)
         listaElementsCard.innerHTML = "";
         const lista = Array.isArray(elementsCard)
             ? elementsCard
