@@ -6,6 +6,7 @@ const btnElementsCard = document.getElementById("buscarElemento");
 
 const input = document.getElementById("urlInput");
 const elementInput = document.getElementById("elementInput");
+const filterSelect = document.getElementById("filterSelect");
 
 const randomBtn = document.getElementById("getRandomAlbums");
 const randomList = document.getElementById("randomList");
@@ -128,26 +129,29 @@ const buscarAlbums = async (texto) => {
     }
 };
 
-/* ---------------- SEARCH CARDS ---------------- */
+/* ---------------- SEARCH ELEMENTS ---------------- */
 
-const buscarElementosCards = async (texto) => {
+const buscarElementosCards = async (texto, filtro = "all") => {
     try {
         const response = await fetch(
-            `http://192.168.1.148:3000/apiElement/card-title/${encodeURIComponent(texto)}`
+            `http://192.168.1.148:3000/apiElement/card-title/${encodeURIComponent(texto)}?filter=${encodeURIComponent(filtro)}`
         );
 
         if (!response.ok) {
             throw new Error("Error en la petición");
         }
+
         const elementsCard = await response.json();
-        console.log(elementsCard);
+
         listaElementsCard.innerHTML = "";
+
         const lista = Array.isArray(elementsCard)
             ? elementsCard
             : [elementsCard];
 
         for (const elementCard of lista) {
             const li = document.createElement("li");
+
             li.innerHTML = `
                 <h3>${elementCard.title}</h3>
                 <img src="${elementCard.image}" alt="${elementCard.title}">
@@ -160,12 +164,14 @@ const buscarElementosCards = async (texto) => {
                     Ver elemento
                 </a>
             `;
+
             listaElementsCard.appendChild(li);
         }
     } catch (error) {
         console.error("Error:", error);
     }
 };
+
 /* ---------------- DELETE ---------------- */
 
 const deleteAlbum = async (id) => {
@@ -208,12 +214,18 @@ input.addEventListener("keypress", (e) => {
 });
 
 btnElementsCard.addEventListener("click", () => {
-    buscarElementosCards(elementInput.value.trim());
+    buscarElementosCards(
+        elementInput.value.trim(),
+        filterSelect.value
+    );
 });
 
 elementInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
-        buscarElementosCards(elementInput.value.trim());
+        buscarElementosCards(
+            elementInput.value.trim(),
+            filterSelect.value
+        );
     }
 });
 

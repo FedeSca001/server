@@ -8,6 +8,7 @@
 </head>
 <body>
 
+    <!-- Buscar álbum -->
     <h3>Buscar álbum</h3>
     <input type="text" id="urlInput" placeholder="Buscar álbum">
     <div class="input-container">
@@ -15,19 +16,34 @@
         <ul id="resultList"></ul>
     </div>
 
+    <!-- Buscar elementos -->
     <h3>Buscar elementos</h3>
-    <input type="text" id="elementInput" placeholder="Buscar elemento">
     <div class="input-container">
+        <input type="text" id="elementInput" placeholder="Buscar elemento">
+
+        <select id="filterSelect">
+            <option value="all" selected>All</option>
+            <option value="date">Date</option>
+            <option value="size">Size</option>
+            <option value="type">Type</option>
+        </select>
+
+        <input type="checkbox" id="recursiveCheck">
+        <label for="recursiveCheck">Recursivo</label>
+
         <button id="buscarElemento">Buscar elemento</button>
-        <ul id="elementsList"></ul>
     </div>
 
+    <ul id="elementsList"></ul>
+
+    <!-- Álbumes aleatorios -->
     <div class="random-container">
         <h3>Álbumes aleatorios</h3>
         <button id="getRandomAlbums">Obtener álbumes</button>
         <ul id="randomList"></ul>
     </div>
 
+    <!-- Top elementos -->
     <div class="topElements-container">
         <h3>Top elementos</h3>
         <button id="getTopElements">Ver top</button>
@@ -36,5 +52,6 @@
     </div>
 
     <script src="index.js"></script>
+
 </body>
 </html>

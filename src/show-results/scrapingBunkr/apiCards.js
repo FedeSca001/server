@@ -4,10 +4,34 @@ const db = require("../../DataBase/db.js");
 
 /*---------------- QUERIES ----------------*/
 
-const getElementbyTitle = (title) => {
+const getElementbyTitle = (title, filter = "all") => {
     return new Promise((resolve, reject) => {
+
+        let orderBy = "";
+
+        switch (filter) {
+            case "date":
+                orderBy = " ORDER BY date DESC";
+                break;
+
+            case "size":
+                orderBy = " ORDER BY size DESC";
+                break;
+
+            case "type":
+                orderBy = " ORDER BY type ASC";
+                break;
+
+            case "all":
+            default:
+                orderBy = "";
+                break;
+        }
+
+        const sql = `SELECT * FROM cards WHERE title LIKE ?${orderBy}`;
+
         db.query(
-            "SELECT * FROM cards WHERE title LIKE ?",
+            sql,
             [`%${title}%`],
             (err, results) => {
                 if (err) {
@@ -24,13 +48,16 @@ const getElementbyTitle = (title) => {
 
 router.get("/card-title/:title", async (req, res) => {
     try {
-        const card = await getElementbyTitle(req.params.title);
+        const { title } = req.params;
+        const filter = req.query.filter || "all";
+
+        const cards = await getElementbyTitle(title, filter);
 
         console.log(
-            `[GET /card-title/${req.params.title}] ${card.length} cards encontradas`
+            `[GET /card-title/${title}] ${cards.length} cards encontradas | filtro: ${filter}`
         );
 
-        res.json(card);
+        res.json(cards);
     } catch (err) {
         console.error(err);
 
