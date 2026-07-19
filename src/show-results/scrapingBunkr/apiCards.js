@@ -6,38 +6,19 @@ const db = require("../../DataBase/db.js");
 
 const getElementbyTitle = (title, filter = "all") => {
     return new Promise((resolve, reject) => {
-
-        let orderBy = "";
-
-        switch (filter) {
-            case "date":
-                orderBy = " ORDER BY date DESC";
-                break;
-
-            case "size":
-                orderBy = " ORDER BY size DESC";
-                break;
-
-            case "type":
-                orderBy = " ORDER BY type ASC";
-                break;
-
-            case "all":
-            default:
-                orderBy = "";
-                break;
+        let sql = "SELECT * FROM cards WHERE title LIKE ?";
+        const params = [`%${title}%`];
+        if (filter !== "all") {
+            sql += " AND type = ?";
+            params.push(filter);
         }
-
-        const sql = `SELECT * FROM cards WHERE title LIKE ?${orderBy}`;
-
         db.query(
             sql,
-            [`%${title}%`],
+            params,
             (err, results) => {
                 if (err) {
                     return reject(err);
                 }
-
                 resolve(results);
             }
         );
@@ -50,17 +31,13 @@ router.get("/card-title/:title", async (req, res) => {
     try {
         const { title } = req.params;
         const filter = req.query.filter || "all";
-
         const cards = await getElementbyTitle(title, filter);
-
         console.log(
-            `[GET /card-title/${title}] ${cards.length} cards encontradas | filtro: ${filter}`
+            `[GET /card-title/${title}] ${cards.length} cards encontradas | filtro: ${filter} /// ${cards}`
         );
-
         res.json(cards);
     } catch (err) {
         console.error(err);
-
         if (!res.headersSent) {
             res.status(500).json({
                 error: "Internal server error"

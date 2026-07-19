@@ -131,27 +131,27 @@ const buscarAlbums = async (texto) => {
 
 /* ---------------- SEARCH ELEMENTS ---------------- */
 
-const buscarElementosCards = async (texto, filtro = "all") => {
+/* ---------------- SEARCH ELEMENTS ---------------- */
+
+const buscarElementosCards = async (texto) => {
     try {
+
+        const filtro = filterSelect.value;
+
         const response = await fetch(
             `http://192.168.1.148:3000/apiElement/card-title/${encodeURIComponent(texto)}?filter=${encodeURIComponent(filtro)}`
         );
-
         if (!response.ok) {
             throw new Error("Error en la petición");
         }
-
         const elementsCard = await response.json();
-
         listaElementsCard.innerHTML = "";
-
         const lista = Array.isArray(elementsCard)
             ? elementsCard
             : [elementsCard];
 
         for (const elementCard of lista) {
             const li = document.createElement("li");
-
             li.innerHTML = `
                 <h3>${elementCard.title}</h3>
                 <img src="${elementCard.image}" alt="${elementCard.title}">
@@ -160,15 +160,14 @@ const buscarElementosCards = async (texto, filtro = "all") => {
                     Tamaño: ${elementCard.size} |
                     Fecha: ${elementCard.date}
                 </p>
-                <a href="${elementCard.url}" target="_blank" rel="noopener noreferrer">
+                <a href="${elementCard.url}" target="_blank">
                     Ver elemento
                 </a>
             `;
-
             listaElementsCard.appendChild(li);
         }
     } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
     }
 };
 
@@ -214,18 +213,12 @@ input.addEventListener("keypress", (e) => {
 });
 
 btnElementsCard.addEventListener("click", () => {
-    buscarElementosCards(
-        elementInput.value.trim(),
-        filterSelect.value
-    );
+    buscarElementosCards(elementInput.value.trim());
 });
 
 elementInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
-        buscarElementosCards(
-            elementInput.value.trim(),
-            filterSelect.value
-        );
+        buscarElementosCards(elementInput.value.trim());
     }
 });
 
