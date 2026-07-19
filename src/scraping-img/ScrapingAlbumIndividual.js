@@ -146,11 +146,11 @@ const main = async () => {
         const total = await dblength();
         console.log(`🚀 Iniciando scraping de ${total} álbumes...`);
 
-        for (let i = 1; i <= total; i++) {
+        for (let i = total - 1; i >= 0; i--) {
             const album = await getAlbum(i);
             if (!album) continue;
 
-            console.log(`📂 Procesando álbum ${i}/${total}: ${album.title}`);
+            console.log(`📂 Procesando álbum ${i}/${total - 1}: ${album.title}`);
             await scrapePage(album.url, album.id);
             await sleep(randomDelay());
         }
