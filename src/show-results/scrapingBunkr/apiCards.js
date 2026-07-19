@@ -33,7 +33,7 @@ router.get("/card-title/:title", async (req, res) => {
         const filter = req.query.filter || "all";
         const cards = await getElementbyTitle(title, filter);
         console.log(
-            `[GET /card-title/${title}] ${cards.length} cards encontradas | filtro: ${filter} /// ${cards}`
+            `[GET /card-title/${title}] ${cards.length} cards encontradas | filtro: ${filter}`
         );
         res.json(cards);
     } catch (err) {
