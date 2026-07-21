@@ -11,6 +11,7 @@
 <h3>Buscar álbum</h3>
 <div class="input-container">
     <input type="text" id="urlInput" placeholder="Buscar álbum">
+    <p id="countAlbums"></p>
     <button id="buscarSql">Buscar en SQL</button>
 </div>
 <ul id="resultList"></ul>
@@ -18,19 +19,22 @@
 <h3>Buscar elementos</h3>
 <div class="input-container">
     <input type="text" id="elementInput" placeholder="Buscar elemento">
+    <h2>Filtrar</h2>
     <select id="filterSelect">
         <option value="all" selected>All</option>
         <option value="Image">Image</option>
         <option value="Video">Video</option>
         <option value="file">File</option>
     </select>
+    <h2>Ordenar</h2>
     <select id="sortType">
         <option value="all" selected>All</option>
-        <option value="size">Size</option>
-        <option value="nombre">Nombre</option>
         <option value="Video">Video</option>
         <option value="img">Imagen</option>
+        <option value="size">Size</option>
+        <option value="nombre">Nombre</option>
     </select>
+    <p id="countCards"></p>
     <button id="buscarElemento">Buscar elemento</button>
 </div>
 <ul id="elementsList"></ul>

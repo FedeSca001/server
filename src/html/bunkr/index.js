@@ -11,10 +11,19 @@ const randomList=document.getElementById("randomList");
 const topElementsBtn=document.getElementById("getTopElements");
 const topElementsList=document.getElementById("topElementsList");
 const moreElementsBtn=document.getElementById("moreElements");
+const countCards=document.getElementById("countCards");
+const countAlbums=document.getElementById("countAlbums");
 
 const spinnerCarga=`<div class="spinner"></div>`;
 
-let cards=[],originalCards=[],albums=[],offset=0;
+let cards=[];
+let originalCards=[];
+let albums=[];
+let offset=0;
+
+const actualizarContador=(elemento,cantidad,texto)=>{
+    elemento.textContent=`${texto}: ${cantidad}`;
+};
 
 const crearCardAlbum=album=>`
 <h3>${album.title}</h3>
@@ -29,6 +38,7 @@ const renderAlbums=(lista,contenedor)=>{
         li.innerHTML=crearCardAlbum(album);
         contenedor.appendChild(li);
     });
+    actualizarContador(countAlbums,lista.length,"Álbumes");
 };
 
 const renderCards=lista=>{
@@ -36,12 +46,13 @@ const renderCards=lista=>{
     lista.forEach(card=>{
         const li=document.createElement("li");
         li.innerHTML=`
-        <h3>${card.title}</h3>
-        <img src="${card.image}" alt="${card.title}">
-        <p>Tipo: ${card.type} | Tamaño: ${card.size} | Fecha: ${card.date}</p>
-        <a href="${card.url}" target="_blank">Ver elemento</a>`;
+<h3>${card.title}</h3>
+<img src="${card.image}" alt="${card.title}">
+<p>Tipo: ${card.type} | Tamaño: ${card.size} | Fecha: ${card.date}</p>
+<a href="${card.url}" target="_blank">Ver elemento</a>`;
         listaElementsCard.appendChild(li);
     });
+    actualizarContador(countCards,lista.length,"Elementos");
 };
 
 const getTopElements=async()=>{
@@ -79,7 +90,8 @@ const getRandomAlbums=async()=>{
     randomList.innerHTML=spinnerCarga;
     try{
         const response=await fetch("http://192.168.1.148:3000/apiAlbums/random");
-        renderAlbums(await response.json(),randomList);
+        const datos=await response.json();
+        renderAlbums(datos,randomList);
     }catch(error){
         console.error(error);
         randomList.innerHTML="";
@@ -90,13 +102,14 @@ const buscarAlbums=async texto=>{
     listado.innerHTML=spinnerCarga;
     try{
         const response=await fetch(`http://192.168.1.148:3000/apiAlbums/album-input/${encodeURIComponent(texto)}`);
-        renderAlbums(await response.json(),listado);
+        const datos=await response.json();
+        renderAlbums(datos,listado);
     }catch(error){
         console.error(error);
         listado.innerHTML="";
+        actualizarContador(countAlbums,0,"Álbumes");
     }
 };
-
 const buscarElementosCards=async texto=>{
     listaElementsCard.innerHTML=spinnerCarga;
     try{
@@ -109,6 +122,7 @@ const buscarElementosCards=async texto=>{
     }catch(error){
         console.error(error);
         listaElementsCard.innerHTML="";
+        actualizarContador(countCards,0,"Elementos");
     }
 };
 
@@ -124,10 +138,18 @@ const sortCards=()=>{
             cards.sort((a,b)=>a.title.localeCompare(b.title));
             break;
         case"Video":
-            cards.sort((a,b)=>a.type==="Video"&&b.type!=="Video"?-1:a.type!=="Video"&&b.type==="Video"?1:a.title.localeCompare(b.title));
+            cards.sort((a,b)=>
+                a.type==="Video"&&b.type!=="Video"?-1:
+                a.type!=="Video"&&b.type==="Video"?1:
+                a.title.localeCompare(b.title)
+            );
             break;
         case"img":
-            cards.sort((a,b)=>a.type==="Image"&&b.type!=="Image"?-1:a.type!=="Image"&&b.type==="Image"?1:a.title.localeCompare(b.title));
+            cards.sort((a,b)=>
+                a.type==="Image"&&b.type!=="Image"?-1:
+                a.type!=="Image"&&b.type==="Image"?1:
+                a.title.localeCompare(b.title)
+            );
             break;
     }
     renderCards(cards);
@@ -135,9 +157,13 @@ const sortCards=()=>{
 
 const deleteAlbum=async id=>{
     try{
-        const response=await fetch(`http://192.168.1.148:3000/apiAlbums/delete/${id}`,{method:"DELETE"});
+        const response=await fetch(`http://192.168.1.148:3000/apiAlbums/delete/${id}`,{
+            method:"DELETE"
+        });
         if(!response.ok)throw new Error("Error al eliminar");
-        if(input.value.trim())await buscarAlbums(input.value.trim());
+        if(input.value.trim()){
+            await buscarAlbums(input.value.trim());
+        }
         albums=albums.filter(album=>album.id!==id);
         renderAlbums(albums,topElementsList);
     }catch(error){
@@ -145,11 +171,30 @@ const deleteAlbum=async id=>{
     }
 };
 
-btn.addEventListener("click",()=>buscarAlbums(input.value.trim()));
-input.addEventListener("keypress",e=>e.key==="Enter"&&buscarAlbums(input.value.trim()));
-btnElementsCard.addEventListener("click",()=>buscarElementosCards(elementInput.value.trim()));
-elementInput.addEventListener("keypress",e=>e.key==="Enter"&&buscarElementosCards(elementInput.value.trim()));
+btn.addEventListener("click",()=>{
+    buscarAlbums(input.value.trim());
+});
+
+input.addEventListener("keypress",e=>{
+    if(e.key==="Enter"){
+        buscarAlbums(input.value.trim());
+    }
+});
+
+btnElementsCard.addEventListener("click",()=>{
+    buscarElementosCards(elementInput.value.trim());
+});
+
+elementInput.addEventListener("keypress",e=>{
+    if(e.key==="Enter"){
+        buscarElementosCards(elementInput.value.trim());
+    }
+});
+
 sortType.addEventListener("change",sortCards);
+
 randomBtn.addEventListener("click",getRandomAlbums);
+
 topElementsBtn.addEventListener("click",getTopElements);
+
 moreElementsBtn.addEventListener("click",getMoreTopElements);

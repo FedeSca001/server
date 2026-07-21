@@ -32,6 +32,13 @@ h3:first-child{
     margin-top:0;
 }
 
+h2{
+    margin:0;
+    font-size:.85rem;
+    font-weight:600;
+    color:#60a5fa;
+}
+
 /*======================
   CONTENEDORES
 ======================*/
@@ -51,6 +58,22 @@ h3:first-child{
     flex-wrap:wrap;
     gap:12px;
     align-items:center;
+}
+
+/*======================
+  CONTADORES
+======================*/
+
+#countAlbums,
+#countCards{
+    margin-left:auto;
+    color:#fbbf24;
+    font-size:.9rem;
+    font-weight:600;
+    padding:6px 12px;
+    background:#111827;
+    border:1px solid #374151;
+    border-radius:8px;
 }
 
 /*======================
@@ -140,7 +163,6 @@ button:hover{
         transform:rotate(360deg);
     }
 }
-
 /*======================
   CLASIFICACION
 ======================*/
@@ -195,6 +217,7 @@ button:hover{
     color:#9ca3af;
     font-weight:600;
 }
+
 /*======================
   CALENDARIO
 ======================*/
@@ -238,7 +261,6 @@ button:hover{
     padding:8px 10px 4px;
     font-size:.88rem;
     font-weight:600;
-    line-height:1.25;
     color:#fff;
 }
 
@@ -252,7 +274,6 @@ button:hover{
 .gpCard h3{
     margin:8px 10px 5px;
     font-size:.72rem;
-    font-weight:600;
     color:#60a5fa;
     text-transform:uppercase;
     letter-spacing:.4px;
@@ -402,7 +423,6 @@ button:hover{
   TARJETAS
 ======================*/
 
-/* CONTENEDORES DE TARJETAS */
 #resultList,
 #elementsList,
 #randomList,
@@ -411,11 +431,10 @@ button:hover{
     display:grid;
     grid-template-columns:repeat(5,minmax(0,1fr));
     gap:16px;
-    margin-top:20px;
     padding:0;
+    margin:20px 0;
 }
 
-/* TARJETA */
 #resultList li,
 #elementsList li,
 #randomList li,
@@ -423,7 +442,6 @@ button:hover{
     position:relative;
     display:flex;
     flex-direction:column;
-    min-width:0;
     gap:10px;
     padding:12px;
     background:#1f2937;
@@ -441,7 +459,6 @@ button:hover{
     border-color:#3b82f6;
 }
 
-/* IMAGEN TARJETA */
 #resultList img,
 #elementsList img,
 #randomList img,
@@ -452,7 +469,6 @@ button:hover{
     border-radius:8px;
 }
 
-/* TITULO TARJETA */
 #resultList h3,
 #elementsList h3,
 #randomList h3,
@@ -474,8 +490,8 @@ button:hover{
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-top:auto;
     height:38px;
+    margin-top:auto;
     border-radius:8px;
     background:#2563eb;
     color:#fff;
@@ -500,19 +516,19 @@ button:hover{
 #randomList button,
 #topElementsList button{
     position:absolute;
-    top:7px;
-    right:7px;
+    top:8px;
+    right:8px;
+    width:28px;
+    height:28px;
+    padding:0;
     display:flex;
     justify-content:center;
     align-items:center;
-    width:26px;
-    height:26px;
-    padding:0;
     border-radius:50%;
-    border:none;
-    background:rgba(0,0,0,.45);
+    border:1px solid rgba(239,68,68,.4);
+    background:rgba(17,24,39,.8);
     color:#ef4444;
-    font-size:20px;
+    font-size:18px;
     font-weight:700;
     line-height:1;
     z-index:2;
@@ -526,35 +542,62 @@ button:hover{
 }
 
 /*======================
+  BOTON MAS ELEMENTOS
+======================*/
+
+#moreElements{
+    display:block;
+    margin:20px auto;
+}
+
+/*======================
   RESPONSIVE
 ======================*/
 
 @media(max-width:1300px){
+
     #resultList,
     #elementsList,
     #randomList,
-    #topElementsList,
-    #calendarioList{
+    #topElementsList{
         grid-template-columns:repeat(4,1fr);
     }
 }
 
 @media(max-width:992px){
+
     #resultList,
     #elementsList,
     #randomList,
-    #topElementsList,
-    #calendarioList{
+    #topElementsList{
         grid-template-columns:repeat(2,1fr);
+    }
+
+    #countAlbums,
+    #countCards{
+        margin-left:0;
+        width:100%;
+        text-align:center;
     }
 }
 
 @media(max-width:768px){
+
     #resultList,
     #elementsList,
     #randomList,
-    #topElementsList,
-    #calendarioList{
+    #topElementsList{
         grid-template-columns:1fr;
+    }
+
+    .input-container{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    input[type="text"],
+    select,
+    button{
+        width:100%;
     }
 }
