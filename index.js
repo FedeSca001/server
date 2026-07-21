@@ -3,7 +3,6 @@ const readline = require("readline");
 const path = require("path");
 const apiMotoGp = require("./src/show-results/scrapingBunkr/apiMotoGp.js")
 const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
-const scrapingRaceRouter = require("./src/show-results/scrapingFunctions/scraping-race.js");
 const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js");
 
 const commands = {
