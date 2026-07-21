@@ -6,6 +6,7 @@
 }
 
 body{
+    max-width: 1400px;
     font-family:Inter,"Segoe UI",Arial,sans-serif;
     background:#111827;
     color:#f8fafc;
@@ -188,6 +189,7 @@ button:hover{
     color:#9ca3af;
     font-weight:600;
 }
+
 /* ==========================================
    CALENDARIO
 ========================================== */
@@ -201,8 +203,8 @@ button:hover{
 #calendarioList{
     list-style:none;
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:14px;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:12px;
     margin:0;
     padding:0;
 }
@@ -224,49 +226,49 @@ button:hover{
 
 .gpCard img{
     width:100%;
-    height:95px;
+    height:90px;
     object-fit:cover;
 }
 
 .gpCard h2{
-    padding:10px 12px 4px;
-    font-size:.95rem;
+    padding:8px 10px 4px;
+    font-size:.88rem;
     font-weight:600;
+    line-height:1.25;
     color:#fff;
-    line-height:1.3;
 }
 
 .gpCard p{
-    padding:1px 12px;
-    font-size:.74rem;
+    padding:1px 10px;
+    font-size:.70rem;
     color:#cbd5e1;
-    line-height:1.4;
+    line-height:1.35;
 }
 
 .gpCard h3{
-    margin:10px 12px 6px;
-    font-size:.78rem;
+    margin:8px 10px 5px;
+    font-size:.72rem;
     color:#60a5fa;
     text-transform:uppercase;
-    letter-spacing:.5px;
+    letter-spacing:.4px;
 }
 
 /* ---------- PODIO ---------- */
 
 .podio{
     list-style:none;
-    margin:0 12px 10px;
+    margin:0 10px 8px;
     padding:0;
 }
 
 .podio li{
     display:grid;
-    grid-template-columns:58px 1fr 16px;
+    grid-template-columns:48px 1fr 14px;
     align-items:center;
-    gap:6px;
-    padding:4px 0;
+    gap:5px;
+    padding:3px 0;
     border-bottom:1px solid #374151;
-    font-size:.72rem;
+    font-size:.66rem;
 }
 
 .podio li:last-child{
@@ -275,19 +277,19 @@ button:hover{
 
 .podio strong{
     color:#fbbf24;
-    font-size:.68rem;
+    font-size:.64rem;
 }
 
 .podio img{
-    width:16px;
-    height:16px;
+    width:14px;
+    height:14px;
     object-fit:contain;
 }
 
 /* ---------- HORARIOS ---------- */
 
 .horario{
-    margin:0 12px 12px;
+    margin:0 10px 10px;
     border:1px solid #374151;
     border-radius:6px;
     overflow:hidden;
@@ -295,12 +297,12 @@ button:hover{
 
 .fila{
     display:grid;
-    grid-template-columns:56px 1fr 40px;
+    grid-template-columns:46px 1fr 34px;
+    gap:4px;
     align-items:center;
-    gap:6px;
-    padding:5px 6px;
+    padding:4px 5px;
     border-bottom:1px solid #374151;
-    font-size:.70rem;
+    font-size:.62rem;
 }
 
 .fila:last-child{
@@ -314,14 +316,14 @@ button:hover{
 
 .descripcion{
     color:#e5e7eb;
+    white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    white-space:nowrap;
 }
 
 .hora{
-    text-align:right;
     color:#fbbf24;
+    text-align:right;
     font-weight:600;
 }
 
@@ -329,14 +331,21 @@ button:hover{
    RESPONSIVE
 ========================================== */
 
-@media (max-width:1400px){
+@media (max-width:1600px){
+
+    #calendarioList{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+
+@media (max-width:1300px){
 
     #calendarioList{
         grid-template-columns:repeat(3,1fr);
     }
 }
 
-@media (max-width:1024px){
+@media (max-width:992px){
 
     #calendarioList{
         grid-template-columns:repeat(2,1fr);
@@ -345,28 +354,7 @@ button:hover{
 
 @media (max-width:768px){
 
-    body{
-        padding:20px 16px 40px;
-    }
-
-    .input-container{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    input[type="text"],
-    select,
-    button{
-        width:100%;
-    }
-
     #calendarioList{
         grid-template-columns:1fr;
-    }
-
-    #ClasificaciontList li{
-        grid-template-columns:40px 1fr 70px 50px;
-        gap:8px;
-        padding:10px;
     }
 }
