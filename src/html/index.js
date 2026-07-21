@@ -10,6 +10,7 @@ const filterSelect = document.getElementById("filterSelect");
 
 const sortType = document.getElementById("sortType");
 let cards = [];
+let originalCards = [];
 
 const randomBtn = document.getElementById("getRandomAlbums");
 const randomList = document.getElementById("randomList");
@@ -149,8 +150,10 @@ const buscarElementosCards = async (texto) => {
         console.log(elementsCard)
         listaElementsCard.innerHTML = "";
         cards = Array.isArray(elementsCard)
-            ? elementsCard
+            ? [...elementsCard]
             : [elementsCard];
+
+        originalCards = [...cards];
 
         renderCards(cards);
     } catch (error) {
@@ -181,21 +184,33 @@ const renderCards = (lista) => {
 };
 
 const sortCards = () => {
-    const type = sortType.value;
-    switch (type) {
+    switch (sortType.value) {
+
         case "all":
+            cards = [...originalCards];
             break;
         case "size":
-            cards.sort((a, b) => Number(a.size) - Number(b.size));
+            cards.sort((a, b) => Number(b.size) - Number(a.size));
             break;
+
         case "nombre":
             cards.sort((a, b) => a.title.localeCompare(b.title));
             break;
         case "Video":
-            cards.sort((a, b) => a.type.localeCompare(b.type));
+            cards.sort((a, b) => {
+                if (a.type === "Video" && b.type !== "Video") return -1;
+                if (a.type !== "Video" && b.type === "Video") return 1;
+                return a.title.localeCompare(b.title);
+            });
+            break;
+        case "img":
+            cards.sort((a, b) => {
+                if (a.type === "Image" && b.type !== "Image") return -1;
+                if (a.type !== "Image" && b.type === "Image") return 1;
+                return a.title.localeCompare(b.title);
+            });
             break;
     }
-
     renderCards(cards);
 };
 
