@@ -1,3 +1,4 @@
+
 *{
     margin:0;
     padding:0;
@@ -14,9 +15,9 @@ body{
     line-height:1.5;
 }
 
-/* =========================
+/* ==========================================
    TÍTULOS
-========================= */
+========================================== */
 
 h3{
     margin:30px 0 14px;
@@ -28,9 +29,9 @@ h3:first-child{
     margin-top:0;
 }
 
-/* =========================
+/* ==========================================
    CONTENEDORES
-========================= */
+========================================== */
 
 .input-container,
 .random-container,
@@ -49,9 +50,9 @@ h3:first-child{
     align-items:center;
 }
 
-/* =========================
+/* ==========================================
    INPUTS
-========================= */
+========================================== */
 
 input[type="text"],
 select{
@@ -77,9 +78,9 @@ select:focus{
     border-color:#3b82f6;
 }
 
-/* =========================
+/* ==========================================
    BOTONES
-========================= */
+========================================== */
 
 button{
     height:44px;
@@ -107,9 +108,9 @@ button:hover{
     background:#dc2626;
 }
 
-/* =========================
+/* ==========================================
    UTILIDADES
-========================= */
+========================================== */
 
 .text-center{
     text-align:center;
@@ -133,9 +134,9 @@ button:hover{
     }
 }
 
-/* ========================================
-   CLASIFICACIÓN MOTOGP
-======================================== */
+/* ==========================================
+   CLASIFICACIÓN
+========================================== */
 
 #clasificacionContainer{
     padding:0;
@@ -166,47 +167,43 @@ button:hover{
 }
 
 .pilotoPosition{
-    margin:0;
     text-align:center;
-    font-weight:700;
     color:#fbbf24;
+    font-weight:700;
 }
 
 .pilotoNombre{
-    margin:0;
     font-weight:600;
     color:#fff;
 }
 
 .pilotoPuntos{
-    margin:0;
     text-align:right;
     color:#60a5fa;
     font-weight:600;
 }
 
 .pilotoDistancia{
-    margin:0;
     text-align:right;
     color:#9ca3af;
     font-weight:600;
 }
 
-/* ========================================
-   CALENDARIO MOTOGP
-======================================== */
+/* ==========================================
+   CALENDARIO
+========================================== */
 
 #calendarioContainer{
-    background:transparent;
-    border:none;
     padding:0;
+    border:none;
+    background:transparent;
 }
 
 #calendarioList{
     list-style:none;
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
-    gap:16px;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
     margin:0;
     padding:0;
 }
@@ -216,119 +213,121 @@ button:hover{
     border:1px solid #374151;
     border-radius:12px;
     overflow:hidden;
-    transition:.2s;
+    transition:.25s;
 }
 
 #calendarioList>li:hover{
+    transform:translateY(-3px);
     border-color:#3b82f6;
-    transform:translateY(-2px);
 }
 
 .gpCard img{
     width:100%;
-    height:130px;
+    height:120px;
     object-fit:cover;
 }
 
 .gpCard h2{
-    padding:12px 16px 6px;
-    font-size:1.05rem;
+    padding:12px 14px 6px;
+    font-size:1rem;
     color:#fff;
 }
 
 .gpCard p{
-    margin:0;
-    padding:2px 16px;
-    font-size:.82rem;
+    padding:2px 14px;
+    font-size:.8rem;
     color:#cbd5e1;
 }
 
 .gpCard h3{
-    margin:14px 16px 8px;
-    font-size:.9rem;
+    margin:12px 14px 8px;
+    font-size:.85rem;
     color:#60a5fa;
     text-transform:uppercase;
     letter-spacing:.5px;
 }
 
-/* ======================
-   PODIO
-====================== */
+/* ---------- PODIO ---------- */
 
-.gpCard ul{
+.podio{
     list-style:none;
-    margin:0 16px 12px;
+    margin:0 14px 12px;
     padding:0;
 }
 
-.gpCard ul li{
+.podio li{
     display:grid;
-    grid-template-columns:70px 1fr 22px;
+    grid-template-columns:70px 1fr 18px;
     align-items:center;
     gap:8px;
     padding:5px 0;
-    border-bottom:1px solid #2f3b4c;
-    font-size:.8rem;
+    border-bottom:1px solid #374151;
+    font-size:.78rem;
 }
 
-.gpCard ul li:last-child{
+.podio li:last-child{
     border-bottom:none;
 }
 
-.gpCard ul li strong{
+.podio strong{
     color:#fbbf24;
     font-size:.75rem;
 }
 
-.gpCard ul li img{
+.podio img{
     width:18px;
     height:18px;
     object-fit:contain;
 }
 
-/* ======================
-   SESIONES
-====================== */
+/* ---------- HORARIOS ---------- */
 
-.gpCard .horario{
-    margin:0 16px 16px;
+.horario{
+    margin:0 14px 14px;
     border:1px solid #374151;
     border-radius:8px;
     overflow:hidden;
 }
 
-.gpCard .fila{
+.fila{
     display:grid;
-    grid-template-columns:74px 1fr 50px;
+    grid-template-columns:72px 1fr 48px;
     align-items:center;
     gap:8px;
-    padding:6px 10px;
-    font-size:.78rem;
+    padding:6px 8px;
     border-bottom:1px solid #374151;
+    font-size:.75rem;
 }
 
-.gpCard .fila:last-child{
+.fila:last-child{
     border-bottom:none;
 }
 
-.gpCard .dia{
+.dia{
     color:#60a5fa;
     font-weight:600;
 }
 
-.gpCard .hora{
+.descripcion{
+    color:#e5e7eb;
+}
+
+.hora{
     text-align:right;
     color:#fbbf24;
     font-weight:600;
 }
 
-.gpCard .descripcion{
-    color:#e5e7eb;
-}
-
-/* =========================
+/* ==========================================
    RESPONSIVE
-========================= */
+========================================== */
+
+@media (max-width:1024px){
+
+    #calendarioList{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
 
 @media (max-width:768px){
 
@@ -348,13 +347,6 @@ button:hover{
     }
 
     #calendarioList{
-        grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    }
-}
-
-@media (max-width:480px){
-
-    #calendarioList{
         grid-template-columns:1fr;
     }
 
@@ -362,9 +354,5 @@ button:hover{
         grid-template-columns:40px 1fr 70px 50px;
         gap:8px;
         padding:10px;
-    }
-
-    .gpCard img{
-        height:180px;
     }
 }
