@@ -54,7 +54,7 @@ const commands = {
     },
 
     bunkrTitulos: async (rl) => {
-        rl.question("inicio fin: ", async (r) => {
+        rl.question("Presiona Enter para iniciar: ", async () => {
             try {
                 const { main } = require("./src/scraping-img/ScrapingAlbumIndividual.js");
                 await main();
