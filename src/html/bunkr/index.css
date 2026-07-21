@@ -247,9 +247,11 @@ a:hover{
     }
 }
 
+
 /* ========================================
    TABLA CLASIFICACIÓN MOTOGP
 ======================================== */
+
 #clasificacionContainer{
     display:block;
     padding:0;
@@ -265,7 +267,7 @@ a:hover{
 
 #ClasificaciontList li{
     display:grid;
-    grid-template-columns:50px 1fr 90px;
+    grid-template-columns:50px 1fr 80px 60px;
     align-items:center;
     gap:12px;
     padding:12px 18px;
@@ -312,5 +314,13 @@ a:hover{
     font-size:.9rem;
     font-weight:600;
     color:#60a5fa;
+    text-align:right;
+}
+
+.pilotoDistancia{
+    margin:0 !important;
+    font-size:.85rem;
+    font-weight:600;
+    color:#9ca3af;
     text-align:right;
 }
