@@ -8,6 +8,9 @@ const input = document.getElementById("urlInput");
 const elementInput = document.getElementById("elementInput");
 const filterSelect = document.getElementById("filterSelect");
 
+const sortType = document.getElementById("sortType");
+let cards = [];
+
 const randomBtn = document.getElementById("getRandomAlbums");
 const randomList = document.getElementById("randomList");
 
@@ -145,29 +148,53 @@ const buscarElementosCards = async (texto) => {
         const elementsCard = await response.json();
         console.log(elementsCard)
         listaElementsCard.innerHTML = "";
-        const lista = Array.isArray(elementsCard)
+        cards = Array.isArray(elementsCard)
             ? elementsCard
             : [elementsCard];
 
-        for (const elementCard of lista) {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <h3>${elementCard.title}</h3>
-                <img src="${elementCard.image}" alt="${elementCard.title}">
-                <p>
-                    Tipo: ${elementCard.type} |
-                    Tamaño: ${elementCard.size} |
-                    Fecha: ${elementCard.date}
-                </p>
-                <a href="${elementCard.url}" target="_blank">
-                    Ver elemento
-                </a>
-            `;
-            listaElementsCard.appendChild(li);
-        }
+        renderCards(cards);
     } catch (error) {
         console.error(error);
     }
+};
+
+const renderCards = (lista) => {
+    listaElementsCard.innerHTML = "";
+
+    for (const elementCard of lista) {
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            <h3>${elementCard.title}</h3>
+            <img src="${elementCard.image}" alt="${elementCard.title}">
+            <p>
+                Tipo: ${elementCard.type} |
+                Tamaño: ${elementCard.size} |
+                Fecha: ${elementCard.date}
+            </p>
+            <a href="${elementCard.url}" target="_blank">
+                Ver elemento
+            </a>
+        `;
+        listaElementsCard.appendChild(li);
+    }
+};
+
+const sortCards = () => {
+    const type = sortType.value;
+    switch (type) {
+        case "size":
+            cards.sort((a, b) => Number(a.size) - Number(b.size));
+            break;
+        case "nombre":
+            cards.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case "Video":
+            cards.sort((a, b) => a.type.localeCompare(b.type));
+            break;
+    }
+
+    renderCards(cards);
 };
 
 /* ---------------- DELETE ---------------- */
@@ -220,7 +247,7 @@ elementInput.addEventListener("keypress", (e) => {
         buscarElementosCards(elementInput.value.trim());
     }
 });
-
+sortType.addEventListener("change", sortCards);
 randomBtn.addEventListener("click", getRandomAlbums);
 topElementsBtn.addEventListener("click", getTopElements);
 moreElementsBtn.addEventListener("click", getMoreTopElements);
