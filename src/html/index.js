@@ -183,6 +183,8 @@ const renderCards = (lista) => {
 const sortCards = () => {
     const type = sortType.value;
     switch (type) {
+        case "all":
+            break;
         case "size":
             cards.sort((a, b) => Number(a.size) - Number(b.size));
             break;
