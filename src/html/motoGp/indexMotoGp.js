@@ -1,0 +1,1 @@
+console.log("moto gp index")

@@ -1,7 +1,9 @@
 const express = require("express");
 const readline = require("readline");
+const path = require("path");
+const apiMotoGp = require("./src/show-results/scrapingBunkr/apiMotoGp.js")
 const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
-const scrapingRaceRouter = require("./src/show-results/scrapingBunkr/scraping-race.js");
+const scrapingRaceRouter = require("./src/show-results/scrapingFunctions/scraping-race.js");
 const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js");
 
 const commands = {
@@ -102,8 +104,9 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
 app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/apiElement", apiElementsCard);
-app.use("/scrapingRace", scrapingRaceRouter);
-app.use("/html", express.static("src/html"));
+app.use("/apiMotoGp", apiMotoGp);
+app.use("/html/bunkr", express.static(path.join(__dirname, "src/html/bunkr")));
+app.use("/html/motogp", express.static(path.join(__dirname, "src/html/motoGp")));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 
 const iniciarServidor = () => {
