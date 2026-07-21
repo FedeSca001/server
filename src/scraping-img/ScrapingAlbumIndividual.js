@@ -14,17 +14,26 @@ const randomDelay = () => Math.floor(Math.random() * 1500) + 500;
 /* ---------------- DATABASE ---------------- */
 const dblength = () =>
     new Promise((resolve, reject) => {
-        db.query("SELECT COUNT(*) AS total FROM albums", (err, rows) =>
-            err ? reject(err) : resolve(rows[0].total)
+        db.query(
+            "SELECT COUNT(*) AS total FROM albums",
+            (err, rows) => err ? reject(err) : resolve(rows[0].total)
         );
     });
-const getAlbum = id =>
+
+const getAlbums = (offset, limit) =>
     new Promise((resolve, reject) => {
-        db.query("SELECT * FROM albums WHERE id = ?", [id], (err, rows) =>
-            err ? reject(err) : resolve(rows[0])
+        db.query(
+            `
+            SELECT id,title,url
+            FROM albums
+            ORDER BY id DESC
+            LIMIT ? OFFSET ?
+            `,
+            [limit, offset],
+            (err, rows) => err ? reject(err) : resolve(rows)
         );
     });
-/* ---------------- LIMPIEZA DE DUPLICADOS ---------------- */
+    /* ---------------- LIMPIEZA DE DUPLICADOS ---------------- */
 const cleanDuplicatesByUrl = () => {
     return new Promise((resolve, reject) => {
         db.query(`
@@ -105,7 +114,7 @@ const scrapePage = async (pageUrl, albumId) => {
                     saveCard(cardData);
                 }
             });
-                        if ($(`a[href="?page=${page + 1}"]`).length === 0) break;
+            if ($(`a[href="?page=${page + 1}"]`).length === 0) break;
             page++;
         }
     } catch (err) {
@@ -117,22 +126,26 @@ const main = async () => {
     try {
         const total = await dblength();
         console.log(`🚀 Iniciando scraping de ${total} álbumes...`);
-        const CONCURRENCY = 5;
-        for (let i = total - 1; i >= 0; i -= CONCURRENCY) {
-            const batch = [];
-            for (let j = i; j > i - CONCURRENCY && j >= 0; j--) {
-                batch.push(
-                    (async () => {
-                        const album = await getAlbum(j);
-                        if (!album) return;
-                        console.log(`📂 Procesando álbum ${j}/${total - 1}: ${album.title}`);
-                        await scrapePage(album.url, album.id);
-                    })()
-                );
-            }
-            await Promise.all(batch);
+
+        const CONCURRENCY = 3;
+
+        for (let offset = 0; offset < total; offset += CONCURRENCY) {
+            const albums = await getAlbums(offset, CONCURRENCY);
+
+            if (!albums.length) break;
+
+            await Promise.all(
+                albums.map(async (album, index) => {
+                    console.log(
+                        `📂 Procesando álbum ${offset + index + 1}/${total}: ${album.title}`
+                    );
+                    await scrapePage(album.url, album.id);
+                })
+            );
+
             await sleep(randomDelay());
         }
+
         console.log("✅ Scraping y limpieza finalizados.");
     } catch (err) {
         console.error("Error en main:", err);
@@ -141,7 +154,7 @@ const main = async () => {
 module.exports = {
     scrapePage,
     dblength,
-    getAlbum,
-        main,
+    getAlbums,
+    main,
     cleanDuplicatesByUrl
 };
