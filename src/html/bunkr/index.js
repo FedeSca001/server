@@ -20,7 +20,7 @@ const crearCardAlbum=album=>`
 <h3>${album.title}</h3>
 <img src="${album.image}" alt="${album.title}">
 <a href="${album.url}" target="_blank">Ver álbum</a>
-<button onclick="deleteAlbum(${album.id})">Eliminar</button>`;
+<button onclick="deleteAlbum(${album.id})">✕</button>`;
 
 const renderAlbums=(lista,contenedor)=>{
     contenedor.innerHTML="";
