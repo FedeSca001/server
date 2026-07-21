@@ -130,11 +130,9 @@ const updateCalendario = async () => {
 
 router.get("/", async (req, res) => {
   const data = await updateCalendario();
-
   if (data.error) {
     return res.status(500).json(data);
   }
-
   try {
     for (const item of data) {
 
