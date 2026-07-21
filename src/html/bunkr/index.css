@@ -195,7 +195,6 @@ button:hover{
     color:#9ca3af;
     font-weight:600;
 }
-
 /*======================
   CALENDARIO
 ======================*/
@@ -403,6 +402,20 @@ button:hover{
   TARJETAS
 ======================*/
 
+/* CONTENEDORES DE TARJETAS */
+#resultList,
+#elementsList,
+#randomList,
+#topElementsList{
+    list-style:none;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:16px;
+    margin-top:20px;
+    padding:0;
+}
+
+/* TARJETA */
 #resultList li,
 #elementsList li,
 #randomList li,
@@ -410,6 +423,7 @@ button:hover{
     position:relative;
     display:flex;
     flex-direction:column;
+    min-width:0;
     gap:10px;
     padding:12px;
     background:#1f2937;
@@ -427,6 +441,7 @@ button:hover{
     border-color:#3b82f6;
 }
 
+/* IMAGEN TARJETA */
 #resultList img,
 #elementsList img,
 #randomList img,
@@ -437,18 +452,19 @@ button:hover{
     border-radius:8px;
 }
 
+/* TITULO TARJETA */
 #resultList h3,
 #elementsList h3,
 #randomList h3,
 #topElementsList h3{
     margin:0;
-    padding-right:28px;
+    padding-right:30px;
     font-size:.95rem;
     color:#fff;
 }
 
 /*======================
-  ENLACES
+  ENLACES TARJETAS
 ======================*/
 
 #resultList a,
@@ -477,33 +493,36 @@ button:hover{
 }
 
 /*======================
-  BOTON ELIMINAR
+  BOTON ELIMINAR X
 ======================*/
 
 #resultList button,
 #randomList button,
 #topElementsList button{
     position:absolute;
-    top:8px;
-    right:8px;
+    top:7px;
+    right:7px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     width:26px;
     height:26px;
     padding:0;
-    border:none;
     border-radius:50%;
-    background:transparent;
+    border:none;
+    background:rgba(0,0,0,.45);
     color:#ef4444;
-    font-size:22px;
+    font-size:20px;
     font-weight:700;
     line-height:1;
-    cursor:pointer;
+    z-index:2;
 }
 
 #resultList button:hover,
 #randomList button:hover,
 #topElementsList button:hover{
-    background:rgba(239,68,68,.15);
-    color:#f87171;
+    background:#ef4444;
+    color:#fff;
 }
 
 /*======================
