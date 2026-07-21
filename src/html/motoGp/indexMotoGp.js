@@ -9,8 +9,8 @@ const renderCalendario = async () => {
     ClasificaciontList.innerHTML = spinnerCarga;
 
     try {
-        //const response = await fetch("http://192.168.1.148:3000/apiMotoGp/clasificacion");
-        const response = await fetch("http://localhost:3000/apiMotoGp/clasificacion");
+        const response = await fetch("http://192.168.1.148:3000/apiMotoGp/clasificacion");
+        //const response = await fetch("http://localhost:3000/apiMotoGp/clasificacion");
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
