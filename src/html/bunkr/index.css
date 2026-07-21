@@ -1,19 +1,44 @@
-*{margin:0;padding:0;box-sizing:border-box;}
+/*======================
+  RESET
+======================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
     max-width:1400px;
+    margin:auto;
+    padding:32px 20px 60px;
     font-family:Inter,"Segoe UI",Arial,sans-serif;
     background:#111827;
     color:#f8fafc;
-    margin:auto;
-    padding:32px 20px 60px;
     line-height:1.5;
 }
 
-h3{margin:30px 0 14px;font-size:1.4rem;font-weight:600;}
-h3:first-child{margin-top:0;}
+/*======================
+  TITULOS
+======================*/
 
-.input-container,.random-container,.topElements-container{
+h3{
+    margin:30px 0 14px;
+    font-size:1.4rem;
+    font-weight:600;
+}
+
+h3:first-child{
+    margin-top:0;
+}
+
+/*======================
+  CONTENEDORES
+======================*/
+
+.input-container,
+.random-container,
+.topElements-container{
     background:#1f2937;
     border:1px solid #374151;
     border-radius:12px;
@@ -21,9 +46,19 @@ h3:first-child{margin-top:0;}
     margin-bottom:24px;
 }
 
-.input-container{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.input-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+}
 
-input[type="text"],select{
+/*======================
+  INPUTS
+======================*/
+
+input[type="text"],
+select{
     flex:1;
     min-width:180px;
     height:44px;
@@ -37,8 +72,18 @@ input[type="text"],select{
     transition:.2s;
 }
 
-input::placeholder{color:#9ca3af;}
-input:focus,select:focus{border-color:#3b82f6;}
+input::placeholder{
+    color:#9ca3af;
+}
+
+input:focus,
+select:focus{
+    border-color:#3b82f6;
+}
+
+/*======================
+  BOTONES
+======================*/
 
 button{
     height:44px;
@@ -53,11 +98,32 @@ button{
     transition:.2s;
 }
 
-button:hover{background:#2563eb;}
-.btn-danger{width:100%;background:#ef4444;}
-.btn-danger:hover{background:#dc2626;}
+button:hover{
+    background:#2563eb;
+}
 
-.text-center{text-align:center;font-weight:bold;margin-top:50px;}
+.btn-danger{
+    width:100%;
+    background:#ef4444;
+}
+
+.btn-danger:hover{
+    background:#dc2626;
+}
+
+/*======================
+  UTILIDADES
+======================*/
+
+.text-center{
+    text-align:center;
+    font-weight:bold;
+    margin-top:50px;
+}
+
+/*======================
+  SPINNER
+======================*/
 
 .spinner{
     width:36px;
@@ -69,29 +135,76 @@ button:hover{background:#2563eb;}
     animation:spin .8s linear infinite;
 }
 
-@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
 
-#clasificacionContainer{padding:0;overflow-x:auto;}
-#ClasificaciontList{list-style:none;margin:0;padding:0;}
+/*======================
+  CLASIFICACION
+======================*/
+
+#clasificacionContainer{
+    padding:0;
+    overflow-x:auto;
+}
+
+#ClasificaciontList{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
 
 #ClasificaciontList li{
     display:grid;
     grid-template-columns:50px 1fr 80px 60px;
-    align-items:center;
     gap:12px;
+    align-items:center;
     padding:12px 18px;
     border-bottom:1px solid #374151;
 }
 
-#ClasificaciontList li:hover{background:#273549;}
-#ClasificaciontList li:last-child{border-bottom:none;}
+#ClasificaciontList li:hover{
+    background:#273549;
+}
 
-.pilotoPosition{text-align:center;color:#fbbf24;font-weight:700;}
-.pilotoNombre{font-weight:600;color:#fff;}
-.pilotoPuntos{text-align:right;color:#60a5fa;font-weight:600;}
-.pilotoDistancia{text-align:right;color:#9ca3af;font-weight:600;}
+#ClasificaciontList li:last-child{
+    border-bottom:none;
+}
 
-#calendarioContainer{padding:0;border:none;background:transparent;}
+.pilotoPosition{
+    text-align:center;
+    color:#fbbf24;
+    font-weight:700;
+}
+
+.pilotoNombre{
+    color:#fff;
+    font-weight:600;
+}
+
+.pilotoPuntos{
+    text-align:right;
+    color:#60a5fa;
+    font-weight:600;
+}
+
+.pilotoDistancia{
+    text-align:right;
+    color:#9ca3af;
+    font-weight:600;
+}
+
+/*======================
+  CALENDARIO
+======================*/
+
+#calendarioContainer{
+    padding:0;
+    border:none;
+    background:transparent;
+}
 
 #calendarioList{
     list-style:none;
@@ -107,12 +220,20 @@ button:hover{background:#2563eb;}
     border:1px solid #374151;
     border-radius:10px;
     overflow:hidden;
+    cursor:pointer;
     transition:.2s;
 }
 
-#calendarioList>li:hover{transform:translateY(-2px);border-color:#3b82f6;}
+#calendarioList>li:hover{
+    transform:translateY(-2px);
+    border-color:#3b82f6;
+}
 
-.gpCard img{width:100%;height:90px;object-fit:cover;}
+.gpCard img{
+    width:100%;
+    height:90px;
+    object-fit:cover;
+}
 
 .gpCard h2{
     padding:8px 10px 4px;
@@ -125,33 +246,57 @@ button:hover{background:#2563eb;}
 .gpCard p{
     padding:1px 10px;
     font-size:.70rem;
-    color:#cbd5e1;
     line-height:1.35;
+    color:#cbd5e1;
 }
 
 .gpCard h3{
     margin:8px 10px 5px;
     font-size:.72rem;
+    font-weight:600;
     color:#60a5fa;
     text-transform:uppercase;
     letter-spacing:.4px;
 }
 
-.podio{list-style:none;margin:0 10px 8px;padding:0;}
+/*======================
+  PODIO
+======================*/
+
+.podio{
+    list-style:none;
+    margin:0 10px 8px;
+    padding:0;
+}
 
 .podio li{
     display:grid;
     grid-template-columns:48px 1fr 14px;
-    align-items:center;
     gap:5px;
+    align-items:center;
     padding:3px 0;
     border-bottom:1px solid #374151;
     font-size:.66rem;
 }
 
-.podio li:last-child{border-bottom:none;}
-.podio strong{color:#fbbf24;font-size:.64rem;}
-.podio img{width:14px;height:14px;object-fit:contain;}
+.podio li:last-child{
+    border-bottom:none;
+}
+
+.podio strong{
+    color:#fbbf24;
+    font-size:.64rem;
+}
+
+.podio img{
+    width:14px;
+    height:14px;
+    object-fit:contain;
+}
+
+/*======================
+  HORARIOS
+======================*/
 
 .horario{
     margin:0 10px 10px;
@@ -170,33 +315,229 @@ button:hover{background:#2563eb;}
     font-size:.62rem;
 }
 
-.fila:last-child{border-bottom:none;}
-.dia{color:#60a5fa;font-weight:600;}
-.descripcion{color:#e5e7eb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hora{color:#fbbf24;text-align:right;font-weight:600;}
-.modal{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:9999;}
-.hidden{display:none;}
-.modal-content{width:min(1000px,95%);max-height:90vh;overflow-y:auto;background:#1f2937;border:1px solid #374151;border-radius:12px;padding:24px;position:relative;}
-.btnCerrar{position:absolute;top:15px;right:15px;width:40px;height:40px;padding:0;border-radius:50%;font-size:20px;}
-.modal-content img{width:100%;border-radius:10px;margin-bottom:15px;}
-.modal-content h2{margin-bottom:10px;}
-.modal-content h3{margin-top:25px;}
-.modal-content .descripcion{color:#fff;text-decoration:none;}
-.modal-content .descripcion:hover{color:#60a5fa;}
-#calendarioList>li{cursor:pointer;}
+.fila:last-child{
+    border-bottom:none;
+}
 
-#resultList,#elementsList,#randomList,#topElementsList{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;padding:0;margin-top:20px;}
-#resultList li,#elementsList li,#randomList li,#topElementsList li{background:#1f2937;border:1px solid #374151;border-radius:10px;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:10px;}
-#resultList img,#elementsList img,#randomList img,#topElementsList img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
-#resultList h3,#elementsList h3,#randomList h3,#topElementsList h3{margin:0;font-size:.95rem;}
-#resultList a,#elementsList a,#randomList a,#topElementsList a{margin-top:auto;color:#60a5fa;text-decoration:none;}
-#resultList button,#randomList button,#topElementsList button{width:100%;}
+.dia{
+    color:#60a5fa;
+    font-weight:600;
+}
 
-@media(max-width:1300px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:repeat(4,1fr);}}
-@media(max-width:992px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:768px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:1fr;}}
+.descripcion{
+    color:#e5e7eb;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
 
-@media (max-width:1600px){#calendarioList{grid-template-columns:repeat(5,1fr);}}
-@media (max-width:1300px){#calendarioList{grid-template-columns:repeat(4,1fr);}}
-@media (max-width:992px){#calendarioList{grid-template-columns:repeat(2,1fr);}}
-@media (max-width:768px){#calendarioList{grid-template-columns:1fr;}}
+.hora{
+    color:#fbbf24;
+    text-align:right;
+    font-weight:600;
+}
+
+/*======================
+  MODAL
+======================*/
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.8);
+    z-index:9999;
+}
+
+.hidden{
+    display:none;
+}
+
+.modal-content{
+    position:relative;
+    width:min(1000px,95%);
+    max-height:90vh;
+    overflow-y:auto;
+    padding:24px;
+    background:#1f2937;
+    border:1px solid #374151;
+    border-radius:12px;
+}
+
+.btnCerrar{
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:40px;
+    height:40px;
+    padding:0;
+    border-radius:50%;
+    font-size:20px;
+}
+
+.modal-content img{
+    width:100%;
+    margin-bottom:15px;
+    border-radius:10px;
+}
+
+.modal-content h2{
+    margin-bottom:10px;
+}
+
+.modal-content h3{
+    margin-top:25px;
+}
+
+.modal-content .descripcion{
+    color:#fff;
+    text-decoration:none;
+}
+
+.modal-content .descripcion:hover{
+    color:#60a5fa;
+}
+/*======================
+  TARJETAS
+======================*/
+
+#resultList,
+#elementsList,
+#randomList,
+#topElementsList{
+    list-style:none;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:16px;
+    margin-top:20px;
+    padding:0;
+}
+
+#resultList li,
+#elementsList li,
+#randomList li,
+#topElementsList li{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:12px;
+    background:#1f2937;
+    border:1px solid #374151;
+    border-radius:10px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+#resultList li:hover,
+#elementsList li:hover,
+#randomList li:hover,
+#topElementsList li:hover{
+    transform:translateY(-3px);
+    border-color:#3b82f6;
+}
+
+#resultList img,
+#elementsList img,
+#randomList img,
+#topElementsList img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+#resultList h3,
+#elementsList h3,
+#randomList h3,
+#topElementsList h3{
+    margin:0;
+    font-size:.95rem;
+    color:#fff;
+}
+
+/*======================
+  ENLACES TARJETAS
+======================*/
+
+#resultList a,
+#elementsList a,
+#randomList a,
+#topElementsList a{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:auto;
+    height:38px;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    font-size:.85rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+#resultList a:hover,
+#elementsList a:hover,
+#randomList a:hover,
+#topElementsList a:hover{
+    background:#1d4ed8;
+}
+
+/*======================
+  BOTON ELIMINAR
+======================*/
+
+#resultList button,
+#randomList button,
+#topElementsList button{
+    width:100%;
+    height:34px;
+    margin-top:6px;
+    background:#dc2626;
+    border-radius:8px;
+    font-size:.8rem;
+    font-weight:600;
+}
+
+#resultList button:hover,
+#randomList button:hover,
+#topElementsList button:hover{
+    background:#b91c1c;
+}
+
+/*======================
+  RESPONSIVE
+======================*/
+
+@media(max-width:1300px){
+    #resultList,
+    #elementsList,
+    #randomList,
+    #topElementsList,
+    #calendarioList{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+
+@media(max-width:992px){
+    #resultList,
+    #elementsList,
+    #randomList,
+    #topElementsList,
+    #calendarioList{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px){
+    #resultList,
+    #elementsList,
+    #randomList,
+    #topElementsList,
+    #calendarioList{
+        grid-template-columns:1fr;
+    }
+}
