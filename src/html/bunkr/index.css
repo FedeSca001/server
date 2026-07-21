@@ -6,7 +6,7 @@
 }
 
 body{
-    max-width: 1400px;
+    max-width:1900px;
     font-family:Inter,"Segoe UI",Arial,sans-serif;
     background:#111827;
     color:#f8fafc;
@@ -334,14 +334,14 @@ button:hover{
 @media (max-width:1600px){
 
     #calendarioList{
-        grid-template-columns:repeat(4,1fr);
+        grid-template-columns:repeat(5,1fr);
     }
 }
 
 @media (max-width:1300px){
 
     #calendarioList{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:repeat(4,1fr);
     }
 }
 
