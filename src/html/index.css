@@ -4,25 +4,10 @@
     box-sizing:border-box;
 }
 
-:root{
-    --bg:#111827;
-    --surface:#1f2937;
-    --surface-hover:#273549;
-    --border:#374151;
-    --primary:#3b82f6;
-    --primary-hover:#2563eb;
-    --text:#f8fafc;
-    --text-muted:#9ca3af;
-    --danger:#ef4444;
-    --danger-hover:#dc2626;
-    --radius:12px;
-    --shadow:0 8px 20px rgba(0,0,0,.15);
-}
-
 body{
     font-family:Inter,"Segoe UI",Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+    background:#111827;
+    color:#f8fafc;
     max-width:1400px;
     margin:auto;
     padding:32px 20px 60px;
@@ -30,7 +15,7 @@ body{
 }
 
 /* =========================
-   TITULOS
+   TÍTULOS
 ========================= */
 
 h3{
@@ -50,9 +35,9 @@ h3:first-child{
 .input-container,
 .random-container,
 .topElements-container{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
+    background:#1f2937;
+    border:1px solid #374151;
+    border-radius:12px;
     padding:20px;
     margin-bottom:24px;
 }
@@ -74,22 +59,22 @@ select{
     min-width:180px;
     height:44px;
     padding:0 14px;
-    border:1px solid var(--border);
+    border:1px solid #374151;
     border-radius:10px;
     background:#111827;
-    color:var(--text);
+    color:#f8fafc;
     font-size:.95rem;
     outline:none;
     transition:.2s;
 }
 
 input::placeholder{
-    color:var(--text-muted);
+    color:#9ca3af;
 }
 
 input:focus,
 select:focus{
-    border-color:var(--primary);
+    border-color:#3b82f6;
 }
 
 /* =========================
@@ -101,8 +86,8 @@ button{
     padding:0 18px;
     border:none;
     border-radius:10px;
-    background:var(--primary);
-    color:white;
+    background:#3b82f6;
+    color:#ffffff;
     cursor:pointer;
     font-size:.95rem;
     font-weight:500;
@@ -110,16 +95,16 @@ button{
 }
 
 button:hover{
-    background:var(--primary-hover);
+    background:#2563eb;
 }
 
 .btn-danger{
     width:100%;
-    background:var(--danger);
+    background:#ef4444;
 }
 
 .btn-danger:hover{
-    background:var(--danger-hover);
+    background:#dc2626;
 }
 
 /* =========================
@@ -141,16 +126,16 @@ ul{
 li{
     display:flex;
     flex-direction:column;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
+    background:#1f2937;
+    border:1px solid #374151;
+    border-radius:12px;
     overflow:hidden;
     transition:.2s;
 }
 
 li:hover{
     transform:translateY(-3px);
-    background:var(--surface-hover);
+    background:#273549;
 }
 
 li h3{
@@ -160,13 +145,24 @@ li h3{
 }
 
 li p{
-    margin:0 16px;
-    color:var(--text-muted);
+    margin:16px;
+    margin-top:0;
+    color:#9ca3af;
     font-size:.9rem;
+    line-height:1.5;
+}
+
+/* Si necesitas un párrafo centrado para otro elemento,
+   usa una clase en lugar de afectar a todos los <p> */
+
+.text-center{
+    text-align:center;
+    font-weight:bold;
+    margin-top:50px;
 }
 
 /* =========================
-   IMAGEN
+   IMÁGENES
 ========================= */
 
 img{
@@ -188,14 +184,34 @@ a{
     height:42px;
     text-decoration:none;
     border-radius:10px;
-    background:var(--primary);
-    color:white;
+    background:#3b82f6;
+    color:#ffffff;
     font-weight:500;
     transition:.2s;
 }
 
 a:hover{
-    background:var(--primary-hover);
+    background:#2563eb;
+}
+
+/* =========================
+   SPINNER
+========================= */
+
+.spinner{
+    width:36px;
+    height:36px;
+    margin:20px auto;
+    border:5px solid rgba(255,255,255,.15);
+    border-top-color:#3b82f6;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 /* =========================
@@ -222,7 +238,6 @@ a:hover{
     ul{
         grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
     }
-
 }
 
 @media (max-width:480px){
@@ -230,5 +245,4 @@ a:hover{
     ul{
         grid-template-columns:1fr;
     }
-
 }
