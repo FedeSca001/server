@@ -2,61 +2,53 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="./index.css">
     <title>Web App</title>
 </head>
 <body>
 
-    <!-- Buscar álbum -->
-    <h3>Buscar álbum</h3>
+<h3>Buscar álbum</h3>
+<div class="input-container">
     <input type="text" id="urlInput" placeholder="Buscar álbum">
-    <div class="input-container">
-        <button id="buscarSql">Buscar en SQL</button>
-        <ul id="resultList"></ul>
-    </div>
+    <button id="buscarSql">Buscar en SQL</button>
+</div>
+<ul id="resultList"></ul>
 
-    <!-- Buscar elementos -->
-    <h3>Buscar elementos</h3>
-    <div class="input-container">
-        <input type="text" id="elementInput" placeholder="Buscar elemento">
+<h3>Buscar elementos</h3>
+<div class="input-container">
+    <input type="text" id="elementInput" placeholder="Buscar elemento">
+    <select id="filterSelect">
+        <option value="all" selected>All</option>
+        <option value="Image">Image</option>
+        <option value="Video">Video</option>
+        <option value="file">File</option>
+    </select>
+    <select id="sortType">
+        <option value="all" selected>All</option>
+        <option value="size">Size</option>
+        <option value="nombre">Nombre</option>
+        <option value="Video">Video</option>
+        <option value="img">Imagen</option>
+    </select>
+    <button id="buscarElemento">Buscar elemento</button>
+</div>
+<ul id="elementsList"></ul>
 
-        <select id="filterSelect">
-            <option value="all" selected>All</option>
-            <option value="Image">Image</option>
-            <option value="Video">Video</option>
-            <option value="file">File</option>
-        </select>
+<div class="random-container">
+    <h3>Álbumes aleatorios</h3>
+    <button id="getRandomAlbums">Obtener álbumes</button>
+    <ul id="randomList"></ul>
+</div>
 
-        <select id="sortType">
-            <option value="all" selected>All</option>
-            <option value="size">Size</option>
-            <option value="nombre">Nombre</option>
-            <option value="Video">Video</option>
-            <option value="img">Imagen</option>
-        </select>
+<div class="topElements-container">
+    <h3>Top elementos</h3>
+    <button id="getTopElements">Ver top</button>
+    <ul id="topElementsList"></ul>
+    <button id="moreElements">Más elementos</button>
+</div>
 
-        <button id="buscarElemento">Buscar elemento</button>
-    </div>
-
-    <ul id="elementsList"></ul>
-
-    <!-- Álbumes aleatorios -->
-    <div class="random-container">
-        <h3>Álbumes aleatorios</h3>
-        <button id="getRandomAlbums">Obtener álbumes</button>
-        <ul id="randomList"></ul>
-    </div>
-
-    <!-- Top elementos -->
-    <div class="topElements-container">
-        <h3>Top elementos</h3>
-        <button id="getTopElements">Ver top</button>
-        <ul id="topElementsList"></ul>
-        <button id="moreElements">Más elementos</button>
-    </div>
-
-    <script src="./index.js"></script>
+<script src="./index.js"></script>
 
 </body>
 </html>

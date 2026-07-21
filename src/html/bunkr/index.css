@@ -185,6 +185,17 @@ button:hover{background:#2563eb;}
 .modal-content .descripcion:hover{color:#60a5fa;}
 #calendarioList>li{cursor:pointer;}
 
+#resultList,#elementsList,#randomList,#topElementsList{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;padding:0;margin-top:20px;}
+#resultList li,#elementsList li,#randomList li,#topElementsList li{background:#1f2937;border:1px solid #374151;border-radius:10px;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:10px;}
+#resultList img,#elementsList img,#randomList img,#topElementsList img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
+#resultList h3,#elementsList h3,#randomList h3,#topElementsList h3{margin:0;font-size:.95rem;}
+#resultList a,#elementsList a,#randomList a,#topElementsList a{margin-top:auto;color:#60a5fa;text-decoration:none;}
+#resultList button,#randomList button,#topElementsList button{width:100%;}
+
+@media(max-width:1300px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:992px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){#resultList,#elementsList,#randomList,#topElementsList{grid-template-columns:1fr;}}
+
 @media (max-width:1600px){#calendarioList{grid-template-columns:repeat(5,1fr);}}
 @media (max-width:1300px){#calendarioList{grid-template-columns:repeat(4,1fr);}}
 @media (max-width:992px){#calendarioList{grid-template-columns:repeat(2,1fr);}}
