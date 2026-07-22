@@ -42,6 +42,7 @@ const renderAlbums=(lista,contenedor)=>{
 };
 
 const renderCards=lista=>{
+    console.log(lista[0])
     listaElementsCard.innerHTML="";
     lista.forEach(card=>{
         const li=document.createElement("li");
