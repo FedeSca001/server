@@ -118,6 +118,7 @@ const buscarElementosCards=async texto=>{
         const datos=await response.json();
         cards=Array.isArray(datos)?[...datos]:[datos];
         originalCards=[...cards];
+        console.log(cards[0])
         renderCards(cards);
     }catch(error){
         console.error(error);
