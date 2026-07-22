@@ -42,15 +42,14 @@ const renderAlbums=(lista,contenedor)=>{
 };
 
 const renderCards=lista=>{
-    console.log(lista[0])
     listaElementsCard.innerHTML="";
     lista.forEach(card=>{
         const li=document.createElement("li");
         li.innerHTML=`
-<h3>${card.title}</h3>
-<img src="${card.image}" alt="${card.title}">
-<p>Tipo: ${card.type} | Tamaño: ${card.size} | Fecha: ${card.date}</p>
-<a href="${card.url}" target="_blank">Ver elemento</a>`;
+            <h3>${card.title}</h3>
+            <img src="${card.image}" alt="${card.title}">
+            <p>Tipo: ${card.type} | Tamaño: ${card.size} | Fecha: ${card.date}</p>
+            <a href="${card.url}" target="_blank">Ver elemento</a>`;
         listaElementsCard.appendChild(li);
     });
     actualizarContador(countCards,lista.length,"Elementos");
@@ -119,7 +118,6 @@ const buscarElementosCards=async texto=>{
         const datos=await response.json();
         cards=Array.isArray(datos)?[...datos]:[datos];
         originalCards=[...cards];
-        console.log(cards[0])
         renderCards(cards);
     }catch(error){
         console.error(error);
@@ -182,21 +180,15 @@ input.addEventListener("keypress",e=>{
         buscarAlbums(input.value.trim());
     }
 });
-
 btnElementsCard.addEventListener("click",()=>{
     buscarElementosCards(elementInput.value.trim());
 });
-
 elementInput.addEventListener("keypress",e=>{
     if(e.key==="Enter"){
         buscarElementosCards(elementInput.value.trim());
     }
 });
-
 sortType.addEventListener("change",sortCards);
-
 randomBtn.addEventListener("click",getRandomAlbums);
-
 topElementsBtn.addEventListener("click",getTopElements);
-
 moreElementsBtn.addEventListener("click",getMoreTopElements);
