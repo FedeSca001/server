@@ -62,8 +62,11 @@ const crearCardAlbum = album => `
     <h3>${album.title}</h3>
     <img src="${album.image}" alt="${album.title}">
     <a href="${album.url}" target="_blank">Ver álbum</a>
-    ${botonFavorito("album", album.id)}
-    <button class="btn-delete-album" data-id="${album.id}">✕</button>
+    
+    <div class="card-actions">
+        ${botonFavorito("album", album.id)}
+        <button class="btn-delete-album" data-id="${album.id}">✕</button>
+    </div>
 `;
 
 const renderAlbums = (lista, contenedor) => {
@@ -93,7 +96,10 @@ const renderCards = lista => {
             <img src="${card.image}" alt="${card.title}">
             <p>Tipo: ${card.type} | Tamaño: ${card.size} | Fecha: ${card.date}</p>
             <a href="${card.url}" target="_blank">Ver elemento</a>
-            ${botonFavorito("card", card.id)}
+            
+            <div class="card-actions">
+                ${botonFavorito("card", card.id)}
+            </div>
         `;
         listaElementsCard.appendChild(li);
     });
