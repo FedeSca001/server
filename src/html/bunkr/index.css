@@ -583,86 +583,88 @@ button:hover{
 /*======================
   FAVORITOS
 ======================*/
-
-.favoritos-container{
-    display:flex;
-    flex-direction:column;
-    gap:24px;
-    margin-top:20px;
+.favoritos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
 }
 
-.favoritos-section{
-    display:flex;
-    flex-direction:column;
+.favoritos-section {
+    display: flex;
+    flex-direction: column;
 }
 
-.favoritos-section h3{
-    margin:0 0 12px;
-    padding-bottom:8px;
-    color:#60a5fa;
-    border-bottom:1px solid #374151;
-    font-size:1rem;
+.favoritos-section h3 {
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    color: #60a5fa;
+    border-bottom: 1px solid #374151;
+    font-size: 1rem;
 }
 
 #favoritos-list-albums,
-#favoritos-list-cards{
-    list-style:none;
-    padding:0;
-    margin:0;
+#favoritos-list-cards {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 #favoritos-list-albums li,
-#favoritos-list-cards li{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-    padding:10px 12px;
-    background:#111827;
-    border:1px solid #374151;
-    border-radius:8px;
-    transition:.2s;
+#favoritos-list-cards li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    transition: 0.2s;
 }
 
 #favoritos-list-albums li:hover,
-#favoritos-list-cards li:hover{
-    border-color:#3b82f6;
-    background:#273549;
+#favoritos-list-cards li:hover {
+    border-color: #3b82f6;
+    background: #273549;
 }
 
 #favoritos-list-albums a,
-#favoritos-list-cards a{
-    color:#f8fafc;
-    text-decoration:none;
-    flex:1;
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+#favoritos-list-cards a {
+    color: #f8fafc;
+    text-decoration: none;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 #favoritos-list-albums a:hover,
-#favoritos-list-cards a:hover{
-    color:#60a5fa;
+#favoritos-list-cards a:hover {
+    color: #60a5fa;
 }
 
-#favoritos-list-albums button,
-#favoritos-list-cards button{
-    width:28px;
-    height:28px;
-    padding:0;
-    border:none;
-    border-radius:50%;
-    background:#ef4444;
-    color:#fff;
-    cursor:pointer;
-    font-size:16px;
-    transition:.2s;
+/* Botón eliminar favorito */
+.btn-delete-fav {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #ef4444;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    flex-shrink: 0;
 }
 
-#favoritos-list-albums button:hover,
-#favoritos-list-cards button:hover{
-    background:#dc2626;
+.btn-delete-fav:hover {
+    background: #dc2626;
 }
 
 /*======================
