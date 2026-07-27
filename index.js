@@ -4,6 +4,7 @@ const path = require("path");
 const apiMotoGp = require("./src/show-results/scrapingBunkr/apiMotoGp.js")
 const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
 const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js");
+const apiFavoritos = require("./src/show-results/scrapingBunkr/apiFavoritos.js")
 
 const commands = {
     videos: async (rl) => {
@@ -103,6 +104,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("¡Hola mundo 🌍"));
 app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/apiElement", apiElementsCard);
+app.use("/apiFavoritos", apiFavoritos);
 app.use("/apiMotoGp", apiMotoGp);
 app.use("/html/bunkr", express.static(path.join(__dirname, "src/html/bunkr")));
 app.use("/html/motogp", express.static(path.join(__dirname, "src/html/motoGp")));

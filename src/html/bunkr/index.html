@@ -2,57 +2,78 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./index.css">
     <title>Web App</title>
 </head>
 <body>
+    <button id="toggleAside" class="toggle-aside">⭐ Favoritos</button>
 
-<h3>Buscar álbum</h3>
-<div class="input-container">
-    <input type="text" id="urlInput" placeholder="Buscar álbum">
-    <p id="countAlbums"></p>
-    <button id="buscarSql">Buscar en SQL</button>
-</div>
-<ul id="resultList"></ul>
+    <aside id="aside" class="aside-container">
+        <h2>⭐ Favoritos</h2>
+        <div class="favoritos-container">
+            <section class="favoritos-section">
+                <h3>Álbumes</h3>
+                <ul id="favoritos-list-albums"></ul>
+            </section>
+            <section class="favoritos-section">
+                <h3>Elementos</h3>
+                <ul id="favoritos-list-cards"></ul>
+            </section>
+        </div>
+    </aside>
 
-<h3>Buscar elementos</h3>
-<div class="input-container">
-    <input type="text" id="elementInput" placeholder="Buscar elemento">
-    <h2>Filtrar</h2>
-    <select id="filterSelect">
-        <option value="all" selected>All</option>
-        <option value="Image">Image</option>
-        <option value="Video">Video</option>
-        <option value="file">File</option>
-    </select>
-    <h2>Ordenar</h2>
-    <select id="sortType">
-        <option value="all" selected>All</option>
-        <option value="Video">Video</option>
-        <option value="img">Imagen</option>
-        <option value="size">Size</option>
-        <option value="nombre">Nombre</option>
-    </select>
-    <p id="countCards"></p>
-    <button id="buscarElemento">Buscar elemento</button>
-</div>
-<ul id="elementsList"></ul>
+    <main>
+        <h3>Buscar álbum</h3>
+        <div class="input-container">
+            <input type="text" id="urlInput" placeholder="Buscar álbum">
+            <p id="countAlbums"></p>
+            <button id="buscarSql">Buscar en SQL</button>
+        </div>
+        <ul id="resultList"></ul>
 
-<div class="random-container">
-    <h3>Álbumes aleatorios</h3>
-    <button id="getRandomAlbums">Obtener álbumes</button>
-</div>
-<ul id="randomList"></ul>
+        <h3>Buscar elementos</h3>
+        <div class="input-container">
+            <input type="text" id="elementInput" placeholder="Buscar elemento">
+            
+            <div class="filters">
+                <label>Filtrar</label>
+                <select id="filterSelect">
+                    <option value="all" selected>All</option>
+                    <option value="Image">Image</option>
+                    <option value="Video">Video</option>
+                    <option value="file">File</option>
+                </select>
 
-<div class="topElements-container">
-    <h3>Top elementos</h3>
-    <button id="getTopElements">Ver top</button>
-</div>
-<ul id="topElementsList"></ul>
-<button id="moreElements">Más elementos</button>
+                <label>Ordenar</label>
+                <select id="sortType">
+                    <option value="all" selected>All</option>
+                    <option value="Video">Video</option>
+                    <option value="img">Imagen</option>
+                    <option value="size">Size</option>
+                    <option value="nombre">Nombre</option>
+                </select>
+            </div>
 
-<script src="./index.js"></script>
+            <p id="countCards"></p>
+            <button id="buscarElemento">Buscar elemento</button>
+        </div>
+        <ul id="elementsList"></ul>
 
+        <div class="random-container">
+            <h3>Álbumes aleatorios</h3>
+            <button id="getRandomAlbums">Obtener álbumes</button>
+        </div>
+        <ul id="randomList"></ul>
+
+        <div class="topElements-container">
+            <h3>Top elementos</h3>
+            <button id="getTopElements">Ver top</button>
+        </div>
+        <ul id="topElementsList"></ul>
+        <button id="moreElements">Más elementos</button>
+
+        <script src="./index.js"></script>
+    </main>
 </body>
 </html>
