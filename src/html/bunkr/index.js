@@ -248,17 +248,14 @@ const deleteAlbum = async id => {
         });
         if (!response.ok) throw new Error("Error al eliminar");
 
-        // Actualizar las tres listas posibles
         topAlbums = topAlbums.filter(a => a.id !== id);
         searchAlbums = searchAlbums.filter(a => a.id !== id);
         randomAlbums = randomAlbums.filter(a => a.id !== id);
 
-        // Re-renderizar solo las que tengan contenido
         if (topAlbums.length) renderAlbums(topAlbums, topElementsList);
         if (searchAlbums.length) renderAlbums(searchAlbums, listado);
         if (randomAlbums.length) renderAlbums(randomAlbums, randomList);
 
-        // Si hay búsqueda activa, refrescarla
         if (input.value.trim()) {
             await buscarAlbums(input.value.trim());
         }
@@ -321,7 +318,6 @@ const deleteFavoritoByReferencia = async (tipo, referencia_id) => {
 };
 
 const actualizarVistaFavoritos = () => {
-    // Solo re-renderiza las listas que ya tienen datos
     if (topAlbums.length) renderAlbums(topAlbums, topElementsList);
     if (searchAlbums.length) renderAlbums(searchAlbums, listado);
     if (randomAlbums.length) renderAlbums(randomAlbums, randomList);
@@ -332,7 +328,6 @@ const actualizarVistaFavoritos = () => {
 // EVENT DELEGATION
 // ======================
 document.addEventListener("click", e => {
-    // Favoritos
     if (e.target.classList.contains("btn-fav")) {
         const tipo = e.target.dataset.tipo;
         const id = Number(e.target.dataset.id);
@@ -345,7 +340,6 @@ document.addEventListener("click", e => {
         }
     }
 
-    // Eliminar álbum
     if (e.target.classList.contains("btn-delete-album")) {
         const id = Number(e.target.dataset.id);
         if (confirm("¿Eliminar este álbum?")) {
@@ -353,7 +347,6 @@ document.addEventListener("click", e => {
         }
     }
 
-    // Eliminar favorito desde el aside
     if (e.target.classList.contains("btn-delete-fav")) {
         const id = Number(e.target.dataset.id);
         deleteFavorito(id);
