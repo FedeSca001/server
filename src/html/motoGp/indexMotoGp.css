@@ -1,0 +1,65 @@
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{max-width:1500px;margin:0 auto;padding:40px 24px 70px;font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 10% 0%,rgba(239,68,68,.1),transparent 30%),#0b0f17;color:#f8fafc;line-height:1.5}
+.page-header{margin-bottom:42px}
+.eyebrow{margin-bottom:8px;color:#ef4444;font-size:.75rem;font-weight:800;letter-spacing:.18em}
+.page-header h1{margin:0 0 10px;font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;color:#f8fafc}
+.page-header p{color:#94a3b8;font-size:1rem}
+.section{margin-bottom:42px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-header h2{margin:0;color:#f8fafc;font-size:1.5rem;font-weight:700}
+.input-container,#clasificacionContainer{padding:20px;background:#111827;border:1px solid #1f2937;border-radius:16px}
+#calendarioList{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:0;margin:0}
+#calendarioList>li{min-width:0}
+.gpCard{height:100%;display:flex;flex-direction:column;overflow:hidden;background:#1f2937;border:1px solid #374151;border-radius:14px;cursor:pointer;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.gpCard:hover{transform:translateY(-5px);border-color:#ef4444;box-shadow:0 15px 35px rgba(0,0,0,.35),0 0 0 1px rgba(239,68,68,.08)}
+.gpCard>img{display:block;width:100%;height:190px;object-fit:cover;background:#0f172a;border-bottom:1px solid #374151}
+.gpCard>h2{margin:16px 16px 8px;color:#f8fafc;font-size:1.1rem;font-weight:700}
+.gpCard>p{margin:0 16px 4px;color:#94a3b8;font-size:.85rem}
+.gpCard>p strong{color:#ef4444}
+.gpCard>h3{margin:16px 16px 8px;padding-bottom:7px;color:#cbd5e1;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #374151}
+.podio{list-style:none;margin:0 16px;padding:0}
+.podio li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #293548}
+.podio li:last-child{border-bottom:none}
+.podio li strong{width:24px;flex-shrink:0;color:#fbbf24;font-size:.85rem;font-weight:800;text-align:center}
+.podio li span{flex:1;min-width:0;overflow:hidden;color:#e2e8f0;font-size:.85rem;white-space:nowrap;text-overflow:ellipsis}
+.podio li img{width:28px;height:20px;flex-shrink:0;object-fit:cover;border-radius:3px;background:#0f172a}
+.horario{display:flex;flex-direction:column;margin:0 16px 16px}
+.fila{display:grid;grid-template-columns:65px minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #293548;font-size:.78rem}
+.fila:last-child{border-bottom:none}
+.dia{color:#ef4444;font-weight:700}
+.descripcion{min-width:0;overflow:hidden;color:#cbd5e1;white-space:nowrap;text-overflow:ellipsis}
+.hora{color:#f8fafc;font-weight:700;white-space:nowrap}
+#ClasificaciontList{list-style:none;display:flex;flex-direction:column;gap:6px;padding:0;margin:0}
+#ClasificaciontList>li{display:grid;grid-template-columns:55px minmax(0,1fr) 100px 70px;align-items:center;min-height:54px;padding:8px 14px;background:#1f2937;border:1px solid #293548;border-radius:10px;transition:background .2s ease,border-color .2s ease}
+#ClasificaciontList>li:hover{background:#273449;border-color:#ef4444}
+.pilotoPosition{width:34px;height:34px;display:flex;align-items:center;justify-content:center;margin:0;border-radius:50%;background:#111827;color:#fbbf24;font-size:.85rem;font-weight:800}
+.pilotoNombre{margin:0;color:#f8fafc;font-size:.95rem;font-weight:600}
+.pilotoPuntos{margin:0;color:#60a5fa;font-size:.9rem;font-weight:700;text-align:right}
+.pilotoDistancia{margin:0;color:#94a3b8;font-size:.8rem;text-align:right}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:1000}
+.modal.hidden{display:none}
+.modal-content{position:relative;width:min(900px,100%);max-height:90vh;overflow-y:auto;padding:24px;background:#111827;border:1px solid #374151;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,.55)}
+.btnCerrar{position:absolute;top:16px;right:16px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid #374151;border-radius:50%;background:rgba(17,24,39,.9);color:#f8fafc;font-size:1rem;cursor:pointer;z-index:10;transition:background .2s ease,border-color .2s ease}
+.btnCerrar:hover{background:#ef4444;border-color:#ef4444}
+#modalBody>img:first-child{display:block;width:100%;height:300px;object-fit:cover;margin-bottom:20px;border-radius:12px;background:#0f172a}
+#modalBody>h2{margin-bottom:12px;color:#f8fafc;font-size:1.6rem}
+#modalBody>p{margin-bottom:6px;color:#94a3b8}
+#modalBody>p strong{color:#ef4444}
+#modalBody>h3{margin-top:24px;margin-bottom:10px;padding-bottom:8px;color:#f8fafc;font-size:1rem;border-bottom:1px solid #374151}
+#modalBody .horario{margin:0}
+#modalBody .fila{min-height:42px;margin-bottom:4px;padding:8px 10px;background:#1f2937;border-radius:6px}
+#modalBody .fila .descripcion{color:#e2e8f0}
+#modalBody .fila a.descripcion{color:#60a5fa;text-decoration:none}
+#modalBody .fila a.descripcion:hover{color:#93c5fd;text-decoration:underline}
+.spinner{width:40px;height:40px;margin:30px auto;border:4px solid rgba(255,255,255,.12);border-top-color:#ef4444;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#calendarioList>h2,#ClasificaciontList>h2{padding:30px;color:#f87171;text-align:center}
+.modal-content::-webkit-scrollbar{width:8px}
+.modal-content::-webkit-scrollbar-track{background:#111827}
+.modal-content::-webkit-scrollbar-thumb{background:#374151;border-radius:10px}
+.modal-content::-webkit-scrollbar-thumb:hover{background:#4b5563}
+@media(max-width:1200px){#calendarioList{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){#calendarioList{grid-template-columns:repeat(2,minmax(0,1fr))}#ClasificaciontList>li{grid-template-columns:50px minmax(0,1fr) 90px 60px}}
+@media(max-width:650px){body{padding:25px 14px 50px}.page-header{margin-bottom:30px}.page-header h1{font-size:2rem}#calendarioList{grid-template-columns:1fr}.input-container,#clasificacionContainer{padding:12px}.gpCard>img{height:210px}#ClasificaciontList>li{grid-template-columns:42px minmax(0,1fr) 70px;gap:8px}.pilotoDistancia{display:none}.pilotoNombre{font-size:.85rem}.pilotoPuntos{font-size:.8rem}.modal{padding:10px}.modal-content{max-height:95vh;padding:16px;border-radius:14px}#modalBody>img:first-child{height:200px}.fila{grid-template-columns:55px minmax(0,1fr) auto}}
+@media(max-width:420px){.page-header h1{font-size:1.8rem}.gpCard>img{height:180px}.fila{grid-template-columns:50px minmax(0,1fr)}.fila .hora{grid-column:2;font-size:.75rem}}

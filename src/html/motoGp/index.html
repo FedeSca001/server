@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../bunkr/index.css">
+    <link rel="stylesheet" href="./indexMotoGp.css">
     <title>MotoGP</title>
 </head>
 <body>
-
-    <h3>Bienvenido al scraping de MotoGP</h3>
-
-    <h3>Calendario MotoGP</h3>
-    <div class="input-container" id="calendarioContainer">
-        <ul id="calendarioList"></ul>
-    </div>
-
-    <h3>Clasificación MotoGP</h3>
-    <div id="clasificacionContainer">
-        <ul id="ClasificaciontList"></ul>
-    </div>
+    <header class="page-header">
+        <div class="eyebrow">MOTOGP</div>
+        <h1>Calendario y clasificación</h1>
+        <p>Consulta los Grandes Premios, horarios y clasificación del campeonato.</p>
+    </header>
+    <section class="section">
+        <div class="section-header">
+            <h2>Calendario MotoGP</h2>
+        </div>
+        <div class="input-container" id="calendarioContainer">
+            <ul id="calendarioList"></ul>
+        </div>
+    </section>
+    <section class="section">
+        <div class="section-header">
+            <h2>Clasificación MotoGP</h2>
+        </div>
+        <div id="clasificacionContainer">
+            <ul id="ClasificaciontList"></ul>
+        </div>
+    </section>
     <div id="gpModal" class="modal hidden">
         <div class="modal-content">
-            <button id="cerrarModal" class="btnCerrar">✕</button>
+            <button id="cerrarModal" class="btnCerrar" type="button" aria-label="Cerrar ventana">✕</button>
             <div id="modalBody"></div>
         </div>
     </div>
-    
     <script src="./indexMotoGp.js"></script>
-
 </body>
 </html>
