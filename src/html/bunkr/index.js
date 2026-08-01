@@ -1,6 +1,3 @@
-// ======================
-// SELECTORES
-// ======================
 const listado = document.getElementById("resultList");
 const btn = document.getElementById("buscarSql");
 const listaElementsCard = document.getElementById("elementsList");

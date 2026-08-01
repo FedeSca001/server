@@ -1,15 +1,20 @@
-/*======================
-  RESET
-======================*/
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     max-width: 1400px;
-    margin: auto;
+    margin: 0 auto;
     padding: 32px 20px 60px;
     font-family: Inter, "Segoe UI", Arial, sans-serif;
     background: #111827;
@@ -17,29 +22,35 @@ body {
     line-height: 1.5;
 }
 
-/*======================
-  TITULOS
-======================*/
+/* =========================================================
+   TITULOS
+========================================================= */
+
+h2,
+h3 {
+    margin: 0;
+}
+
+h2 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #60a5fa;
+}
+
 h3 {
     margin: 30px 0 14px;
     font-size: 1.4rem;
     font-weight: 600;
 }
 
-h3:first-child {
+main > h3:first-child {
     margin-top: 0;
 }
 
-h2 {
-    margin: 0;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #60a5fa;
-}
+/* =========================================================
+   CONTENEDORES PRINCIPALES
+========================================================= */
 
-/*======================
-  CONTENEDORES
-======================*/
 .input-container,
 .random-container,
 .topElements-container {
@@ -53,96 +64,131 @@ h2 {
 .input-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
     align-items: center;
+    gap: 12px;
 }
 
+/* =========================================================
+   FILTROS
+========================================================= */
+
 .filters {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
     align-items: center;
-    width: 100%;
+    gap: 12px;
 }
 
 .filters label {
     font-size: 0.85rem;
-    color: #60a5fa;
     font-weight: 600;
+    color: #60a5fa;
 }
 
-/*======================
-  CONTADORES
-======================*/
+/* =========================================================
+   CONTADORES
+========================================================= */
+
 #countAlbums,
 #countCards {
     margin-left: auto;
-    color: #fbbf24;
-    font-size: 0.9rem;
-    font-weight: 600;
     padding: 6px 12px;
     background: #111827;
     border: 1px solid #374151;
     border-radius: 8px;
+    color: #fbbf24;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
-/*======================
-  INPUTS
-======================*/
+/* =========================================================
+   INPUTS Y SELECTS
+========================================================= */
+
 input[type="text"],
 select {
     flex: 1;
     min-width: 180px;
     height: 44px;
     padding: 0 14px;
+
     border: 1px solid #374151;
     border-radius: 10px;
+
     background: #111827;
     color: #f8fafc;
+
+    font-family: inherit;
     font-size: 0.95rem;
+
     outline: none;
-    transition: 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-input::placeholder {
+input[type="text"]::placeholder {
     color: #9ca3af;
 }
 
-input:focus,
+input[type="text"]:focus,
 select:focus {
     border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
-/*======================
-  BOTONES GENERALES
-======================*/
+select {
+    cursor: pointer;
+}
+
+/* =========================================================
+   BOTONES GENERALES
+========================================================= */
+
 button {
     height: 44px;
     padding: 0 18px;
+
     border: none;
     border-radius: 10px;
+
     background: #3b82f6;
-    color: #fff;
-    cursor: pointer;
+    color: #ffffff;
+
+    font-family: inherit;
     font-size: 0.95rem;
     font-weight: 500;
-    transition: 0.2s;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 button:hover {
     background: #2563eb;
 }
 
-/*======================
-  SPINNER
-======================*/
+button:active {
+    transform: scale(0.98);
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
 .spinner {
     width: 36px;
     height: 36px;
+
     margin: 20px auto;
+
     border: 5px solid rgba(255, 255, 255, 0.15);
     border-top-color: #3b82f6;
     border-radius: 50%;
+
     animation: spin 0.8s linear infinite;
 }
 
@@ -152,35 +198,53 @@ button:hover {
     }
 }
 
-/*======================
-  TARJETAS
-======================*/
+/* =========================================================
+   LISTAS DE TARJETAS
+========================================================= */
+
 #resultList,
 #elementsList,
 #randomList,
 #topElementsList {
-    list-style: none;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
+
     gap: 16px;
+
     padding: 0;
     margin: 20px 0;
+
+    list-style: none;
 }
+
+/* =========================================================
+   TARJETAS
+========================================================= */
 
 #resultList li,
 #elementsList li,
 #randomList li,
 #topElementsList li {
     position: relative;
+
     display: flex;
     flex-direction: column;
+
     gap: 10px;
+
+    min-width: 0;
     padding: 12px;
+
     background: #1f2937;
     border: 1px solid #374151;
     border-radius: 10px;
+
     overflow: hidden;
-    transition: 0.2s;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 #resultList li:hover,
@@ -189,47 +253,92 @@ button:hover {
 #topElementsList li:hover {
     transform: translateY(-3px);
     border-color: #3b82f6;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
+
+/* =========================================================
+   IMAGENES DE TARJETAS
+========================================================= */
 
 #resultList img,
 #elementsList img,
 #randomList img,
 #topElementsList img {
+    display: block;
+
     width: 100%;
     height: 180px;
+
     object-fit: cover;
+
     border-radius: 8px;
+
+    background: #111827;
 }
+
+/* =========================================================
+   TITULOS DE TARJETAS
+========================================================= */
 
 #resultList h3,
 #elementsList h3,
 #randomList h3,
 #topElementsList h3 {
     margin: 0;
+
     padding-right: 70px;
+
+    color: #ffffff;
+
     font-size: 0.95rem;
-    color: #fff;
+    font-weight: 600;
+
+    line-height: 1.35;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/*======================
-  ENLACES TARJETAS
-======================*/
+/* =========================================================
+   INFORMACION DE ELEMENTOS
+========================================================= */
+
+#elementsList p {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   ENLACES DE TARJETAS
+========================================================= */
+
 #resultList a,
 #elementsList a,
 #randomList a,
 #topElementsList a {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 38px;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 38px;
+
     margin-top: auto;
+
     border-radius: 8px;
+
     background: #2563eb;
-    color: #fff;
+    color: #ffffff;
+
     text-decoration: none;
+
     font-size: 0.85rem;
     font-weight: 600;
-    transition: 0.2s;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 #resultList a:hover,
@@ -239,81 +348,118 @@ button:hover {
     background: #1d4ed8;
 }
 
-/*======================
-  BOTONES DE TARJETA (Favorito + Eliminar)
-======================*/
+/* =========================================================
+   ACCIONES DE LAS TARJETAS
+========================================================= */
+
 .card-actions {
     position: absolute;
+
     top: 8px;
     right: 8px;
+
     display: flex;
+    align-items: center;
     gap: 6px;
+
     z-index: 10;
 }
+
+/* =========================================================
+   BOTON FAVORITO
+========================================================= */
 
 .btn-fav,
 .btn-delete-album {
     width: 30px;
     height: 30px;
+
     padding: 0;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
     border-radius: 50%;
-    border: none;
+
     font-size: 16px;
     font-weight: 700;
+
     cursor: pointer;
-    transition: 0.2s;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-/* Estrella */
 .btn-fav {
     background: rgba(17, 24, 39, 0.9);
     color: #fbbf24;
+
     border: 1px solid rgba(251, 191, 36, 0.5);
 }
 
 .btn-fav:hover {
     background: #fbbf24;
-    color: #111;
+    color: #111827;
 }
 
-/* Eliminar */
+.btn-fav:active,
+.btn-delete-album:active {
+    transform: scale(0.9);
+}
+
+/* =========================================================
+   BOTON ELIMINAR ALBUM
+========================================================= */
+
 .btn-delete-album {
     background: rgba(17, 24, 39, 0.9);
     color: #ef4444;
+
     border: 1px solid rgba(239, 68, 68, 0.5);
 }
 
 .btn-delete-album:hover {
     background: #ef4444;
-    color: white;
+    color: #ffffff;
 }
 
-/*======================
-  BOTÓN MÁS ELEMENTOS
-======================*/
+/* =========================================================
+   BOTON MAS ELEMENTOS
+========================================================= */
+
 #moreElements {
     display: block;
+
     margin: 20px auto;
 }
 
-/*======================
-  ASIDE (FAVORITOS)
-======================*/
+/* =========================================================
+   ASIDE DE FAVORITOS
+========================================================= */
+
 .aside-container {
     position: fixed;
+
     top: 0;
     right: 0;
+
     width: 320px;
     height: 100vh;
+
     padding: 20px;
+
     background: #1f2937;
     border-left: 1px solid #374151;
+
     overflow-y: auto;
+
     transform: translateX(100%);
+
     transition: transform 0.3s ease;
+
     z-index: 1000;
 }
 
@@ -321,66 +467,105 @@ button:hover {
     transform: translateX(0);
 }
 
+/* =========================================================
+   BOTON ABRIR FAVORITOS
+========================================================= */
+
 .toggle-aside {
     position: fixed;
+
     top: 20px;
     right: 20px;
+
     z-index: 1100;
 }
 
-/*======================
-  LISTA DE FAVORITOS
-======================*/
+/* =========================================================
+   CONTENEDOR DE FAVORITOS
+========================================================= */
+
 .favoritos-container {
     display: flex;
     flex-direction: column;
+
     gap: 24px;
+
     margin-top: 20px;
 }
+
+/* =========================================================
+   SECCIONES DE FAVORITOS
+========================================================= */
 
 .favoritos-section h3 {
     margin: 0 0 12px;
     padding-bottom: 8px;
+
     color: #60a5fa;
+
     border-bottom: 1px solid #374151;
+
     font-size: 1rem;
+    font-weight: 600;
 }
+
+/* =========================================================
+   LISTAS DE FAVORITOS
+========================================================= */
 
 #favoritos-list-albums,
 #favoritos-list-cards {
-    list-style: none;
     padding: 0;
     margin: 0;
+
+    list-style: none;
 }
 
 #favoritos-list-albums li,
 #favoritos-list-cards li {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
     gap: 10px;
+
     margin-bottom: 10px;
     padding: 10px 12px;
+
     background: #111827;
     border: 1px solid #374151;
     border-radius: 8px;
-    transition: 0.2s;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
 #favoritos-list-albums li:hover,
 #favoritos-list-cards li:hover {
-    border-color: #3b82f6;
     background: #273549;
+    border-color: #3b82f6;
 }
+
+/* =========================================================
+   ENLACES DE FAVORITOS
+========================================================= */
 
 #favoritos-list-albums a,
 #favoritos-list-cards a {
-    color: #f8fafc;
-    text-decoration: none;
     flex: 1;
+
+    min-width: 0;
+
+    color: #f8fafc;
+
+    text-decoration: none;
+
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    transition: color 0.2s ease;
 }
 
 #favoritos-list-albums a:hover,
@@ -388,37 +573,63 @@ button:hover {
     color: #60a5fa;
 }
 
+/* =========================================================
+   BOTON ELIMINAR FAVORITO
+========================================================= */
+
 .btn-delete-fav {
     width: 28px;
     height: 28px;
+
+    flex-shrink: 0;
+
     padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border: none;
     border-radius: 50%;
+
     background: #ef4444;
-    color: #fff;
-    cursor: pointer;
+    color: #ffffff;
+
     font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.2s;
-    flex-shrink: 0;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .btn-delete-fav:hover {
     background: #dc2626;
 }
 
-/*======================
-  ESTADOS VACÍOS / ERROR
-======================*/
+.btn-delete-fav:active {
+    transform: scale(0.9);
+}
+
+/* =========================================================
+   ESTADOS VACIOS Y ERRORES
+========================================================= */
+
 .empty,
 .error {
     grid-column: 1 / -1;
-    text-align: center;
+
+    width: 100%;
+
     padding: 30px;
+
+    text-align: center;
+
     color: #9ca3af;
+
     background: #1f2937;
+
     border: 1px dashed #374151;
     border-radius: 10px;
 }
@@ -428,35 +639,70 @@ button:hover {
     border-color: #7f1d1d;
 }
 
-/*======================
-  RESPONSIVE
-======================*/
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.aside-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.aside-container::-webkit-scrollbar-track {
+    background: #111827;
+}
+
+.aside-container::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 10px;
+}
+
+.aside-container::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* =========================================================
+   RESPONSIVE - 1300px
+========================================================= */
+
 @media (max-width: 1300px) {
     #resultList,
     #elementsList,
     #randomList,
     #topElementsList {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
+
+/* =========================================================
+   RESPONSIVE - 992px
+========================================================= */
 
 @media (max-width: 992px) {
     #resultList,
     #elementsList,
     #randomList,
     #topElementsList {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     #countAlbums,
     #countCards {
-        margin-left: 0;
         width: 100%;
+        margin-left: 0;
+
         text-align: center;
     }
 }
 
+/* =========================================================
+   RESPONSIVE - 768px
+========================================================= */
+
 @media (max-width: 768px) {
+    body {
+        padding: 24px 14px 50px;
+    }
+
     #resultList,
     #elementsList,
     #randomList,
@@ -471,7 +717,7 @@ button:hover {
 
     input[type="text"],
     select,
-    button {
+    .input-container > button {
         width: 100%;
     }
 
@@ -480,7 +726,66 @@ button:hover {
         align-items: stretch;
     }
 
+    .filters label {
+        margin-top: 4px;
+    }
+
+    #countAlbums,
+    #countCards {
+        width: 100%;
+    }
+
     .aside-container {
         width: 100%;
+    }
+
+    .toggle-aside {
+        top: 12px;
+        right: 12px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - 480px
+========================================================= */
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 10px 40px;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    .input-container,
+    .random-container,
+    .topElements-container {
+        padding: 14px;
+    }
+
+    #resultList,
+    #elementsList,
+    #randomList,
+    #topElementsList {
+        gap: 12px;
+    }
+
+    #resultList li,
+    #elementsList li,
+    #randomList li,
+    #topElementsList li {
+        padding: 10px;
+    }
+
+    #resultList img,
+    #elementsList img,
+    #randomList img,
+    #topElementsList img {
+        height: 200px;
+    }
+
+    .aside-container {
+        padding: 16px;
     }
 }
