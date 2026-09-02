@@ -6,7 +6,7 @@ const db = require("../DataBase/db.js");
 /* ---------------- QUERIES ---------------- */
 
 const getRecetas = async ()=>{
-    return new Promise((resolve, reject)=>{
+    /*return new Promise((resolve, reject)=>{
         db.query(
             "SELECT * FROM recetas",
             (err, results) => {
@@ -18,7 +18,8 @@ const getRecetas = async ()=>{
                 }
             }
         );
-    });
+    });*/
+    return "Hola amigos de beer"
 }
 
 
@@ -26,7 +27,7 @@ const getRecetas = async ()=>{
 
 router.get("/", async (req, res) => {
     try {
-        getRecetas();
+        res.send(getRecetas());
     } catch (error) {
         res.json({ error: err.message});
     }
