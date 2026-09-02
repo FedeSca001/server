@@ -180,5 +180,4 @@ function mostrarMenu() {
     });
 }
 
-iniciarServidor();
 mostrarMenu();
