@@ -180,5 +180,5 @@ function mostrarMenu() {
     });
 }
 
-mostrarMenu();
 iniciarServidor();
+mostrarMenu();
