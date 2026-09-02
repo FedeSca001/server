@@ -107,7 +107,7 @@ app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/apiElement", apiElementsCard);
 app.use("/apiFavoritos", apiFavoritos);
 app.use("/apiMotoGp", apiMotoGp);
-app.use("/berr-system", BeerSystem);
+app.use("/beer-system", BeerSystem);
 app.use("/html/beer", express.static(path.join(__dirname, "src/html/Beer")));
 app.use("/html/bunkr", express.static(path.join(__dirname, "src/html/bunkr")));
 app.use("/html/motogp", express.static(path.join(__dirname, "src/html/motoGp")));
