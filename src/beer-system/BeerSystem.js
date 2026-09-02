@@ -1,7 +1,7 @@
 console.log('hola BEER');
 const express = require("express");
 const router = express.Router();
-const db = require("../DataBase/db;");
+const db = require("../DataBase/db.js");
 
 /* ---------------- QUERIES ---------------- */
 
