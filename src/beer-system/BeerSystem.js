@@ -27,7 +27,7 @@ const getRecetas = async ()=>{
 
 router.get("/", async (req, res) => {
     try {
-        res.send(getRecetas());
+        res.json(getRecetas());
     } catch (error) {
         res.json({ error: err.message});
     }
