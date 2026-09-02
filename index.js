@@ -4,7 +4,8 @@ const path = require("path");
 const apiMotoGp = require("./src/show-results/scrapingBunkr/apiMotoGp.js")
 const apiAlbumsRouter = require("./src/show-results/scrapingBunkr/apiAlbums.js");
 const apiElementsCard = require("./src/show-results/scrapingBunkr/apiCards.js");
-const apiFavoritos = require("./src/show-results/scrapingBunkr/apiFavoritos.js")
+const apiFavoritos = require("./src/show-results/scrapingBunkr/apiFavoritos.js");
+const BeerSystem = require("./src/beer-system/BeerSystem.js");
 
 const commands = {
     videos: async (rl) => {
@@ -85,7 +86,7 @@ const commands = {
         });
     },
 
-    scraping: async () => iniciarServidor(),
+    server: async () => iniciarServidor(),
     salir: async () => cerrarAplicacion()
 };
 
@@ -106,6 +107,8 @@ app.use("/apiAlbums", apiAlbumsRouter);
 app.use("/apiElement", apiElementsCard);
 app.use("/apiFavoritos", apiFavoritos);
 app.use("/apiMotoGp", apiMotoGp);
+app.use("/berr-system", BeerSystem);
+app.use("/html/beer", express.static(path.join(__dirname, "src/html/beer")));
 app.use("/html/bunkr", express.static(path.join(__dirname, "src/html/bunkr")));
 app.use("/html/motogp", express.static(path.join(__dirname, "src/html/motoGp")));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
@@ -142,8 +145,8 @@ function mostrarMenu() {
     rl.question("Opcion: ", async (op) => {
         op = op.toLowerCase();
         const map = {
-            "1": "scraping",
-            "scraping": "scraping",
+            "1": "server",
+            "server": "server",
             "2": "videos",
             "videos": "videos",
             "3": "imagenes",
@@ -178,3 +181,4 @@ function mostrarMenu() {
 }
 
 mostrarMenu();
+iniciarServidor();
