@@ -108,7 +108,7 @@ app.use("/apiElement", apiElementsCard);
 app.use("/apiFavoritos", apiFavoritos);
 app.use("/apiMotoGp", apiMotoGp);
 app.use("/berr-system", BeerSystem);
-app.use("/html/beer", express.static(path.join(__dirname, "src/html/beer")));
+app.use("/html/beer", express.static(path.join(__dirname, "src/html/Beer")));
 app.use("/html/bunkr", express.static(path.join(__dirname, "src/html/bunkr")));
 app.use("/html/motogp", express.static(path.join(__dirname, "src/html/motoGp")));
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
