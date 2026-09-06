@@ -17,6 +17,9 @@ const aside=document.getElementById("aside");
 const toggleAside=document.getElementById("toggleAside");
 const favoritosAlbumsList=document.getElementById("favoritos-list-albums");
 const favoritosCardsList=document.getElementById("favoritos-list-cards");
+const elementInputName=document.getElementById("elementInputName");
+const buscarSqlByName=document.getElementById("buscarSqlByName");
+const cardByName=document.getElementById("cardByName");
 const API_ALBUMS="http://192.168.1.139:3000/apiAlbums";
 const API_ELEMENTS="http://192.168.1.139:3000/apiElement";
 const API_FAVORITOS="http://192.168.1.139:3000/apiFavoritos";
@@ -27,6 +30,7 @@ let originalCards=[];
 let topAlbums=[];
 let searchAlbums=[];
 let randomAlbums=[];
+let cardsByName=[];
 let offset=0;
 const actualizarContador=(elemento,cantidad,texto)=>{
     if(elemento){
@@ -54,6 +58,15 @@ const crearCardAlbum=album=>`
         <button type="button" class="btn-delete-album" data-id="${album.id}">✕</button>
     </div>
 `;
+const crearCardElemento=card=>`
+    <h3>${card.title??"Sin título"}</h3>
+    <img src="${card.image??""}" alt="${card.title??"Elemento"}">
+    <p>Tipo: ${card.type??"-"} | Tamaño: ${card.size??"-"} | Fecha: ${card.date??"-"}</p>
+    <a href="${card.url??"#"}" target="_blank" rel="noopener noreferrer">Ver elemento</a>
+    <div class="card-actions">
+        ${botonFavorito("card",card.id)}
+    </div>
+`;
 const renderAlbums=(lista,contenedor)=>{
     contenedor.innerHTML="";
     if(!Array.isArray(lista)||!lista.length){
@@ -75,18 +88,22 @@ const renderCards=lista=>{
     }
     lista.forEach(card=>{
         const li=document.createElement("li");
-        li.innerHTML=`
-            <h3>${card.title??"Sin título"}</h3>
-            <img src="${card.image??""}" alt="${card.title??"Elemento"}">
-            <p>Tipo: ${card.type??"-"} | Tamaño: ${card.size??"-"} | Fecha: ${card.date??"-"}</p>
-            <a href="${card.url??"#"}" target="_blank" rel="noopener noreferrer">Ver elemento</a>
-            <div class="card-actions">
-                ${botonFavorito("card",card.id)}
-            </div>
-        `;
+        li.innerHTML=crearCardElemento(card);
         listaElementsCard.appendChild(li);
     });
     actualizarContador(countCards,lista.length,"Elementos");
+};
+const renderCardsByName=lista=>{
+    cardByName.innerHTML="";
+    if(!Array.isArray(lista)||!lista.length){
+        cardByName.innerHTML=`<li class="empty">No hay resultados</li>`;
+        return;
+    }
+    lista.forEach(card=>{
+        const li=document.createElement("li");
+        li.innerHTML=crearCardElemento(card);
+        cardByName.appendChild(li);
+    });
 };
 const renderFavoritos=()=>{
     favoritosAlbumsList.innerHTML="";
@@ -209,6 +226,25 @@ const buscarElementosCards=async texto=>{
         console.error("Error buscando elementos:",error);
         mostrarError(listaElementsCard);
         actualizarContador(countCards,0,"Elementos");
+    }
+};
+const buscarElementoPorNombre=async nombre=>{
+    if(!nombre){
+        cardByName.innerHTML=`<li class="empty">Escribe un nombre para buscar</li>`;
+        return;
+    }
+    cardByName.innerHTML=spinnerCarga;
+    try{
+        const response=await fetch(`${API_ELEMENTS}/card-name/${encodeURIComponent(nombre)}`);
+        if(!response.ok){
+            throw new Error(`Error HTTP ${response.status}`);
+        }
+        const datos=await response.json();
+        cardsByName=Array.isArray(datos)?datos:[datos];
+        renderCardsByName(cardsByName);
+    }catch(error){
+        console.error("Error buscando elemento por nombre:",error);
+        mostrarError(cardByName,"No se pudo buscar el elemento");
     }
 };
 const sortCards=()=>{
@@ -343,6 +379,9 @@ const actualizarVistaFavoritos=()=>{
     if(cards.length){
         renderCards(cards);
     }
+    if(cardsByName.length){
+        renderCardsByName(cardsByName);
+    }
 };
 document.addEventListener("click",e=>{
     const btnFavorito=e.target.closest(".btn-fav");
@@ -387,6 +426,14 @@ btnElementsCard.addEventListener("click",()=>{
 elementInput.addEventListener("keypress",e=>{
     if(e.key==="Enter"){
         buscarElementosCards(elementInput.value.trim());
+    }
+});
+buscarSqlByName.addEventListener("click",()=>{
+    buscarElementoPorNombre(elementInputName.value.trim());
+});
+elementInputName.addEventListener("keypress",e=>{
+    if(e.key==="Enter"){
+        buscarElementoPorNombre(elementInputName.value.trim());
     }
 });
 toggleAside.addEventListener("click",e=>{
