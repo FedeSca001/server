@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cheerio = require("cheerio");
 const axios = require("axios");
-const db = require("../../DataBase/motogpDB");
+const db = require("../../DataBase/motogpDB.js");
 
 const url = "https://www.marca.com/motor/motogp/calendario.html?intcmp=MENUMIGA&s_kw=calendario#";
 
