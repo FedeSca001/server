@@ -18,10 +18,11 @@ const getElementbyTitle=(title,filter="all")=>{
         });
     });
 };
+
 const getElementByName=name=>{
     return new Promise((resolve,reject)=>{
-        const sql="SELECT * FROM cards WHERE title LIKE ?";
-        const params=[`%${name}%`];
+        const sql="SELECT * FROM cards WHERE title = ?";
+        const params=[name];
         db.query(sql,params,(err,results)=>{
             if(err){
                 return reject(err);
@@ -30,6 +31,7 @@ const getElementByName=name=>{
         });
     });
 };
+
 /*---------------- ROUTES ----------------*/
 router.get("/card-title/:title",async(req,res)=>{
     try{
